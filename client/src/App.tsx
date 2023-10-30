@@ -1,14 +1,24 @@
 import "./App.css";
-import { Flip } from "./components/Flip";
-import { Rotate } from "./components/Rotate";
-import { Mirror } from "./components/Mirror";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { FlipPage } from "./components/Flip/FlipPage";
+
+import { RotatePage } from "./components/Rotate/RotatePage";
+
+import { MirrorPage } from "./components/Mirror/MirrorPage";
+import { MainPage } from "./components/Main/MainPage";
 
 function App() {
   return (
     <>
-      <Flip />
-      <Rotate />
-      <Mirror />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route path='/flip' element={<FlipPage />} />
+          <Route path='/rotate' element={<RotatePage />} />
+          <Route path='/mirror' element={<MirrorPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
