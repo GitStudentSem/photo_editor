@@ -2,10 +2,9 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { FlipPage } from "./components/Flip/FlipPage";
-
 import { RotatePage } from "./components/Rotate/RotatePage";
+import { NegativePage } from "./components/Negative/NegativePage";
 
-import { MirrorPage } from "./components/Mirror/MirrorPage";
 import { MainPage } from "./components/Main/MainPage";
 
 function App() {
@@ -16,7 +15,7 @@ function App() {
           <Route path='/' element={<MainPage />} />
           <Route path='/flip' element={<FlipPage />} />
           <Route path='/rotate' element={<RotatePage />} />
-          <Route path='/mirror' element={<MirrorPage />} />
+          <Route path='/negatve' element={<NegativePage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,12 +1,12 @@
 import { FlipCard } from "../Flip/FlipCard";
 import { RotateCard } from "../Rotate/RotateCard";
-import { MirrorCard } from "../Mirror/MirrorCard";
+import { NegativeCard } from "../Negative/NegativeCard";
 
 export const MainPage = () => {
   return (
     <div>
       <FlipCard />
-      <MirrorCard />
+      <NegativeCard />
       <RotateCard />
     </div>
   );

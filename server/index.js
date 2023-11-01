@@ -7,9 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/flip", photoController.flip);
+app.post("/flipflop", photoController.flip);
 app.post("/rotate", photoController.rotate);
-app.post("/mirror", photoController.mirror);
+app.post("/negative", photoController.negative);
 
 app.listen(3333, (err) => {
   if (err) {
