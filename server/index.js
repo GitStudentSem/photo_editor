@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import * as photoController from "./controllers/index.js";
-
+// http://localhost:3333/flip
 const app = express();
 app.use(cors());
 app.use(express.json());
