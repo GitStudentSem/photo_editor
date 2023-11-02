@@ -15,7 +15,7 @@ function App() {
           <Route path='/' element={<MainPage />} />
           <Route path='/flip' element={<FlipPage />} />
           <Route path='/rotate' element={<RotatePage />} />
-          <Route path='/negatve' element={<NegativePage />} />
+          <Route path='/negative' element={<NegativePage />} />
         </Routes>
       </BrowserRouter>
     </>
