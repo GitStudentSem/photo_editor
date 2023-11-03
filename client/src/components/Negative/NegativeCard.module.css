@@ -14,7 +14,6 @@
 
 .card:hover {
   filter: invert(100%);
-  transform: rotateX(190deg);
 }
 
 .card__wrapper {
