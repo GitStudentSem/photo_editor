@@ -1,0 +1,156 @@
+.flip {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 0 10px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: min-content 1fr 1fr 1fr 1fr 1fr;
+	gap: 10px;
+}
+
+.flip button,
+.flip input {
+	cursor: pointer;
+	background-color: transparent;
+}
+
+.flip button {
+	grid-column: 1/4;
+}
+
+.flip__title {
+	grid-column: 1/4;
+	font-size: 24px;
+}
+
+.flip__preloadFile {
+	grid-column: 1/6;
+	grid-row: 4/6;
+	border: 1px solid;
+}
+
+.flip__form {
+	grid-row: 2/4;
+	grid-column: 1/4;
+}
+
+@media screen and (min-width: 768px) {
+	.flip__preloadFile {
+		grid-column: 1/3;
+		grid-row: 2/6;
+	}
+
+	.flip__form {
+		grid-column: 3/4;
+		grid-row: 2/4;
+	}
+
+	h2.flip__title {
+		grid-column: 1/4;
+		grid-row: 1/2;
+		font-size: 36px;
+	}
+}
+
+
+.flip__form button[type="submit"],
+.flip__form input[type="file"],
+.flip__loadButton {
+	display: flex;
+	min-width: 100%;
+	align-items: center;
+	justify-content: center;
+	font-family: sans-serif;
+	font-size: 18px;
+	line-height: 24px;
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+	background-color: transparent;
+	min-height: 50px;
+}
+
+.flip__form input[type="file"].flip__chooseFile {
+	display: none;
+}
+
+.flip button.flip__loadButton {
+	background-color: black;
+	color: white;
+	transition: 0.3s ease-in-out;
+}
+
+.flip button.flip__loadButton:hover {
+	background-color: white;
+	color: black;
+}
+
+.flip__labelFile,
+.flip__form button[type="submit"] {
+	border: 1px solid black;
+	padding: 10px;
+	min-width: 100px;
+	text-align: center;
+	min-height: 50px;
+	cursor: pointer;
+	background-color: white;
+	color: black;
+	transition: 0.3s ease-in-out;
+}
+
+.flip__labelFile:hover,
+.flip__form button[type="submit"]:hover {
+	background-color: black;
+	color: white;
+}
+
+.flip__form input[type="file"] {
+	margin-bottom: 20px;
+}
+
+.flip__form button[type="submit"] {
+	margin-bottom: 10px;
+	min-width: 100%;
+}
+
+.flip__fieldset {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+.flip__label,
+.flip__legend,
+.flip__title,
+.flip__fieldset input,
+.flip__fieldset button,
+.flip__labelFile,
+.flip button,
+.flip input {
+	font-family: sans-serif;
+	font-size: 18px;
+	line-height: 24px;
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+}
+
+.flip__legend {
+	font-size: 16px;
+}
+
+.flip__label,
+.flip__fieldset input,
+.flip__fieldset button {
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.flip__fieldset {
+	display: grid;
+}
+
+.flip__fieldset div {
+	display: flex;
+	align-items: center;
+}
