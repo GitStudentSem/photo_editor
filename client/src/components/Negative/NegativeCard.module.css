@@ -7,7 +7,7 @@
   height: 150px;
   background: white;
   display: flex;
-  transition: 0.4s;
+  transition: 0.5s;
   border-radius: 20px;
   box-shadow: 4px 4px 20px 10px rgba(34, 60, 80, 0.2);
 }
