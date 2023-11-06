@@ -1,12 +1,56 @@
 import styles from "./FlipPage.module.css";
+import { useRef } from "react";
 
 export const FlipPage = () => {
+  const ref = useRef<HTMLInputElement>(null);
+  const refImage = useRef<HTMLImageElement>(null);
+
+  //   function previewFile(input: { files: any[] } | undefined) {
+  //     const file = input?.files[0];
+
+  //     const reader = new FileReader();
+
+  //     reader.onload = function () {
+  //       console.log(reader.result);
+  //       const a = reader.readAsText(file);
+  //       refImage.src = a;
+  //     };
+
+  //     reader.onerror = function () {
+  //       console.log(reader.error);
+  //     };
+  //   }
+  //   let path;
+  //   if (refImage.current) {
+  //     path = refImage.current.src;
+  //   }
+  const regexp = /^\D*\w*.*\//gm;
   return (
     <div className={styles.flip}>
       <h2 className={styles.flip__title}>
         Выберите настройки для эффекта Flip
       </h2>
-      <div className={styles.flip__preloadFile}></div>
+      <div
+        className={styles.flip__preloadFile}
+        onClick={() => {
+          if (refImage.current) {
+            const path = refImage.current.src;
+
+            console.log(path, "path");
+            const a = path.match(regexp);
+            const path1 = path.replace(a, "");
+            console.log(path1, "AaA");
+            return path;
+          }
+        }}
+      >
+        <img
+          src='sdfsdfsd1f'
+          ref={refImage}
+          alt='your image'
+          id='preloadFile'
+        />
+      </div>
       <form
         action='http://localhost:3333/flip'
         method='post'
@@ -17,6 +61,7 @@ export const FlipPage = () => {
             type='file'
             id='toChooseFile'
             className={styles.flip__chooseFile}
+            ref={ref}
           />
           <label htmlFor='toChooseFile' className={styles.flip__labelFile}>
             Загрузить файл
