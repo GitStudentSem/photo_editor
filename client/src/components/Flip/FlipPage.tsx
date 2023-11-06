@@ -1,55 +1,28 @@
 import styles from "./FlipPage.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export const FlipPage = () => {
   const ref = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
+  const refFlip_X = useRef<HTMLImageElement>(null);
+  const [image, setImage] = useState();
 
-  //   function previewFile(input: { files: any[] } | undefined) {
-  //     const file = input?.files[0];
+  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const a = URL.createObjectURL(event.target.files[0]);
+      setImage(a);
+    }
+  };
 
-  //     const reader = new FileReader();
+  //   regexp = /^\D*\w*.*\//gm;
 
-  //     reader.onload = function () {
-  //       console.log(reader.result);
-  //       const a = reader.readAsText(file);
-  //       refImage.src = a;
-  //     };
-
-  //     reader.onerror = function () {
-  //       console.log(reader.error);
-  //     };
-  //   }
-  //   let path;
-  //   if (refImage.current) {
-  //     path = refImage.current.src;
-  //   }
-  const regexp = /^\D*\w*.*\//gm;
   return (
     <div className={styles.flip}>
       <h2 className={styles.flip__title}>
         Выберите настройки для эффекта Flip
       </h2>
-      <div
-        className={styles.flip__preloadFile}
-        onClick={() => {
-          if (refImage.current) {
-            const path = refImage.current.src;
-
-            console.log(path, "path");
-            const a = path.match(regexp);
-            const path1 = path.replace(a, "");
-            console.log(path1, "AaA");
-            return path;
-          }
-        }}
-      >
-        <img
-          src='sdfsdfsd1f'
-          ref={refImage}
-          alt='your image'
-          id='preloadFile'
-        />
+      <div className={styles.flip__preloadFile}>
+        <img src={image} ref={refImage} alt='your image' id='preloadFile' />
       </div>
       <form
         action='http://localhost:3333/flip'
@@ -62,6 +35,7 @@ export const FlipPage = () => {
             id='toChooseFile'
             className={styles.flip__chooseFile}
             ref={ref}
+            onChange={onImageChange}
           />
           <label htmlFor='toChooseFile' className={styles.flip__labelFile}>
             Загрузить файл
@@ -73,7 +47,13 @@ export const FlipPage = () => {
             <label htmlFor='Flip-X' className={styles.flip__label}>
               Отразить по горизонтали ( FLIP - X)
             </label>
-            <input type='checkbox' id='Flip-X' value={"true"} name='Flip-X' />
+            <input
+              type='checkbox'
+              id='Flip-X'
+              value={"true"}
+              name='Flip-X'
+              ref={refFlip_X}
+            />
           </div>
           <div className=''>
             <label htmlFor='Flip-Y' className={styles.flip__label}>

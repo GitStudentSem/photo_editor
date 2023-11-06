@@ -29,6 +29,12 @@
 	border: 1px solid;
 }
 
+.flip__preloadFile img {
+	max-width: 100%;
+	min-height: auto;
+	object-fit: cover;
+}
+
 .flip__form {
 	grid-row: 2/4;
 	grid-column: 1/4;
