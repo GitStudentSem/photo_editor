@@ -4,8 +4,8 @@ import { useRef, useState } from "react";
 export const FlipPage = () => {
   const ref = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
-  const refFlip_X = useRef<HTMLImageElement>(null);
-  const [image, setImage] = useState();
+  const refFlip_X = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<string | undefined>();
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
