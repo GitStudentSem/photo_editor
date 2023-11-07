@@ -1,16 +1,34 @@
 import styles from "./FlipPage.module.css";
-import { useRef, useState } from "react";
-
+import { RefObject, useRef, useState } from "react";
+// import image1 from "https://i.pinimg.com/originals/fb/03/4d/fb034dcee0463abdaeb6919c47ddddd3.jpg";
 export const FlipPage = () => {
   const ref = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
   const refFlip_X = useRef<HTMLInputElement>(null);
+  const refFlip_Y = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<string | undefined>();
+  const [flipX, setFlipX] = useState<boolean | undefined>(true);
+  const [flipY, setFlipY] = useState<boolean | undefined>(true);
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const a = URL.createObjectURL(event.target.files[0]);
       setImage(a);
+    }
+  };
+
+  const getImageflipX = function () {
+    if (flipX) {
+      refImage.current.style.transform = "scaleX(-1) ";
+    } else {
+      refImage.current.style.transform = "scaleX(1) ";
+    }
+  };
+  const getImageflipY = function () {
+    if (flipY) {
+      refImage.current.style.transform = "scaleY(-1) ";
+    } else {
+      refImage.current.style.transform = "scaleY(1) ";
     }
   };
 
@@ -53,13 +71,27 @@ export const FlipPage = () => {
               value={"true"}
               name='Flip-X'
               ref={refFlip_X}
+              onChange={() => {
+                setFlipX(!flipX);
+                getImageflipX();
+              }}
             />
           </div>
           <div className=''>
             <label htmlFor='Flip-Y' className={styles.flip__label}>
               Отразить по горизонтали ( FLIP - Y)
             </label>
-            <input type='checkbox' id='Flip-Y' value={"false"} name='Flip-Y' />
+            <input
+              type='checkbox'
+              id='Flip-Y'
+              value={"false"}
+              name='Flip-Y'
+              ref={refFlip_Y}
+              onChange={() => {
+                setFlipY(!flipY);
+                getImageflipY();
+              }}
+            />
           </div>
         </fieldset>
         <fieldset className={styles.flip__fieldset}>
