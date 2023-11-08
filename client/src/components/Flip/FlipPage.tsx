@@ -1,9 +1,13 @@
 import styles from "./FlipPage.module.css";
-import { useRef, useState } from "react";
-// import image1 from "https://i.pinimg.com/originals/fb/03/4d/fb034dcee0463abdaeb6919c47ddddd3.jpg";
+import { useRef, useState, useCallback } from "react";
+import { DropZone } from "./DropZone";
+import { FileList } from "./FileList";
+import { getImageflipX, getImageflipY } from "./utils";
+
 export const FlipPage = () => {
   const ref = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
+  const refPreloadFile = useRef<HTMLDivElement>(null);
   const refFlip_X = useRef<HTMLInputElement>(null);
   const refFlip_Y = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<string | undefined>();
@@ -18,23 +22,31 @@ export const FlipPage = () => {
     }
   };
 
-  const getImageflipX = function () {
-    if (flipX && refImage.current) {
-      refImage.current.style.transform = "scaleX(-1) ";
-    } else if (refImage.current) {
-      refImage.current.style.transform = "scaleX(1) ";
-    }
-  };
-  const getImageflipY = function () {
-    if (flipY && refImage.current) {
-      refImage.current.style.transform = "scaleY(-1) ";
-    } else if (refImage.current) {
-      refImage.current.style.transform = "scaleY(1) ";
-    }
-  };
+  const [isDropActive, setIsDropActive] = useState(false);
+  // Create state for dropped files:
+  const [files, setFiles] = useState<File[]>([]);
 
-  //   regexp = /^\D*\w*.*\//gm;
+  // Create handler for dropzone's onDragStateChange:
+  const onDragStateChange = useCallback((dragActive: boolean) => {
+    setIsDropActive(dragActive);
+  }, []);
 
+  // Create handler for dropzone's onFilesDrop:
+  const onFilesDrop = useCallback((files: File[]) => {
+    setFiles(files);
+    files.forEach((file: File) => {
+      const a = URL.createObjectURL(file);
+      setImage(a);
+    });
+
+    if (refImage?.current) {
+      refImage.current.style.opacity = "100%";
+
+      if (flipX) {
+        getImageflipX(flipX, refImage);
+      }
+    }
+  }, []);
   return (
     <div className={styles.flip}>
       <h2 className={styles.flip__title}>
@@ -44,18 +56,34 @@ export const FlipPage = () => {
         action='http://localhost:3333/flip'
         method='post'
         className={styles.flip__form}
+        // onSubmit={handleSubmit}
       >
-        <div className={styles.flip__preloadFile}>
-          <img
-            src={image}
-            ref={refImage}
-            alt='your image'
-            id='preloadFile'
-            style={{ opacity: 0 }}
-          />
-        </div>
-        <div className=''>
+        {" "}
+        <div>
           {" "}
+          <DropZone
+            onDragStateChange={onDragStateChange}
+            onFilesDrop={onFilesDrop}
+          >
+            <div className={styles.flip__preloadFile} ref={refPreloadFile}>
+              {/* <img
+                src={image}
+                ref={refImage}
+                alt='your image'
+                id='preloadFile'
+                style={{ opacity: 0 }}
+              /> */}
+            </div>{" "}
+            {files.length === 0 ? (
+              <h3>No files to upload</h3>
+            ) : (
+              <h3>Files to upload: {files.length}</h3>
+            )}
+            {/* Render the file list */}
+            <FileList files={files} images={image} />
+          </DropZone>
+        </div>
+        <div className={styles.flip__wrapperInputs}>
           <fieldset className={styles.flip__fieldset}>
             <input
               type='file'
@@ -63,6 +91,7 @@ export const FlipPage = () => {
               className={styles.flip__chooseFile}
               ref={ref}
               onChange={onImageChange}
+              multiple={true}
             />
             <label htmlFor='toChooseFile' className={styles.flip__labelFile}>
               Загрузить файл
@@ -139,7 +168,11 @@ export const FlipPage = () => {
               <input type='radio' id='hard' name='optimization' />
             </div>
           </fieldset>
-          <button type='submit' id='submitButton'>
+          <button
+            type='submit'
+            id='submitButton'
+            className={styles.flip__button}
+          >
             Применить
           </button>
           <button type='button' className={styles.flip__loadButton}>
