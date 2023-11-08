@@ -21,7 +21,7 @@
 
 .flip__preloadFile {
 	border: 1px solid;
-	background-image: url('./../../../public/drag_drop.svg');
+	background-image: url('./../../../drag_drop.svg');
 	object-fit: cover;
 	background-position: center;
 	overflow: hidden;

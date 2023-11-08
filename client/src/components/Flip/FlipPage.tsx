@@ -2,7 +2,6 @@ import styles from "./FlipPage.module.css";
 import { useRef, useState, useCallback } from "react";
 import { DropZone } from "./DropZone";
 import { FileList } from "./FileList";
-import { getImageflipX, getImageflipY } from "./utils";
 
 export const FlipPage = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -14,6 +13,9 @@ export const FlipPage = () => {
   const [flipX, setFlipX] = useState<boolean | undefined>(true);
   const [flipY, setFlipY] = useState<boolean | undefined>(true);
 
+  const [isDropActive, setIsDropActive] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0] && refImage.current) {
       const a = URL.createObjectURL(event.target.files[0]);
@@ -22,16 +24,12 @@ export const FlipPage = () => {
     }
   };
 
-  const [isDropActive, setIsDropActive] = useState(false);
-  // Create state for dropped files:
-  const [files, setFiles] = useState<File[]>([]);
+  console.log(image, "image");
 
-  // Create handler for dropzone's onDragStateChange:
   const onDragStateChange = useCallback((dragActive: boolean) => {
     setIsDropActive(dragActive);
   }, []);
 
-  // Create handler for dropzone's onFilesDrop:
   const onFilesDrop = useCallback((files: File[]) => {
     setFiles(files);
     files.forEach((file: File) => {
@@ -41,10 +39,6 @@ export const FlipPage = () => {
 
     if (refImage?.current) {
       refImage.current.style.opacity = "100%";
-
-      if (flipX) {
-        getImageflipX(flipX, refImage);
-      }
     }
   }, []);
   return (
@@ -56,31 +50,27 @@ export const FlipPage = () => {
         action='http://localhost:3333/flip'
         method='post'
         className={styles.flip__form}
-        // onSubmit={handleSubmit}
       >
-        {" "}
         <div>
-          {" "}
           <DropZone
             onDragStateChange={onDragStateChange}
             onFilesDrop={onFilesDrop}
           >
             <div className={styles.flip__preloadFile} ref={refPreloadFile}>
-              {/* <img
+              <img
                 src={image}
                 ref={refImage}
                 alt='your image'
                 id='preloadFile'
                 style={{ opacity: 0 }}
-              /> */}
-            </div>{" "}
+              />
+            </div>
             {files.length === 0 ? (
               <h3>No files to upload</h3>
             ) : (
               <h3>Files to upload: {files.length}</h3>
             )}
-            {/* Render the file list */}
-            <FileList files={files} images={image} />
+            <FileList files={files} />
           </DropZone>
         </div>
         <div className={styles.flip__wrapperInputs}>
@@ -111,7 +101,7 @@ export const FlipPage = () => {
                 ref={refFlip_X}
                 onChange={() => {
                   setFlipX(!flipX);
-                  getImageflipX();
+                  //   getImageflipX();
                 }}
               />
             </div>
@@ -127,7 +117,7 @@ export const FlipPage = () => {
                 ref={refFlip_Y}
                 onChange={() => {
                   setFlipY(!flipY);
-                  getImageflipY();
+                  //   getImageflipY();
                 }}
               />
             </div>
