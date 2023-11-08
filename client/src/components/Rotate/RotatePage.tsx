@@ -5,18 +5,31 @@ import { UploadControl } from "./UploadControl";
 const RotatePage = () => {
   const [image, setImage] = useState("");
   const [angle, setAngle] = useState(0);
-  const [background, setBackground] = useState("");
+  const [background, setBackground] = useState("red");
 
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImage(URL.createObjectURL(e.target.files[0]));
     }
   };
-  const onSend = (e: FormEvent<HTMLButtonElement> | undefined) => {
+  const onSend = async (e: FormEvent<HTMLButtonElement> | undefined) => {
     if (!e) return;
     e.preventDefault();
-    console.log(image, angle, background);
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("angle", angle.toString());
+    formData.append("background", background);
+
+    const response = await fetch("http://localhost:3333/rotate", {
+      method: "POST",
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      body: formData,
+    });
+    console.log("res", response);
   };
+
   return (
     <div className={s.wrapper}>
       <div className={s.image_wrapper}>

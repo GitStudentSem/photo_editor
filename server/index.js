@@ -1,11 +1,23 @@
 import express from "express";
 import cors from "cors";
-
 import * as photoController from "./controllers/index.js";
+import bodyParser from "body-parser";
+import multer from "multer";
+
+const upload = multer();
 // http://localhost:3333/flip
 const app = express();
 app.use(cors());
-app.use(express.json());
+// for parsing application/json
+app.use(bodyParser.json());
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true }));
+//form-urlencoded
+
+// for parsing multipart/form-data
+app.use(upload.array());
+app.use(express.static("public"));
 
 app.post("/flipflop", photoController.flip);
 app.post("/rotate", photoController.rotate);
