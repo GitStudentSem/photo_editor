@@ -27,10 +27,13 @@
 	grid-column: 1/6;
 	grid-row: 4/6;
 	border: 1px solid;
-	background-image: url('https://i.pinimg.com/originals/fb/03/4d/fb034dcee0463abdaeb6919c47ddddd3.jpg');
+	/* background-image: url('https://i.pinimg.com/originals/fb/03/4d/fb034dcee0463abdaeb6919c47ddddd3.jpg'); */
+	background-image: url('./../../../public/drag_drop.svg');
 	object-fit: cover;
 	background-position: center;
 	overflow: hidden;
+	background-size: 50%;
+	background-repeat: no-repeat;
 }
 
 .flip__preloadFile img {
