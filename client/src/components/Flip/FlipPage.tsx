@@ -2,12 +2,15 @@ import styles from "./FlipPage.module.css";
 import { useRef, useState, useCallback } from "react";
 import { DropZone } from "./DropZone";
 import { FileList } from "./FileList";
+import { getImageflipX } from "./utils";
 
 export const FlipPage = () => {
   const ref = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
   const refPreloadFile = useRef<HTMLDivElement>(null);
+
   const refFlip_X = useRef<HTMLInputElement>(null);
+
   const refFlip_Y = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<string | undefined>();
   const [flipX, setFlipX] = useState<boolean | undefined>(true);
@@ -19,16 +22,19 @@ export const FlipPage = () => {
 
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0] && refImage.current) {
-      for (let i = 0; i < event.target.files.length; ++i) {
-        const file = files[i];
-        const a = URL.createObjectURL(file);
-        setImage(a);
-      }
-      refImage.current.style.opacity = "100%";
+  const onImageChange = useCallback((files: File[]) => {
+    setFiles(files);
+    files.forEach((file: File) => {
+      console.log(file, "file");
+      const a = URL.createObjectURL(file);
+      images.push(file);
+      setImage(a);
+    });
+
+    if (refImage?.current) {
+      refImage.current.style.opacity = "0%";
     }
-  };
+  }, []);
 
   const onDragStateChange = useCallback((dragActive: boolean) => {
     setIsDropActive(dragActive);
@@ -81,11 +87,7 @@ export const FlipPage = () => {
               Загрузить файл
             </label>
             <FileList files={files} />
-            {files.length === 0 ? (
-              <h3>No files to upload</h3>
-            ) : (
-              <h3>Files to upload: {files.length}</h3>
-            )}
+            {files.length === 0 ? "" : <h3>Files to upload: {files.length}</h3>}
           </DropZone>
         </div>
         <div className={styles.flip__wrapperInputs}>
@@ -104,7 +106,7 @@ export const FlipPage = () => {
                 ref={refFlip_X}
                 onChange={() => {
                   setFlipX(!flipX);
-                  //   getImageflipX();
+                  getImageflipX({ flipX, refImage });
                 }}
               />
             </div>

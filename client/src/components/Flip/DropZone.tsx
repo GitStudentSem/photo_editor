@@ -43,11 +43,11 @@ export const DropZone = memo(
 
     // Create handler for dragenter event:
     const handleDragIn = useCallback(
-      (event: DragEvent<React.MutableRefObject<HTMLDivElement>>) => {
+      (event: globalThis.DragEvent) => {
         event.preventDefault();
         event.stopPropagation();
         onDragIn?.();
-
+        if (!event.dataTransfer) return;
         if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
           setIsDragActive(true);
         }
@@ -89,8 +89,7 @@ export const DropZone = memo(
 
         if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
           const files = mapFileListToArray(event.dataTransfer.files);
-
-          onFilesDrop?.(files);
+          onFilesDrop?.(files[0]);
           event.dataTransfer.clearData();
         }
       },
