@@ -43,7 +43,7 @@ export const DropZone = memo(
 
     // Create handler for dragenter event:
     const handleDragIn = useCallback(
-      (event: DragEvent<HTMLDivElement>) => {
+      (event: DragEvent<React.MutableRefObject<HTMLDivElement>>) => {
         event.preventDefault();
         event.stopPropagation();
         onDragIn?.();
@@ -55,7 +55,6 @@ export const DropZone = memo(
       [onDragIn]
     );
 
-    // Create handler for dragleave event:
     const handleDragOut = useCallback(
       (event: Event) => {
         event.preventDefault();
@@ -67,7 +66,6 @@ export const DropZone = memo(
       [onDragOut]
     );
 
-    // Create handler for dragover event:
     const handleDrag = useCallback(
       (event: Event) => {
         event.preventDefault();
@@ -81,9 +79,8 @@ export const DropZone = memo(
       [isDragActive, onDrag]
     );
 
-    // Create handler for drop event:
     const handleDrop = useCallback(
-      (event: DragEvent) => {
+      (event: DragEvent<React.MutableRefObject<HTMLDivElement>>) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -100,30 +97,35 @@ export const DropZone = memo(
       [onDrop, onFilesDrop]
     );
 
-    // Obser active state and emit changes:
     useEffect(() => {
       onDragStateChange?.(isDragActive);
     }, [isDragActive]);
 
-    // Attach listeners to dropzone on mount:
+    const dragEnter = "dragenter";
+    const dragLeave = "dragleave";
+    const dragOver = "dragover";
+    const dropEvent = "drop";
+
     useEffect(() => {
       const tempZoneRef = dropZoneRef?.current;
       if (tempZoneRef) {
-        tempZoneRef.addEventListener("dragenter", handleDragIn);
-        tempZoneRef.addEventListener("dragleave", handleDragOut);
-        tempZoneRef.addEventListener("dragover", handleDrag);
-        tempZoneRef.addEventListener("drop", handleDrop);
+        tempZoneRef.addEventListener(dragEnter, handleDragIn);
+        tempZoneRef.addEventListener(dragLeave, handleDragOut);
+        tempZoneRef.addEventListener(dragOver, handleDrag);
+        tempZoneRef.addEventListener(dropEvent, handleDrop);
       }
-
-      // Remove listeners from dropzone on unmount:
       return () => {
-        tempZoneRef?.removeEventListener("dragenter", handleDragIn);
-        tempZoneRef?.removeEventListener("dragleave", handleDragOut);
-        tempZoneRef?.removeEventListener("dragover", handleDrag);
-        tempZoneRef?.removeEventListener("drop", handleDrop);
+        tempZoneRef?.removeEventListener(dragEnter, handleDragIn);
+        tempZoneRef?.removeEventListener(dragLeave, handleDragOut);
+        tempZoneRef?.removeEventListener(dragOver, handleDrag);
+        tempZoneRef?.removeEventListener(dropEvent, handleDrop);
       };
     }, []);
-    return <div ref={dropZoneRef}>{props.children}</div>;
+    return (
+      <div ref={dropZoneRef} id='DropZone'>
+        {props.children}
+      </div>
+    );
   }
 );
 DropZone.displayName = "DropZone";

@@ -15,16 +15,20 @@ export const FlipPage = () => {
 
   const [isDropActive, setIsDropActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const images: Blob[] = [];
+
+  const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0] && refImage.current) {
-      const a = URL.createObjectURL(event.target.files[0]);
-      setImage(a);
+      for (let i = 0; i < event.target.files.length; ++i) {
+        const file = files[i];
+        const a = URL.createObjectURL(file);
+        setImage(a);
+      }
       refImage.current.style.opacity = "100%";
     }
   };
-
-  console.log(image, "image");
 
   const onDragStateChange = useCallback((dragActive: boolean) => {
     setIsDropActive(dragActive);
@@ -33,14 +37,17 @@ export const FlipPage = () => {
   const onFilesDrop = useCallback((files: File[]) => {
     setFiles(files);
     files.forEach((file: File) => {
+      console.log(file, "file");
       const a = URL.createObjectURL(file);
+      images.push(file);
       setImage(a);
     });
 
     if (refImage?.current) {
-      refImage.current.style.opacity = "100%";
+      refImage.current.style.opacity = "0%";
     }
   }, []);
+  console.log(files.length, "files");
   return (
     <div className={styles.flip}>
       <h2 className={styles.flip__title}>
@@ -51,42 +58,38 @@ export const FlipPage = () => {
         method='post'
         className={styles.flip__form}
       >
-        <div>
+        <div
+          className={styles.flip__preloadFile}
+          ref={refPreloadFile}
+          style={{
+            backgroundImage: files.length > 0 ? "" : preloadFileBackground,
+          }}
+        >
           <DropZone
             onDragStateChange={onDragStateChange}
             onFilesDrop={onFilesDrop}
           >
-            <div className={styles.flip__preloadFile} ref={refPreloadFile}>
-              <img
-                src={image}
-                ref={refImage}
-                alt='your image'
-                id='preloadFile'
-                style={{ opacity: 0 }}
-              />
-            </div>
-            {files.length === 0 ? (
-              <h3>No files to upload</h3>
-            ) : (
-              <h3>Files to upload: {files.length}</h3>
-            )}
-            <FileList files={files} />
-          </DropZone>
-        </div>
-        <div className={styles.flip__wrapperInputs}>
-          <fieldset className={styles.flip__fieldset}>
             <input
               type='file'
               id='toChooseFile'
               className={styles.flip__chooseFile}
               ref={ref}
-              onChange={onImageChange}
               multiple={true}
+              onChange={onImageChange}
             />
             <label htmlFor='toChooseFile' className={styles.flip__labelFile}>
               Загрузить файл
             </label>
-          </fieldset>
+            <FileList files={files} />
+            {files.length === 0 ? (
+              <h3>No files to upload</h3>
+            ) : (
+              <h3>Files to upload: {files.length}</h3>
+            )}
+          </DropZone>
+        </div>
+        <div className={styles.flip__wrapperInputs}>
+          <fieldset className={styles.flip__fieldset}></fieldset>
           <fieldset className={styles.flip__fieldset}>
             <legend className={styles.flip__legend}>Положение отражения</legend>
             <div className=''>
