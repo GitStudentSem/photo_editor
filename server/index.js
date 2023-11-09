@@ -2,25 +2,22 @@ import express from "express";
 import cors from "cors";
 import * as photoController from "./controllers/index.js";
 import bodyParser from "body-parser";
-import multer from "multer";
+import fileLoader from "./midlewares/file.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const upload = multer();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // http://localhost:3333/flip
 const app = express();
 app.use(cors());
+
 // for parsing application/json
-app.use(bodyParser.json());
-
-// for parsing application/xwww-
-app.use(bodyParser.urlencoded({ extended: true }));
-//form-urlencoded
-
-// for parsing multipart/form-data
-app.use(upload.array());
-app.use(express.static("public"));
+app.use(bodyParser.json({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.post("/flipflop", photoController.flip);
-app.post("/rotate", photoController.rotate);
+app.post("/rotate", fileLoader.single("image"), photoController.rotate);
 app.post("/negative", photoController.negative);
 
 app.listen(3333, (err) => {

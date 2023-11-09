@@ -5,12 +5,12 @@ import { UploadControl } from "./UploadControl";
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<any>(""); // TODO Определить тип картинки, заменить any
-  const [angle, setAngle] = useState(0);
+  const [angle, setAngle] = useState("0");
   const [background, setBackground] = useState("red");
 
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
+      setImage(e.target.files[0]);
     }
   };
 
@@ -19,19 +19,15 @@ const RotatePage = () => {
       if (!e) return;
       e.preventDefault();
       const formData = new FormData();
-
       formData.append("image", image);
-      //   formData.append("angle", angle.toString());
-      //   formData.append("background", background);
-
-      const response = await fetch("http://localhost:3333/rotate", {
+      formData.append("angle", angle);
+      formData.append("background", background);
+      const res = await fetch("http://localhost:3333/rotate", {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
         body: formData,
       });
-      console.log("res", response);
+      const data = await res.json();
+      console.log("http://localhost:3333/" + data.path);
     } catch (error) {
       console.error(error);
     }
@@ -44,7 +40,7 @@ const RotatePage = () => {
           <img
             className={s.image}
             alt='Изображение не может быть прочитано, попробуйте выбрать другое'
-            src={image}
+            src={URL.createObjectURL(image)}
           />
         )}
       </div>
@@ -79,7 +75,7 @@ const RotatePage = () => {
             type='text'
             placeholder='Угол поворота'
             onChange={(e) => {
-              setAngle(+e.target.value);
+              setAngle(e.target.value);
             }}
           />
         </label>
