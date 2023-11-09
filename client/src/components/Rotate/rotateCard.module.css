@@ -1,0 +1,19 @@
+.wrapper {
+  width: 150px;
+  height: 150px;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  border-radius: 20px;
+  text-decoration: none;
+}
+.text {
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+.wrapper:hover {
+  transform: rotateZ(30deg);
+}

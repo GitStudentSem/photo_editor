@@ -4,7 +4,7 @@ export const rotate = async (req, res) => {
     const { image, angle, background } = req.body;
 
     console.log(image, angle, background);
-    res.status(200).json({ success: true });
+    res.json({ url: `/uploads` });
   } catch (error) {
     sendError({ message: "Не удалось rotate", error, res });
   }
