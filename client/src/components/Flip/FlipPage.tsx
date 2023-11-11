@@ -2,58 +2,51 @@ import styles from "./FlipPage.module.css";
 import { useRef, useState, useCallback } from "react";
 import { DropZone } from "./DropZone";
 import { FileList } from "./FileList";
-import { getImageflipX } from "./utils";
+import { mapFileListToArray } from "./utils";
+// import { validation } from "./validation";
+// import { onSubmit } from "./onSubmit";
 
 export const FlipPage = () => {
-  const ref = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
   const refPreloadFile = useRef<HTMLDivElement>(null);
-
   const refFlip_X = useRef<HTMLInputElement>(null);
-
   const refFlip_Y = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<string | undefined>();
   const [flipX, setFlipX] = useState<boolean | undefined>(true);
   const [flipY, setFlipY] = useState<boolean | undefined>(true);
-
   const [isDropActive, setIsDropActive] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const images: Blob[] = [];
 
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
-  const onImageChange = useCallback((files: File[]) => {
-    setFiles(files);
-    files.forEach((file: File) => {
-      console.log(file, "file");
-      const a = URL.createObjectURL(file);
-      images.push(file);
-      setImage(a);
-    });
-
-    if (refImage?.current) {
-      refImage.current.style.opacity = "0%";
-    }
-  }, []);
-
   const onDragStateChange = useCallback((dragActive: boolean) => {
-    setIsDropActive(dragActive);
+    if (!isDropActive) setIsDropActive(dragActive);
   }, []);
 
-  const onFilesDrop = useCallback((files: File[]) => {
-    setFiles(files);
-    files.forEach((file: File) => {
-      console.log(file, "file");
-      const a = URL.createObjectURL(file);
-      images.push(file);
-      setImage(a);
-    });
+  const onFilesDrop = useCallback(
+    (files: File[]) => {
+      if (files.length <= 0) return;
+      setFiles(files);
+      files.forEach((file: File) => {
+        images.push(file);
+      });
 
-    if (refImage?.current) {
-      refImage.current.style.opacity = "0%";
-    }
-  }, []);
-  console.log(files.length, "files");
+      if (refImage?.current) {
+        refImage.current.style.opacity = "0%";
+      }
+    },
+    [images]
+  );
+  const onChangeFiles = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!event.target.files) return;
+      if (event.target.files && event.target.files.length > 0) {
+        const files = mapFileListToArray(event.target.files);
+        onFilesDrop?.(files);
+      }
+    },
+    []
+  );
   return (
     <div className={styles.flip}>
       <h2 className={styles.flip__title}>
@@ -63,6 +56,7 @@ export const FlipPage = () => {
         action='http://localhost:3333/flip'
         method='post'
         className={styles.flip__form}
+        // onSubmit={onSubmit}
       >
         <div
           className={styles.flip__preloadFile}
@@ -78,10 +72,9 @@ export const FlipPage = () => {
             <input
               type='file'
               id='toChooseFile'
-              className={styles.flip__chooseFile}
-              ref={ref}
               multiple={true}
-              onChange={onImageChange}
+              onChange={onChangeFiles}
+              className={styles.flip__chooseFile}
             />
             <label htmlFor='toChooseFile' className={styles.flip__labelFile}>
               Загрузить файл
@@ -106,7 +99,6 @@ export const FlipPage = () => {
                 ref={refFlip_X}
                 onChange={() => {
                   setFlipX(!flipX);
-                  getImageflipX({ flipX, refImage });
                 }}
               />
             </div>
@@ -122,7 +114,6 @@ export const FlipPage = () => {
                 ref={refFlip_Y}
                 onChange={() => {
                   setFlipY(!flipY);
-                  //   getImageflipY();
                 }}
               />
             </div>

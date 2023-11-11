@@ -1,11 +1,5 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  memo,
-  useCallback,
-  DragEvent,
-} from "react";
+import { useRef, useState, useEffect, memo, useCallback } from "react";
+import { mapFileListToArray } from "./utils";
 export interface DropZoneProps {
   onDragStateChange?: (isDragActive: boolean) => void;
   onDrag?: () => void;
@@ -31,15 +25,14 @@ export const DropZone = memo(
     const dropZoneRef = useRef<null | HTMLDivElement>(null);
 
     // Create helper method to map file list to array of files:
-    const mapFileListToArray = (files: FileList) => {
-      const array = [];
+    // const mapFileListToArray = (files: FileList) => {
+    //   const array = [];
+    //   for (let i = 0; i < files.length; i++) {
+    //     array.push(files.item(i));
+    //   }
 
-      for (let i = 0; i < files.length; i++) {
-        array.push(files.item(i));
-      }
-
-      return array;
-    };
+    //   return array;
+    // };
 
     // Create handler for dragenter event:
     const handleDragIn = useCallback(
@@ -56,7 +49,7 @@ export const DropZone = memo(
     );
 
     const handleDragOut = useCallback(
-      (event: Event) => {
+      (event: globalThis.DragEvent) => {
         event.preventDefault();
         event.stopPropagation();
         onDragOut?.();
@@ -67,7 +60,7 @@ export const DropZone = memo(
     );
 
     const handleDrag = useCallback(
-      (event: Event) => {
+      (event: globalThis.DragEvent) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -79,22 +72,20 @@ export const DropZone = memo(
       [isDragActive, onDrag]
     );
 
-    const handleDrop = useCallback(
-      (event: DragEvent<React.MutableRefObject<HTMLDivElement>>) => {
-        event.preventDefault();
-        event.stopPropagation();
+    const handleDrop = useCallback((event: globalThis.DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-        setIsDragActive(false);
-        onDrop?.();
+      setIsDragActive(false);
+      onDrop?.();
+      if (!event.dataTransfer) return;
+      if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+        const files = mapFileListToArray(event.dataTransfer.files);
 
-        if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-          const files = mapFileListToArray(event.dataTransfer.files);
-          onFilesDrop?.(files[0]);
-          event.dataTransfer.clearData();
-        }
-      },
-      [onDrop, onFilesDrop]
-    );
+        onFilesDrop?.(files);
+        event.dataTransfer.clearData();
+      }
+    }, []);
 
     useEffect(() => {
       onDragStateChange?.(isDragActive);
@@ -107,12 +98,14 @@ export const DropZone = memo(
 
     useEffect(() => {
       const tempZoneRef = dropZoneRef?.current;
+
       if (tempZoneRef) {
         tempZoneRef.addEventListener(dragEnter, handleDragIn);
         tempZoneRef.addEventListener(dragLeave, handleDragOut);
         tempZoneRef.addEventListener(dragOver, handleDrag);
         tempZoneRef.addEventListener(dropEvent, handleDrop);
       }
+
       return () => {
         tempZoneRef?.removeEventListener(dragEnter, handleDragIn);
         tempZoneRef?.removeEventListener(dragLeave, handleDragOut);
@@ -120,6 +113,7 @@ export const DropZone = memo(
         tempZoneRef?.removeEventListener(dropEvent, handleDrop);
       };
     }, []);
+
     return (
       <div ref={dropZoneRef} id='DropZone'>
         {props.children}

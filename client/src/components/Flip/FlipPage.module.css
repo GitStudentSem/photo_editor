@@ -2,6 +2,7 @@
 	max-width: 1400px;
 	margin: 0 auto;
 	padding: 0 10px;
+	padding-top: 30px;
 }
 
 .flip__button,
@@ -225,5 +226,6 @@
 
 	h2.flip__title {
 		font-size: 36px;
+		margin-bottom: 20px;
 	}
 }
