@@ -9,15 +9,24 @@ export const rotate = async (req, res) => {
     const { angle, background } = req.body;
 
     fs.readFile(`uploads/${req.file.originalname}`, (err, data) => {
-      if (err) throw new Error(err);
+      if (err) {
+        return;
+      }
+      try {
+        sharp(data)
+          .rotate(+angle, { background: background })
+          .toBuffer((err, resizedBuffer) => {
+            if (err) return;
 
-      sharp(data)
-        .rotate(+angle, { background })
-        .toBuffer((err, resizedBuffer) => {
-          if (err) throw new Error(err);
-
-          res.send(resizedBuffer);
+            res.send(resizedBuffer);
+          });
+      } catch (error) {
+        sendError({
+          defaultMessage: "Не удалось выполнить поворот",
+          error,
+          res,
         });
+      }
     });
   } catch (error) {
     sendError({ defaultMessage: "Не удалось выполнить поворот", error, res });

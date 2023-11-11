@@ -8,6 +8,7 @@ interface IPropsSettingInput {
   type: React.HTMLInputTypeAttribute;
   name: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 export const SettingInput = ({
@@ -16,6 +17,7 @@ export const SettingInput = ({
   type,
   name,
   disabled,
+  required,
 }: IPropsSettingInput) => {
   const [value, setValue] = useState("");
   const [isError, setIsError] = useState(false);
@@ -40,7 +42,9 @@ export const SettingInput = ({
         {isError && <img className={s.input_icon} src={errorIcon} />}
       </div>
 
-      <p className={s.support_text}>Поле обязательно к заполнению</p>
+      {required && (
+        <p className={s.support_text}>Поле обязательно к заполнению</p>
+      )}
     </label>
   );
 };
