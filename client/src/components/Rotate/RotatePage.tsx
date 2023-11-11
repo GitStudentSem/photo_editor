@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./style.module.css";
+import { SettingInput } from "./SettingInput";
 
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
@@ -39,7 +40,7 @@ const RotatePage = () => {
 
       var arrayBufferView = new Uint8Array(arrayBuffer);
       var blob = new Blob([arrayBufferView]);
-      console.log(arrayBuffer);
+
       setProcessedImage(blob);
     } catch (error) {
       if (error instanceof Error) {
@@ -92,34 +93,23 @@ const RotatePage = () => {
             hidden
             accept='.png,.jpeg'
             onChange={onImageChange}
+            name='image'
           />
         </div>
 
-        <label className={s.input_wrapper}>
-          <p>На какой угол нужно повернуть изображение?</p>
-          <input
-            className={s.setting_input}
-            type='text'
-            placeholder='Угол поворота'
-            value={angle}
-            onChange={(e) => {
-              setAngle(e.target.value);
-            }}
-          />
-        </label>
+        <SettingInput
+          placeholder='Угол поворота'
+          label='На какой угол нужно повернуть изображение?'
+          type='number'
+          name='angle'
+        />
 
-        <label className={s.input_wrapper}>
-          <p>Какого цвета установить задний фон?</p>
-          <input
-            className={s.setting_input}
-            type='text'
-            placeholder='Задний фон'
-            value={background}
-            onChange={(e) => {
-              setBackground(e.target.value);
-            }}
-          />
-        </label>
+        <SettingInput
+          placeholder='Задний фон'
+          label='Какого цвета установить задний фон?'
+          type='text'
+          name='background'
+        />
 
         <button onClick={onSend} disabled={!originalImage}>
           Отправить

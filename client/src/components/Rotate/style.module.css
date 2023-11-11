@@ -27,15 +27,6 @@
   margin: 10px;
 }
 
-.input_wrapper {
-  display: block;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-.input_wrapper > p {
-  margin-bottom: 2px;
-}
-
 .file_button {
   background-color: gray;
   border: none;
@@ -47,16 +38,4 @@
 }
 .file_button:hover {
   background-color: beige;
-}
-
-.setting_input {
-  display: block;
-  width: 200px;
-  background-color: gray;
-  outline: none;
-  border: none;
-  padding: 5px;
-}
-.setting_input::placeholder {
-  color: #000;
 }

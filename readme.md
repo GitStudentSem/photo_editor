@@ -1,6 +1,7 @@
 Для разработки смотри:
 https://www.npmjs.com/package/sharp - npm страница
 https://sharp.pixelplumbing.com/api-operation - Доступные функции
+https://www.figma.com/file/iN9rvjMLHK9OYj9zDSNb0r/Components-UI-Kit-(Community)?node-id=237:136709&mode=dev - дизайн система
 
 | Компонент | Автор  | Ссылка                                                                                                        |
 | --------- | ------ | ------------------------------------------------------------------------------------------------------------- |
