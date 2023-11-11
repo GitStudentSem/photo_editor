@@ -24,7 +24,7 @@ export const FlipPage = () => {
   }, []);
 
   const onFilesDrop = (files: (File | null)[]) => {
-    if ((files.length = 0)) return;
+    if (files.length === 0) return;
     setFiles(files);
     files.forEach((file: File | null) => {
       images.push(file);

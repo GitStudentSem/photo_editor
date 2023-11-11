@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, memo, useCallback } from "react";
+import { useRef, useState, useEffect, memo } from "react";
 import { mapFileListToArray } from "./utils";
 export interface DropZoneProps {
   onDragStateChange?: (isDragActive: boolean) => void;
@@ -19,22 +19,9 @@ export const DropZone = memo(
       onDrop,
     } = props;
 
-    // Create state to keep track when dropzone is active/non-active:
     const [isDragActive, setIsDragActive] = useState(false);
-    // Prepare ref for dropzone element:
     const dropZoneRef = useRef<null | HTMLDivElement>(null);
 
-    // Create helper method to map file list to array of files:
-    // const mapFileListToArray = (files: FileList) => {
-    //   const array = [];
-    //   for (let i = 0; i < files.length; i++) {
-    //     array.push(files.item(i));
-    //   }
-
-    //   return array;
-    // };
-
-    // Create handler for dragenter event:
     const handleDragIn = (event: globalThis.DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
