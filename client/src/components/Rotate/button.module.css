@@ -1,0 +1,23 @@
+.button {
+  background-color: #186ade;
+  color: #ffffff;
+  padding: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition: all 0.3s;
+  margin-bottom: 10px;
+}
+.button:hover {
+  background-color: #013681;
+}
+.button:disabled {
+  background-color: #186ade4d;
+  color: #ffffffcc;
+}
+.text {
+  margin: 0 10px;
+  color: inherit;
+}

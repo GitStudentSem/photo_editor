@@ -3,10 +3,10 @@
   height: 100vh;
 }
 .image_wrapper {
-  width: 50%;
   height: 100%;
   background-color: darkgray;
   min-height: 500px;
+  flex-grow: 1;
 }
 .image_before {
   height: 50%;
@@ -23,8 +23,9 @@
 }
 
 .controls_wrapper {
-  width: 50%;
+  width: 400px;
   margin: 10px;
+  position: relative;
 }
 
 .file_button {
@@ -38,4 +39,8 @@
 }
 .file_button:hover {
   background-color: beige;
+}
+
+.close_icon {
+  cursor: pointer;
 }

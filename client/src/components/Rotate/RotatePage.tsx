@@ -1,12 +1,18 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./style.module.css";
 import { SettingInput } from "./SettingInput";
+import { Button } from "./Button";
+import { Alert } from "./Alert";
 
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
+  const downloadRef = useRef<HTMLAnchorElement>(null);
   const [originalImage, setOriginalImage] = useState<File>();
   const [processedImage, setProcessedImage] = useState<any>(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState<{
+    text: string;
+    type?: "error" | "warning" | "success" | "info";
+  }>();
   const formRef = useRef(null);
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -36,14 +42,18 @@ const RotatePage = () => {
       const arrayBufferView = new Uint8Array(arrayBuffer);
       const blob = new Blob([arrayBufferView]);
 
+      setNotificationMessage({
+        text: "Обработка завершена, вы можете скачать изображение",
+        type: "success",
+      });
       setProcessedImage(blob);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
-        setErrorMessage(error.message);
+        setNotificationMessage({ text: error.message, type: "error" });
       } else {
         console.error("Unexpected error:", error);
-        setErrorMessage(`Неизвестная ошибка: ${error}`);
+        setNotificationMessage({ text: `Неизвестная ошибка: ${error}` });
       }
     }
   };
@@ -72,16 +82,14 @@ const RotatePage = () => {
       </div>
       <form className={s.controls_wrapper} onSubmit={onSend} ref={formRef}>
         <div className={s.input_wrapper}>
-          <button
-            className={s.file_button}
+          <Button
+            text='Загрузить изображение'
             onClick={(e) => {
               e.preventDefault();
               if (!filePickerRef.current) return;
               filePickerRef.current.click();
             }}
-          >
-            Загрузить изображение
-          </button>
+          />
           <input
             ref={filePickerRef}
             type='file'
@@ -97,6 +105,7 @@ const RotatePage = () => {
           label='На какой угол нужно повернуть изображение?'
           type='number'
           name='angle'
+          required
         />
 
         <SettingInput
@@ -106,18 +115,32 @@ const RotatePage = () => {
           name='background'
         />
 
-        <button disabled={!originalImage}>Отправить</button>
-        {processedImage && (
-          <a
-            download={originalImage?.name}
-            //   onClick={onSend}
-            href={URL.createObjectURL(processedImage)}
-            //   disabled={!processedImage}
-          >
-            Скачать
-          </a>
+        <Button text='Отправить' disabled={!originalImage} />
+        <Button
+          text='Скачать'
+          onClick={() => {
+            if (!downloadRef.current) return;
+
+            downloadRef.current.href = URL.createObjectURL(processedImage);
+
+            downloadRef.current?.click();
+          }}
+          disabled={!processedImage}
+        />
+
+        <a ref={downloadRef} download={originalImage?.name} hidden />
+
+        {notificationMessage?.text && (
+          <Alert
+            text={notificationMessage.text}
+            type={notificationMessage.type}
+            onClose={() => {
+              setNotificationMessage({
+                text: "",
+              });
+            }}
+          />
         )}
-        {errorMessage && <div>{errorMessage}</div>}
       </form>
     </div>
   );
