@@ -8,7 +8,14 @@
   background-color: darkgray;
   min-height: 500px;
 }
-
+.image_before {
+  height: 50%;
+  width: 100%;
+}
+.image_after {
+  height: 50%;
+  width: 100%;
+}
 .image {
   width: 100%;
   height: 100%;
@@ -28,9 +35,6 @@
 .input_wrapper > p {
   margin-bottom: 2px;
 }
-.input_file {
-  cursor: pointer;
-}
 
 .file_button {
   background-color: gray;
@@ -39,13 +43,10 @@
   padding: 5px;
   transition: all 0.3s;
   width: 200px;
+  cursor: pointer;
 }
 .file_button:hover {
   background-color: beige;
-}
-
-.file_label {
-  display: none;
 }
 
 .setting_input {
