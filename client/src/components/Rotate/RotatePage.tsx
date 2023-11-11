@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
-import s from "./style.module.css";
+import s from "./rotatePage.module.css";
 import { SettingInput } from "./SettingInput";
 import { Button } from "./Button";
 import { Alert } from "./Alert";
@@ -60,7 +60,7 @@ const RotatePage = () => {
 
   return (
     <div className={s.wrapper}>
-      <div className={s.image_wrapper}>
+      <div className={s.images_wrapper}>
         <div className={s.image_before}>
           {originalImage && (
             <img
