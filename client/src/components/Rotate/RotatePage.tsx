@@ -1,57 +1,81 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./style.module.css";
-import { UploadControl } from "./UploadControl";
+import { SettingInput } from "./SettingInput";
 
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<any>(""); // TODO Определить тип картинки, заменить any
-  const [angle, setAngle] = useState(0);
-  const [background, setBackground] = useState("red");
-
+  const [originalImage, setOriginalImage] = useState<File>();
+  const [processedImage, setProcessedImage] = useState<any>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const formRef = useRef(null);
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
+      setOriginalImage(e.target.files[0]);
     }
   };
 
-  const onSend = async (e: FormEvent<HTMLButtonElement> | undefined) => {
+  const onSend = async (e: FormEvent<HTMLFormElement> | undefined) => {
     try {
-      if (!e) return;
+      if (!e || !originalImage || !formRef.current) return;
+
       e.preventDefault();
-      const formData = new FormData();
 
-      formData.append("image", image);
-      //   formData.append("angle", angle.toString());
-      //   formData.append("background", background);
+      const formData = new FormData(formRef.current);
 
-      const response = await fetch("http://localhost:3333/rotate", {
+      const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
         body: formData,
       });
-      console.log("res", response);
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const arrayBufferView = new Uint8Array(arrayBuffer);
+      const blob = new Blob([arrayBufferView]);
+
+      setProcessedImage(blob);
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        console.error(error);
+        setErrorMessage(error.message);
+      } else {
+        console.error("Unexpected error:", error);
+        setErrorMessage(`Неизвестная ошибка: ${error}`);
+      }
     }
   };
 
   return (
     <div className={s.wrapper}>
       <div className={s.image_wrapper}>
-        {image && (
-          <img
-            className={s.image}
-            alt='Изображение не может быть прочитано, попробуйте выбрать другое'
-            src={image}
-          />
-        )}
+        <div className={s.image_before}>
+          {originalImage && (
+            <img
+              className={s.image}
+              alt='Изображение не может быть прочитано, попробуйте выбрать другое'
+              src={URL.createObjectURL(originalImage)}
+            />
+          )}
+        </div>
+        <div className={s.image_after}>
+          {processedImage && (
+            <img
+              className={s.image}
+              alt='Изображение не может быть прочитано, попробуйте выбрать другое'
+              src={URL.createObjectURL(processedImage)}
+            />
+          )}
+        </div>
       </div>
-      <div className={s.controls_wrapper}>
+      <form className={s.controls_wrapper} onSubmit={onSend} ref={formRef}>
         <div className={s.input_wrapper}>
           <button
-            onClick={() => {
+            className={s.file_button}
+            onClick={(e) => {
+              e.preventDefault();
               if (!filePickerRef.current) return;
               filePickerRef.current.click();
             }}
@@ -64,40 +88,37 @@ const RotatePage = () => {
             hidden
             accept='.png,.jpeg'
             onChange={onImageChange}
+            name='image'
           />
         </div>
-        {/* <div className={s.input_wrapper}>
-          <UploadControl onChange={onImageChange} accept='.png,.jpeg'>
-            Выбрать фотографию
-          </UploadControl>
-        </div> */}
 
-        <label className={s.input_wrapper}>
-          <p>На какой угол нужно повернуть изображение?</p>
-          <input
-            className={s.setting_input}
-            type='text'
-            placeholder='Угол поворота'
-            onChange={(e) => {
-              setAngle(+e.target.value);
-            }}
-          />
-        </label>
+        <SettingInput
+          placeholder='Угол поворота'
+          label='На какой угол нужно повернуть изображение?'
+          type='number'
+          name='angle'
+        />
 
-        <label className={s.input_wrapper}>
-          <p>Какого цвета установить задний фон?</p>
-          <input
-            className={s.setting_input}
-            type='text'
-            placeholder='Задний фон'
-            onChange={(e) => {
-              setBackground(e.target.value);
-            }}
-          />
-        </label>
+        <SettingInput
+          placeholder='Задний фон'
+          label='Какого цвета установить задний фон?'
+          type='text'
+          name='background'
+        />
 
-        <button onClick={onSend}>Отправить</button>
-      </div>
+        <button disabled={!originalImage}>Отправить</button>
+        {processedImage && (
+          <a
+            download={originalImage?.name}
+            //   onClick={onSend}
+            href={URL.createObjectURL(processedImage)}
+            //   disabled={!processedImage}
+          >
+            Скачать
+          </a>
+        )}
+        {errorMessage && <div>{errorMessage}</div>}
+      </form>
     </div>
   );
 };

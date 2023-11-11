@@ -24,14 +24,16 @@ export const NegativePage = () => {
         photo,
         isAlpha: false,
       }),
-    }).then(res => res.json()).then(data => console.log(data));
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   }
 
   function onSubmit(e: FormEvent<HTMLButtonElement>) {
     if (photo) {
       e.preventDefault();
       setSubmitStatus("Обрабатываем ваше фото. Подождите...");
-      getEditedPhoto()
+      getEditedPhoto();
       //another function do post request to the controller
     } else {
       setSubmitStatus("Загрузите фото перед отправкой");
@@ -44,30 +46,30 @@ export const NegativePage = () => {
       <div className={styles.negativePage__wrapper}>
         <div className={styles.photo}>
           <div className={styles.photo__wrapper}>
-            <img src={photo} alt="Фото" />
+            <img src={photo} alt='Фото' />
           </div>
         </div>
         <div className={styles.settings}>
-          <input type="file" onChange={onChange} />
+          <input type='file' onChange={onChange} />
           <div className={styles.settings__item}>
             <label>
               Настройка n
-              <input type="text" placeholder="Какая то настройка!" />
+              <input type='text' placeholder='Какая то настройка!' />
             </label>
           </div>
           <div className={styles.settings__item}>
             <label>
               Настройка n
-              <input type="text" placeholder="Какая то настройка!" />
+              <input type='text' placeholder='Какая то настройка!' />
             </label>
           </div>
           <div className={styles.settings__item}>
             <label>
               Настройка n
-              <input type="text" placeholder="Какая то настройка!" />
+              <input type='text' placeholder='Какая то настройка!' />
             </label>
           </div>
-          <button type="submit" onClick={onSubmit}>
+          <button type='submit' onClick={onSubmit}>
             Отправить на обработку
           </button>
           <p>{submitStatus}</p>

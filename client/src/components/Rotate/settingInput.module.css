@@ -1,0 +1,51 @@
+.label {
+  display: block;
+  width: 400px;
+  margin-bottom: 15px;
+}
+.label_text {
+  color: #3e5463;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.input_wrapper {
+  margin-bottom: 4px;
+  position: relative;
+}
+.input_icon {
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  right: 10px;
+}
+.input {
+  width: 100%;
+  padding: 8px 25px 8px 12px;
+  border-radius: 2px;
+  border: 1px solid #9fb1bd;
+  background-color: #ffffff;
+  transition: all 0.3s;
+  outline: none;
+  color: #1c2b36;
+}
+.input.error {
+  border-color: #d91f11;
+}
+.input::placeholder {
+  color: #9fb1bd;
+}
+.input:hover {
+  border-color: #7a909e;
+}
+.input:focus {
+  border-color: #186ade;
+}
+.input:disabled {
+  color: #5b728280;
+  border-color: #5b728266;
+  background-color: #5b728233;
+}
+.support_text {
+  font-size: 11px;
+  color: #3e5463;
+}
