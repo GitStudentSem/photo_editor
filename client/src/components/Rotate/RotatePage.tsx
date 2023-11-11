@@ -6,26 +6,22 @@ const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const [originalImage, setOriginalImage] = useState<File>();
   const [processedImage, setProcessedImage] = useState<any>(null);
-  const [angle, setAngle] = useState("0");
-  const [background, setBackground] = useState("red");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const formRef = useRef(null);
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files[0]);
       setOriginalImage(e.target.files[0]);
     }
   };
 
-  const onSend = async (e: FormEvent<HTMLButtonElement> | undefined) => {
+  const onSend = async (e: FormEvent<HTMLFormElement> | undefined) => {
     try {
-      if (!e || !originalImage) return;
+      if (!e || !originalImage || !formRef.current) return;
 
       e.preventDefault();
-      const formData = new FormData();
-      formData.append("image", originalImage);
-      formData.append("angle", angle);
-      formData.append("background", background);
+
+      const formData = new FormData(formRef.current);
+
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
         body: formData,
@@ -37,9 +33,8 @@ const RotatePage = () => {
       }
 
       const arrayBuffer = await response.arrayBuffer();
-
-      var arrayBufferView = new Uint8Array(arrayBuffer);
-      var blob = new Blob([arrayBufferView]);
+      const arrayBufferView = new Uint8Array(arrayBuffer);
+      const blob = new Blob([arrayBufferView]);
 
       setProcessedImage(blob);
     } catch (error) {
@@ -75,7 +70,7 @@ const RotatePage = () => {
           )}
         </div>
       </div>
-      <form className={s.controls_wrapper}>
+      <form className={s.controls_wrapper} onSubmit={onSend} ref={formRef}>
         <div className={s.input_wrapper}>
           <button
             className={s.file_button}
@@ -111,9 +106,7 @@ const RotatePage = () => {
           name='background'
         />
 
-        <button onClick={onSend} disabled={!originalImage}>
-          Отправить
-        </button>
+        <button disabled={!originalImage}>Отправить</button>
         {processedImage && (
           <a
             download={originalImage?.name}
