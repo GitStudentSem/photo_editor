@@ -6,7 +6,7 @@ export interface DropZoneProps {
   onDragIn?: () => void;
   onDragOut?: () => void;
   onDrop?: () => void;
-  onFilesDrop: (files: File[]) => void;
+  onFilesDrop: (files: (File | null)[]) => void;
 }
 export const DropZone = memo(
   (props: React.PropsWithChildren<DropZoneProps>) => {
@@ -35,44 +35,35 @@ export const DropZone = memo(
     // };
 
     // Create handler for dragenter event:
-    const handleDragIn = useCallback(
-      (event: globalThis.DragEvent) => {
-        event.preventDefault();
-        event.stopPropagation();
-        onDragIn?.();
-        if (!event.dataTransfer) return;
-        if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
-          setIsDragActive(true);
-        }
-      },
-      [onDragIn]
-    );
+    const handleDragIn = (event: globalThis.DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onDragIn?.();
+      if (!event.dataTransfer) return;
+      if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
+        setIsDragActive(true);
+      }
+    };
 
-    const handleDragOut = useCallback(
-      (event: globalThis.DragEvent) => {
-        event.preventDefault();
-        event.stopPropagation();
-        onDragOut?.();
+    const handleDragOut = (event: globalThis.DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onDragOut?.();
 
-        setIsDragActive(false);
-      },
-      [onDragOut]
-    );
+      setIsDragActive(false);
+    };
 
-    const handleDrag = useCallback(
-      (event: globalThis.DragEvent) => {
-        event.preventDefault();
-        event.stopPropagation();
+    const handleDrag = (event: globalThis.DragEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-        onDrag?.();
-        if (!isDragActive) {
-          setIsDragActive(true);
-        }
-      },
-      [isDragActive, onDrag]
-    );
+      onDrag?.();
+      if (!isDragActive) {
+        setIsDragActive(true);
+      }
+    };
 
-    const handleDrop = useCallback((event: globalThis.DragEvent) => {
+    const handleDrop = (event: globalThis.DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
 
@@ -85,7 +76,7 @@ export const DropZone = memo(
         onFilesDrop?.(files);
         event.dataTransfer.clearData();
       }
-    }, []);
+    };
 
     useEffect(() => {
       onDragStateChange?.(isDragActive);

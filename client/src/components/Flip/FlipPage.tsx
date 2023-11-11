@@ -14,8 +14,8 @@ export const FlipPage = () => {
   const [flipX, setFlipX] = useState<boolean | undefined>(true);
   const [flipY, setFlipY] = useState<boolean | undefined>(true);
   const [isDropActive, setIsDropActive] = useState(false);
-  const [files, setFiles] = useState<File[]>([]);
-  const images: Blob[] = [];
+  const [files, setFiles] = useState<(File | null)[]>([]);
+  const images: (Blob | null)[] = [];
 
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
@@ -23,20 +23,18 @@ export const FlipPage = () => {
     if (!isDropActive) setIsDropActive(dragActive);
   }, []);
 
-  const onFilesDrop = useCallback(
-    (files: File[]) => {
-      if (files.length <= 0) return;
-      setFiles(files);
-      files.forEach((file: File) => {
-        images.push(file);
-      });
+  const onFilesDrop = (files: (File | null)[]) => {
+    if ((files.length = 0)) return;
+    setFiles(files);
+    files.forEach((file: File | null) => {
+      images.push(file);
+    });
 
-      if (refImage?.current) {
-        refImage.current.style.opacity = "0%";
-      }
-    },
-    [images]
-  );
+    if (refImage?.current) {
+      refImage.current.style.opacity = "0%";
+    }
+  };
+
   const onChangeFiles = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files) return;
