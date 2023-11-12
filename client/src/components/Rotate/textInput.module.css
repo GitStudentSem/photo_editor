@@ -19,13 +19,16 @@
 }
 .input {
   width: 100%;
-  padding: 8px 25px 8px 12px;
+  height: 40px;
+  padding-left: 12px;
+  padding-right: 25px;
   border-radius: 2px;
   border: 1px solid #9fb1bd;
   background-color: #ffffff;
   transition: all 0.3s;
   outline: none;
   color: #1c2b36;
+  cursor: pointer;
 }
 .input.error {
   border-color: #d91f11;

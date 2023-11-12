@@ -1,19 +1,23 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./rotatePage.module.css";
-import { SettingInput } from "./SettingInput";
+import { TextInput } from "./TextInput";
 import { Button } from "./Button";
 import { Alert } from "./Alert";
+import { Checkbox } from "./Checkbox";
+import { ColorInput } from "./ColorInput";
 
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
+
   const [originalImage, setOriginalImage] = useState<File>();
-  const [processedImage, setProcessedImage] = useState<any>(null);
-  const [notificationMessage, setNotificationMessage] = useState<{
+  const [processedImage, setProcessedImage] = useState<File>();
+  const [notification, setNotification] = useState<{
     text: string;
     type?: "error" | "warning" | "success" | "info";
   }>();
-  const formRef = useRef(null);
+  const [usedBackground, setUsedBackground] = useState(false);
+
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setOriginalImage(e.target.files[0]);
@@ -22,11 +26,11 @@ const RotatePage = () => {
 
   const onSend = async (e: FormEvent<HTMLFormElement> | undefined) => {
     try {
-      if (!e || !originalImage || !formRef.current) return;
+      if (!e || !originalImage) return;
 
       e.preventDefault();
 
-      const formData = new FormData(formRef.current);
+      const formData = new FormData(e.currentTarget);
 
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
@@ -40,20 +44,20 @@ const RotatePage = () => {
 
       const arrayBuffer = await response.arrayBuffer();
       const arrayBufferView = new Uint8Array(arrayBuffer);
-      const blob = new Blob([arrayBufferView]);
+      const file = new File([arrayBufferView], originalImage?.name);
 
-      setNotificationMessage({
+      setNotification({
         text: "Обработка завершена, вы можете скачать изображение",
         type: "success",
       });
-      setProcessedImage(blob);
+      setProcessedImage(file);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
-        setNotificationMessage({ text: error.message, type: "error" });
+        setNotification({ text: error.message, type: "error" });
       } else {
         console.error("Unexpected error:", error);
-        setNotificationMessage({ text: `Неизвестная ошибка: ${error}` });
+        setNotification({ text: `Неизвестная ошибка: ${error}` });
       }
     }
   };
@@ -80,7 +84,7 @@ const RotatePage = () => {
           )}
         </div>
       </div>
-      <form className={s.controls_wrapper} onSubmit={onSend} ref={formRef}>
+      <form className={s.controls_wrapper} onSubmit={onSend}>
         <div className={s.input_wrapper}>
           <Button
             text='Загрузить изображение'
@@ -100,7 +104,7 @@ const RotatePage = () => {
           />
         </div>
 
-        <SettingInput
+        <TextInput
           placeholder='Угол поворота'
           label='На какой угол нужно повернуть изображение?'
           type='number'
@@ -108,18 +112,23 @@ const RotatePage = () => {
           required
         />
 
-        <SettingInput
-          placeholder='Задний фон'
+        <Checkbox
+          text='Использоавать задний фон?'
+          checked={usedBackground}
+          onChange={() => setUsedBackground(!usedBackground)}
+        />
+
+        <ColorInput
           label='Какого цвета установить задний фон?'
-          type='text'
           name='background'
+          disabled={!usedBackground}
         />
 
         <Button text='Отправить' disabled={!originalImage} />
         <Button
           text='Скачать'
           onClick={() => {
-            if (!downloadRef.current) return;
+            if (!downloadRef.current || !processedImage) return;
 
             downloadRef.current.href = URL.createObjectURL(processedImage);
 
@@ -128,14 +137,14 @@ const RotatePage = () => {
           disabled={!processedImage}
         />
 
-        <a ref={downloadRef} download={originalImage?.name} hidden />
+        <a ref={downloadRef} download={processedImage?.name} hidden />
 
-        {notificationMessage?.text && (
+        {notification?.text && (
           <Alert
-            text={notificationMessage.text}
-            type={notificationMessage.type}
+            text={notification.text}
+            type={notification.type}
             onClose={() => {
-              setNotificationMessage({
+              setNotification({
                 text: "",
               });
             }}

@@ -1,0 +1,51 @@
+.label {
+  display: block;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.label_text {
+  color: #3e5463;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.input_wrapper {
+  display: flex;
+  align-items: center;
+  padding-left: 34px;
+  position: relative;
+}
+/* Hide the browser's default checkbox */
+.input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.color_view {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 28px;
+  height: 14px;
+  border: 1px solid #9fb1bd;
+  background-color: #ffffff;
+  transition: all 0.3s;
+  outline: none;
+}
+.input:hover ~ .color_view {
+  border-color: #7a909e;
+}
+.input:focus ~ .color_view {
+  border-color: #186ade;
+}
+.input:disabled ~ .color_view {
+  border-color: #5b728266;
+}
+.input:disabled ~ .label_text {
+  color: #5b728280;
+}
+.support_text {
+  font-size: 11px;
+  color: #3e5463;
+}
