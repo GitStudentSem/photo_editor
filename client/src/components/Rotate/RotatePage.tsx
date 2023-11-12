@@ -9,10 +9,9 @@ import { ColorInput } from "./ColorInput";
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
-  const formRef = useRef(null);
 
   const [originalImage, setOriginalImage] = useState<File>();
-  const [processedImage, setProcessedImage] = useState<any>(null);
+  const [processedImage, setProcessedImage] = useState<File>();
   const [notification, setNotification] = useState<{
     text: string;
     type?: "error" | "warning" | "success" | "info";
@@ -27,11 +26,11 @@ const RotatePage = () => {
 
   const onSend = async (e: FormEvent<HTMLFormElement> | undefined) => {
     try {
-      if (!e || !originalImage || !formRef.current) return;
+      if (!e || !originalImage) return;
 
       e.preventDefault();
 
-      const formData = new FormData(formRef.current);
+      const formData = new FormData(e.currentTarget);
 
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
@@ -45,13 +44,13 @@ const RotatePage = () => {
 
       const arrayBuffer = await response.arrayBuffer();
       const arrayBufferView = new Uint8Array(arrayBuffer);
-      const blob = new Blob([arrayBufferView]);
+      const file = new File([arrayBufferView], originalImage?.name);
 
       setNotification({
         text: "Обработка завершена, вы можете скачать изображение",
         type: "success",
       });
-      setProcessedImage(blob);
+      setProcessedImage(file);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
@@ -85,7 +84,7 @@ const RotatePage = () => {
           )}
         </div>
       </div>
-      <form className={s.controls_wrapper} onSubmit={onSend} ref={formRef}>
+      <form className={s.controls_wrapper} onSubmit={onSend}>
         <div className={s.input_wrapper}>
           <Button
             text='Загрузить изображение'
@@ -129,7 +128,7 @@ const RotatePage = () => {
         <Button
           text='Скачать'
           onClick={() => {
-            if (!downloadRef.current) return;
+            if (!downloadRef.current || !processedImage) return;
 
             downloadRef.current.href = URL.createObjectURL(processedImage);
 
@@ -138,7 +137,7 @@ const RotatePage = () => {
           disabled={!processedImage}
         />
 
-        <a ref={downloadRef} download={originalImage?.name} hidden />
+        <a ref={downloadRef} download={processedImage?.name} hidden />
 
         {notification?.text && (
           <Alert
