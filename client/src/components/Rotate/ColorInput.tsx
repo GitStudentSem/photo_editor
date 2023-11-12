@@ -14,7 +14,7 @@ export const ColorInput = ({
   disabled,
   required,
 }: IPropsColorInput) => {
-  const [value, setValue] = useState("transparent");
+  const [value, setValue] = useState("#ffffff");
 
   return (
     <label className={s.label}>
