@@ -9,7 +9,6 @@ import { ColorInput } from "./ColorInput";
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
-  const formRef = useRef(null);
 
   const [originalImage, setOriginalImage] = useState<File>();
   const [processedImage, setProcessedImage] = useState<any>(null);
@@ -27,11 +26,11 @@ const RotatePage = () => {
 
   const onSend = async (e: FormEvent<HTMLFormElement> | undefined) => {
     try {
-      if (!e || !originalImage || !formRef.current) return;
+      if (!e || !originalImage) return;
 
       e.preventDefault();
 
-      const formData = new FormData(formRef.current);
+      const formData = new FormData(e.currentTarget);
 
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
@@ -85,7 +84,7 @@ const RotatePage = () => {
           )}
         </div>
       </div>
-      <form className={s.controls_wrapper} onSubmit={onSend} ref={formRef}>
+      <form className={s.controls_wrapper} onSubmit={onSend}>
         <div className={s.input_wrapper}>
           <Button
             text='Загрузить изображение'
