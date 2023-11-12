@@ -18,7 +18,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.post("/flipflop", photoController.flip);
 app.post("/rotate", fileLoader.single("image"), photoController.rotate);
-app.post("/negative", photoController.negative);
+app.post("/negative", fileLoader.single("image") , photoController.negative);
 
 app.listen(3333, (err) => {
   if (err) {
