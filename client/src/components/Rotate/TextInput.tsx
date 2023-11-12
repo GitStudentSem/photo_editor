@@ -1,24 +1,24 @@
 import { useState } from "react";
-import s from "./settingInput.module.css";
+import s from "./textInput.module.css";
 import errorIcon from "../../icons/errorIcon.svg";
 
-interface IPropsSettingInput {
-  placeholder: string;
+interface IPropsTextInput {
   label: string;
-  type: React.HTMLInputTypeAttribute;
+  type: "number" | "text" | "password";
   name: string;
+  placeholder?: string;
   disabled?: boolean;
   required?: boolean;
 }
 
-export const SettingInput = ({
+export const TextInput = ({
   placeholder,
   label,
   type,
   name,
   disabled,
   required,
-}: IPropsSettingInput) => {
+}: IPropsTextInput) => {
   const [value, setValue] = useState("");
   const [isError, setIsError] = useState(false);
   const errorClass = isError ? s.error : "";

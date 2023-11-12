@@ -1,19 +1,24 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./rotatePage.module.css";
-import { SettingInput } from "./SettingInput";
+import { TextInput } from "./TextInput";
 import { Button } from "./Button";
 import { Alert } from "./Alert";
+import { Checkbox } from "./Checkbox";
+import { ColorInput } from "./ColorInput";
 
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
+  const formRef = useRef(null);
+
   const [originalImage, setOriginalImage] = useState<File>();
   const [processedImage, setProcessedImage] = useState<any>(null);
-  const [notificationMessage, setNotificationMessage] = useState<{
+  const [notification, setNotification] = useState<{
     text: string;
     type?: "error" | "warning" | "success" | "info";
   }>();
-  const formRef = useRef(null);
+  const [usedBackground, setUsedBackground] = useState(false);
+
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setOriginalImage(e.target.files[0]);
@@ -42,7 +47,7 @@ const RotatePage = () => {
       const arrayBufferView = new Uint8Array(arrayBuffer);
       const blob = new Blob([arrayBufferView]);
 
-      setNotificationMessage({
+      setNotification({
         text: "Обработка завершена, вы можете скачать изображение",
         type: "success",
       });
@@ -50,10 +55,10 @@ const RotatePage = () => {
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
-        setNotificationMessage({ text: error.message, type: "error" });
+        setNotification({ text: error.message, type: "error" });
       } else {
         console.error("Unexpected error:", error);
-        setNotificationMessage({ text: `Неизвестная ошибка: ${error}` });
+        setNotification({ text: `Неизвестная ошибка: ${error}` });
       }
     }
   };
@@ -100,7 +105,7 @@ const RotatePage = () => {
           />
         </div>
 
-        <SettingInput
+        <TextInput
           placeholder='Угол поворота'
           label='На какой угол нужно повернуть изображение?'
           type='number'
@@ -108,11 +113,16 @@ const RotatePage = () => {
           required
         />
 
-        <SettingInput
-          placeholder='Задний фон'
+        <Checkbox
+          text='Использоавать задний фон?'
+          checked={usedBackground}
+          onChange={() => setUsedBackground(!usedBackground)}
+        />
+
+        <ColorInput
           label='Какого цвета установить задний фон?'
-          type='text'
           name='background'
+          disabled={!usedBackground}
         />
 
         <Button text='Отправить' disabled={!originalImage} />
@@ -130,12 +140,12 @@ const RotatePage = () => {
 
         <a ref={downloadRef} download={originalImage?.name} hidden />
 
-        {notificationMessage?.text && (
+        {notification?.text && (
           <Alert
-            text={notificationMessage.text}
-            type={notificationMessage.type}
+            text={notification.text}
+            type={notification.type}
             onClose={() => {
-              setNotificationMessage({
+              setNotification({
                 text: "",
               });
             }}
