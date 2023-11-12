@@ -1,16 +1,16 @@
 import styles from "./FlipPage.module.css";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import { DropZone } from "./DropZone";
 import { FileList } from "./FileList";
 import { mapFileListToArray } from "./utils";
 // import { validation } from "./validation";
-// import { onSubmit } from "./onSubmit";
-
 export const FlipPage = () => {
+  const refForm = useRef<HTMLFormElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
   const refPreloadFile = useRef<HTMLDivElement>(null);
   const refFlip_X = useRef<HTMLInputElement>(null);
   const refFlip_Y = useRef<HTMLInputElement>(null);
+
   const [flipX, setFlipX] = useState<boolean | undefined>(true);
   const [flipY, setFlipY] = useState<boolean | undefined>(true);
   const [isDropActive, setIsDropActive] = useState(false);
@@ -19,9 +19,9 @@ export const FlipPage = () => {
 
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
-  const onDragStateChange = useCallback((dragActive: boolean) => {
+  const onDragStateChange = (dragActive: boolean) => {
     if (!isDropActive) setIsDropActive(dragActive);
-  }, []);
+  };
 
   const onFilesDrop = (files: (File | null)[]) => {
     if (files.length === 0) return;
@@ -35,16 +35,41 @@ export const FlipPage = () => {
     }
   };
 
-  const onChangeFiles = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (!event.target.files) return;
-      if (event.target.files && event.target.files.length > 0) {
-        const files = mapFileListToArray(event.target.files);
-        onFilesDrop?.(files);
+  const onChangeFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    if (event.target.files && event.target.files.length > 0) {
+      const files = mapFileListToArray(event.target.files);
+      onFilesDrop?.(files);
+    }
+  };
+
+  const onSubmit = async (
+    event: React.FormEvent<HTMLFormElement> | undefined
+  ) => {
+    if (!event) return;
+    event.preventDefault();
+    const apiAddress = " http://localhost:3333/flip";
+    const method = "POST";
+    const formData = new FormData(event.currentTarget);
+    try {
+      const params = {
+        method: method,
+        body: formData,
+      };
+
+      const response = await fetch(apiAddress, params);
+      const data = await response.json();
+      console.log(data, "123");
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
       }
-    },
-    []
-  );
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className={styles.flip}>
       <h2 className={styles.flip__title}>
@@ -54,7 +79,8 @@ export const FlipPage = () => {
         action='http://localhost:3333/flip'
         method='post'
         className={styles.flip__form}
-        // onSubmit={onSubmit}
+        onSubmit={onSubmit}
+        ref={refForm}
       >
         <div
           className={styles.flip__preloadFile}
@@ -82,7 +108,6 @@ export const FlipPage = () => {
           </DropZone>
         </div>
         <div className={styles.flip__wrapperInputs}>
-          <fieldset className={styles.flip__fieldset}></fieldset>
           <fieldset className={styles.flip__fieldset}>
             <legend className={styles.flip__legend}>Положение отражения</legend>
             <div className=''>
@@ -121,15 +146,15 @@ export const FlipPage = () => {
             <label htmlFor='red' className={styles.flip__label}>
               Синий
             </label>
-            <input type='range' id='red' />
+            <input type='range' id='red' name='red' />
             <label htmlFor='green' className={styles.flip__label}>
               Зеленый
             </label>
-            <input type='range' id='green' />
+            <input type='range' id='green' name='green' />
             <label htmlFor='blue' className={styles.flip__label}>
               Синий
             </label>
-            <input type='range' id='blue' />
+            <input type='range' id='blue' name='blue' />
           </fieldset>
           <fieldset className={styles.flip__fieldset}>
             <legend className={styles.flip__legend}>Степень сжатия</legend>

@@ -67,7 +67,7 @@ export const DropZone = memo(
 
     useEffect(() => {
       onDragStateChange?.(isDragActive);
-    }, [isDragActive]);
+    }, [isDragActive, onDragStateChange]);
 
     const dragEnter = "dragenter";
     const dragLeave = "dragleave";
@@ -90,7 +90,7 @@ export const DropZone = memo(
         tempZoneRef?.removeEventListener(dragOver, handleDrag);
         tempZoneRef?.removeEventListener(dropEvent, handleDrop);
       };
-    }, []);
+    });
 
     return (
       <div ref={dropZoneRef} id='DropZone'>
