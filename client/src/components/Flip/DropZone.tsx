@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, memo, useCallback } from "react";
+import { useRef, useState, useEffect, memo } from "react";
 import { mapFileListToArray } from "./utils";
 export interface DropZoneProps {
   onDragStateChange?: (isDragActive: boolean) => void;
