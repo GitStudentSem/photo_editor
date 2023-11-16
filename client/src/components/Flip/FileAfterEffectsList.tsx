@@ -2,7 +2,9 @@ import { useRef } from "react";
 export interface FileListProps {
   files: (File | null)[];
 }
-export const FileList = (props: React.PropsWithChildren<FileListProps>) => {
+export const FileAfterEffectsList = (
+  props: React.PropsWithChildren<FileListProps>
+) => {
   const refImage = useRef<HTMLImageElement>(null);
 
   return (
@@ -29,4 +31,4 @@ export const FileList = (props: React.PropsWithChildren<FileListProps>) => {
   );
 };
 
-FileList.displayName = "FileList";
+FileAfterEffectsList.displayName = "FileAfterEffectsList";

@@ -229,3 +229,8 @@
 		margin-bottom: 20px;
 	}
 }
+
+.flip__imageAfter {
+	max-height: 300px;
+	object-fit: contain;
+}
