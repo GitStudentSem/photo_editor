@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent, useRef } from "react";
+import { useState, ChangeEvent, FormEvent, useRef, DragEvent } from "react";
 import s from "./rotatePage.module.css";
 import { TextInput } from "./TextInput";
 import { Button } from "./Button";
@@ -17,6 +17,21 @@ const RotatePage = () => {
     type?: "error" | "warning" | "success" | "info";
   }>();
   const [usedBackground, setUsedBackground] = useState(false);
+  const [isDrag, setIsDrag] = useState(false);
+
+  interface ILog {
+    error: Error | any;
+    type?: "error" | "warning" | "success" | "info";
+  }
+  const log = ({ type = "error", error }: ILog) => {
+    if (error instanceof Error) {
+      console.error(error);
+      setNotification({ text: error.message, type });
+    } else {
+      console.error("Неизвестная ошибка:", error);
+      setNotification({ text: `Неизвестная ошибка: ${error}` });
+    }
+  };
 
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,33 +67,84 @@ const RotatePage = () => {
       });
       setProcessedImage(file);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error);
-        setNotification({ text: error.message, type: "error" });
-      } else {
-        console.error("Unexpected error:", error);
-        setNotification({ text: `Неизвестная ошибка: ${error}` });
-      }
+      log({ type: "error", error });
     }
+  };
+
+  const onLoad = () => {
+    if (!downloadRef.current || !processedImage) return;
+    downloadRef.current.href = URL.createObjectURL(processedImage);
+    downloadRef.current?.click();
+    setOriginalImage(undefined);
+    setProcessedImage(undefined);
+  };
+
+  const dragEnterHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDrag(true);
+  };
+  const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDrag(false);
+  };
+  const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const dropHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const dt = e.dataTransfer;
+    const files = [...dt.files].filter((file: File) => {
+      const regex = /image/;
+      const isImage = regex.test(file.type);
+      if (isImage) {
+        return true;
+      } else {
+        setNotification({
+          text: `Файл ${file.name} не был добавлен - это не изображение`,
+        });
+        return false;
+      }
+    });
+    if (filePickerRef.current && filePickerRef.current?.files) {
+      filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
+    }
+    setOriginalImage(files[0]);
+    setIsDrag(false);
   };
 
   return (
     <div className={s.wrapper}>
       <div className={s.images_wrapper}>
-        <div className={s.image_before}>
-          {originalImage && (
+        <div
+          className={s.image_before}
+          id='drop_zone'
+          onDragEnter={dragEnterHandler}
+          onDragLeave={dragLeaveHandler}
+          onDrop={dropHandler}
+          onDragOver={dragOverHandler}
+        >
+          {originalImage ? (
             <img
               className={s.image}
-              alt='Изображение не может быть прочитано, попробуйте выбрать другое'
+              alt='Исходное изображение'
               src={URL.createObjectURL(originalImage)}
             />
+          ) : isDrag ? (
+            <p>Отпустите для загрузки</p>
+          ) : (
+            <p>Перетащите файлы сюда</p>
           )}
         </div>
         <div className={s.image_after}>
           {processedImage && (
             <img
               className={s.image}
-              alt='Изображение не может быть прочитано, попробуйте выбрать другое'
+              alt='Обработанное изображение'
               src={URL.createObjectURL(processedImage)}
             />
           )}
@@ -98,7 +164,7 @@ const RotatePage = () => {
             ref={filePickerRef}
             type='file'
             hidden
-            accept='.png,.jpeg'
+            accept='image/*'
             onChange={onImageChange}
             name='image'
           />
@@ -125,17 +191,7 @@ const RotatePage = () => {
         />
 
         <Button text='Отправить' disabled={!originalImage} />
-        <Button
-          text='Скачать'
-          onClick={() => {
-            if (!downloadRef.current || !processedImage) return;
-
-            downloadRef.current.href = URL.createObjectURL(processedImage);
-
-            downloadRef.current?.click();
-          }}
-          disabled={!processedImage}
-        />
+        <Button text='Скачать' onClick={onLoad} disabled={!processedImage} />
 
         <a ref={downloadRef} download={processedImage?.name} hidden />
 

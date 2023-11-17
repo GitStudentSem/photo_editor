@@ -12,10 +12,12 @@
 .image_before {
   height: calc(50% - 8px); /* Посчитать позже*/
   width: 100%;
-
   margin-bottom: 8px;
   background-color: #ffffff;
   border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .image_after {
   height: 50%; /* Посчитать позже*/

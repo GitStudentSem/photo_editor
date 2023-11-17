@@ -2,6 +2,7 @@
 [npm страница](https://www.npmjs.com/package/sharp)
 [Доступные функции](https://sharp.pixelplumbing.com/api-operation)
 [Дизайн система](<https://www.figma.com/file/iN9rvjMLHK9OYj9zDSNb0r/Components-UI-Kit-(Community)?node-id=237:136709&mode=dev>)
+[Деплой сервера](https://render.com/)
 
 | Компонент | Автор  | Ссылка                                                                                                        |
 | --------- | ------ | ------------------------------------------------------------------------------------------------------------- |

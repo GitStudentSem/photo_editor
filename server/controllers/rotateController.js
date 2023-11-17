@@ -14,7 +14,9 @@ export const rotate = async (req, res) => {
       }
       try {
         sharp(data)
-          .rotate(+angle, { background: background || "transparent" })
+          .rotate(+angle, {
+            background: background || "transparent", // проблема с прозрачностью
+          })
           .toBuffer((err, resizedBuffer) => {
             if (err) return;
 
