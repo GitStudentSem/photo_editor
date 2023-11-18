@@ -1,23 +1,25 @@
-import { useState, ChangeEvent, FormEvent, useRef, DragEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./rotatePage.module.css";
 import { TextInput } from "./TextInput";
 import { Button } from "./Button";
 import { Alert } from "./Alert";
 import { Checkbox } from "./Checkbox";
 import { ColorInput } from "./ColorInput";
+import { Images } from "./Images";
 
+export interface INotification {
+  text: string;
+  type?: "error" | "warning" | "success" | "info";
+}
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
   const [originalImage, setOriginalImage] = useState<File>();
   const [processedImage, setProcessedImage] = useState<File>();
-  const [notification, setNotification] = useState<{
-    text: string;
-    type?: "error" | "warning" | "success" | "info";
-  }>();
+
+  const [notification, setNotification] = useState<INotification>();
   const [usedBackground, setUsedBackground] = useState(false);
-  const [isDrag, setIsDrag] = useState(false);
 
   interface ILog {
     error: Error | any;
@@ -79,77 +81,15 @@ const RotatePage = () => {
     setProcessedImage(undefined);
   };
 
-  const dragEnterHandler = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDrag(true);
-  };
-  const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDrag(false);
-  };
-  const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-  const dropHandler = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const dt = e.dataTransfer;
-    const files = [...dt.files].filter((file: File) => {
-      const regex = /image/;
-      const isImage = regex.test(file.type);
-      if (isImage) {
-        return true;
-      } else {
-        setNotification({
-          text: `Файл ${file.name} не был добавлен - это не изображение`,
-        });
-        return false;
-      }
-    });
-    if (filePickerRef.current && filePickerRef.current?.files) {
-      filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
-    }
-    setOriginalImage(files[0]);
-    setIsDrag(false);
-  };
-
   return (
     <div className={s.wrapper}>
-      <div className={s.images_wrapper}>
-        <div
-          className={s.image_before}
-          id='drop_zone'
-          onDragEnter={dragEnterHandler}
-          onDragLeave={dragLeaveHandler}
-          onDrop={dropHandler}
-          onDragOver={dragOverHandler}
-        >
-          {originalImage ? (
-            <img
-              className={s.image}
-              alt='Исходное изображение'
-              src={URL.createObjectURL(originalImage)}
-            />
-          ) : isDrag ? (
-            <p>Отпустите для загрузки</p>
-          ) : (
-            <p>Перетащите файлы сюда</p>
-          )}
-        </div>
-        <div className={s.image_after}>
-          {processedImage && (
-            <img
-              className={s.image}
-              alt='Обработанное изображение'
-              src={URL.createObjectURL(processedImage)}
-            />
-          )}
-        </div>
-      </div>
+      <Images
+        originalImage={originalImage}
+        setOriginalImage={setOriginalImage}
+        processedImage={processedImage}
+        setNotification={setNotification}
+        filePickerRef={filePickerRef}
+      />
       <form className={s.controls_wrapper} onSubmit={onSend}>
         <div className={s.input_wrapper}>
           <Button
