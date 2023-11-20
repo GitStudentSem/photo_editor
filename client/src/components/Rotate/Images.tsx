@@ -3,22 +3,25 @@ import s from "./images.module.css";
 import { INotification } from "./RotatePage";
 
 interface IImagesListProps {
-  originalImage: File;
+  imagesList: File[];
 }
-const ImagesList = ({ originalImage }: IImagesListProps) => {
-  return (
-    <img
-      className={s.image}
-      alt='Исходное изображение'
-      src={URL.createObjectURL(originalImage)}
-    />
-  );
+const ImagesList = ({ imagesList }: IImagesListProps) => {
+  return imagesList.map((image) => {
+    return (
+      <img
+        key={image.name}
+        className={s.image}
+        alt='Исходное изображение'
+        src={URL.createObjectURL(image)}
+      />
+    );
+  });
 };
 
 interface IImagesProps {
-  originalImage: File | undefined;
-  setOriginalImage: (file: File | undefined) => void;
-  processedImage: File | undefined;
+  originalImage: File[] | undefined;
+  setOriginalImage: (file: File[] | undefined) => void;
+  processedImage: File[] | undefined;
   setNotification: (notification: INotification) => void;
   filePickerRef: RefObject<HTMLInputElement>;
 }
@@ -65,7 +68,7 @@ export const Images = ({
     if (filePickerRef.current && filePickerRef.current?.files) {
       filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
     }
-    setOriginalImage(files[0]);
+    setOriginalImage(files);
     setIsDrag(false);
   };
 
@@ -79,7 +82,7 @@ export const Images = ({
         onDragOver={dragOverHandler}
       >
         {originalImage ? (
-          <ImagesList originalImage={originalImage} />
+          <ImagesList imagesList={originalImage} />
         ) : isDrag ? (
           <p>Отпустите для загрузки</p>
         ) : (
@@ -87,13 +90,7 @@ export const Images = ({
         )}
       </div>
       <div className={s.image_after}>
-        {processedImage && (
-          <img
-            className={s.image}
-            alt='Обработанное изображение'
-            src={URL.createObjectURL(processedImage)}
-          />
-        )}
+        {processedImage && <ImagesList imagesList={processedImage} />}
       </div>
     </div>
   );

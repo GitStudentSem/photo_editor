@@ -15,8 +15,8 @@ const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
-  const [originalImage, setOriginalImage] = useState<File>();
-  const [processedImage, setProcessedImage] = useState<File>();
+  const [originalImage, setOriginalImage] = useState<File[]>();
+  const [processedImage, setProcessedImage] = useState<File[]>();
 
   const [notification, setNotification] = useState<INotification>();
   const [usedBackground, setUsedBackground] = useState(false);
@@ -37,7 +37,7 @@ const RotatePage = () => {
 
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setOriginalImage(e.target.files[0]);
+      setOriginalImage([...e.target.files]);
     }
   };
 
@@ -48,7 +48,9 @@ const RotatePage = () => {
       e.preventDefault();
 
       const formData = new FormData(e.currentTarget);
-
+      const image = formData.getAll("image")[0];
+      formData.delete("image");
+      formData.append("image", image);
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
         body: formData,
@@ -61,22 +63,29 @@ const RotatePage = () => {
 
       const arrayBuffer = await response.arrayBuffer();
       const arrayBufferView = new Uint8Array(arrayBuffer);
-      const file = new File([arrayBufferView], originalImage?.name);
+      const files = originalImage.map((image) => {
+        return new File([arrayBufferView], image?.name); // Вот эта штука может сломатся
+      });
 
       setNotification({
         text: "Обработка завершена, вы можете скачать изображение",
         type: "success",
       });
-      setProcessedImage(file);
+      setProcessedImage(files);
     } catch (error) {
       log({ type: "error", error });
     }
   };
 
-  const onLoad = () => {
-    if (!downloadRef.current || !processedImage) return;
-    downloadRef.current.href = URL.createObjectURL(processedImage);
-    downloadRef.current?.click();
+  const onDownload = () => {
+    if (!processedImage) return;
+    processedImage.forEach((image) => {
+      if (!downloadRef.current || !processedImage) return;
+      downloadRef.current.href = URL.createObjectURL(image);
+      downloadRef.current.download = image.name;
+      downloadRef.current?.click();
+    });
+
     setOriginalImage(undefined);
     setProcessedImage(undefined);
   };
@@ -107,6 +116,7 @@ const RotatePage = () => {
             accept='image/*'
             onChange={onImageChange}
             name='image'
+            multiple
           />
         </div>
 
@@ -131,9 +141,13 @@ const RotatePage = () => {
         />
 
         <Button text='Отправить' disabled={!originalImage} />
-        <Button text='Скачать' onClick={onLoad} disabled={!processedImage} />
+        <Button
+          text='Скачать'
+          onClick={onDownload}
+          disabled={!processedImage}
+        />
 
-        <a ref={downloadRef} download={processedImage?.name} hidden />
+        <a ref={downloadRef} hidden />
 
         {notification?.text && (
           <Alert
