@@ -1,4 +1,5 @@
 import { ChangeEvent, useRef, useState } from "react";
+
 import styles from "./NegativePage.module.css";
 import Button from "./ui/Button/Button";
 import Checkbox from "./ui/Checkbox/Checkbox";
@@ -6,9 +7,15 @@ import Checkbox from "./ui/Checkbox/Checkbox";
 export const NegativePage = () => {
   const [photo, setPhoto] = useState<File>();
   const [processedPhoto, setProcessedPhoto] = useState<Blob | null>(null);
+
   const [isAlpha, setIsAlpha] = useState(false);
+
   const [submitStatus, setSubmitStatus] = useState<string>();
+
   const filePickerRef = useRef<HTMLInputElement>(null);
+  const downloadRef = useRef(null);
+
+  const [drag, setDrag] = useState(false);
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (e.target.files) {
@@ -20,6 +27,7 @@ export const NegativePage = () => {
   async function sendPhoto(e) {
     const data = new FormData();
     data.append("image", photo as Blob);
+    data.append("alpha", String(isAlpha));
     const res: any = await fetch("http://localhost:3333/negative", {
       method: "POST",
       body: data,
@@ -36,19 +44,54 @@ export const NegativePage = () => {
     setProcessedPhoto(blob);
   }
 
+  function downloadPhoto(e) {
+    if (!processedPhoto) return;
+    // filePickerRef.current.download();
+    setPhoto(null);
+    setProcessedPhoto(null);
+  }
+
+  function dragStartHandler(e) {
+    e.preventDefault();
+    setDrag(true);
+  }
+
+  function dragLeaveHandler(e) {
+    e.preventDefault();
+    setDrag(false);
+  }
+
+  function onDropHandler(e) {
+    e.preventDefault();
+    setDrag(false);
+    setPhoto(e.dataTransfer.files[0]);
+  }
+
   return (
     <div className={styles.negativePage}>
       <div className={styles.photo}>
         <div className={styles.photo__wrapper}>
-          <div className={styles.photo__before}>
-            {photo ? <img src={URL.createObjectURL(photo)} alt="Фото" /> : <></>}</div>
+          <div className={!drag ? styles.photo__before : styles.photo__before + " " + styles.drag}
+               onDragStart={e => dragStartHandler(e)}
+               onDragOver={e => dragStartHandler(e)}
+               onDragLeave={e => dragLeaveHandler(e)}
+               onDrop={onDropHandler}
+               onClick={() => {
+                 setProcessedPhoto(null);
+                 if (!filePickerRef.current) return;
+                 filePickerRef.current.click();
+               }}
+          >
+            {photo ? <img src={URL.createObjectURL(photo)} alt="Фото" /> : <>Перетащите файл сюда</>}</div>
           <div className={styles.photo__after}>
             {processedPhoto ? <img src={URL.createObjectURL(processedPhoto)} alt="Фото" /> : <></>}</div>
         </div>
+        <div className={styles.photo__fileList}></div>
       </div>
       <div className={styles.settings}>
         <Button text="Выбрать фото" onClick={(e) => {
           e.preventDefault();
+          setProcessedPhoto(null);
           if (!filePickerRef.current) return;
           filePickerRef.current.click();
         }} />
@@ -60,13 +103,15 @@ export const NegativePage = () => {
         <Button type="submit"
                 onClick={sendPhoto}
                 text="Отправить на обработку"
-                disabled={!photo && !processedPhoto}
+                disabled={!!processedPhoto}
         />
         <Button type="submit"
-                onClick={sendPhoto}
+                onClick={downloadPhoto}
+                ref={filePickerRef}
                 text="Скачать фото"
                 disabled={!processedPhoto}
         />
+        <a ref={downloadRef} hidden></a>
         <p>{submitStatus}</p>
       </div>
     </div>
