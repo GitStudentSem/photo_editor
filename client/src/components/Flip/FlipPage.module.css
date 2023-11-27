@@ -25,10 +25,10 @@
 	object-fit: cover;
 	background-position: center;
 	overflow: hidden;
-	background-size: 50%;
+	/* background-size: 50%; */
 	background-repeat: no-repeat;
 	flex-basis: 100%;
-	min-height: 75vh;
+	min-height: 25vh;
 	cursor: grab;
 }
 
@@ -41,7 +41,7 @@
 
 .flip__preloadFile div ul {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	/* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
 	gap: 20px;
 	padding: 15px;
 	margin: 0;
@@ -67,10 +67,11 @@
 
 .flip__preloadFile img {
 	display: block;
-	min-height: auto;
-	object-fit: cover;
-	min-height: 100%;
-	width: 100%;
+	/* min-height: auto; */
+	object-fit: contain;
+	height: 200px;
+	/* min-height: 100%; */
+	/* width: 100%; */
 	/* -webkit-filter: grayscale(1); */
 	filter: grayscale(1);
 	transition: all 100ms ease-out;
@@ -199,14 +200,14 @@
 }
 
 @media screen and (min-width: 768px) {
-	.flip__preloadFile {
+	/* .flip__preloadFile {
 		flex-basis: 70%;
 	}
 
 	.flip__wrapperInputs {
 		flex-basis: 25%;
 
-	}
+	} */
 
 	h2.flip__title {
 		font-size: 36px;
@@ -214,7 +215,7 @@
 }
 
 @media screen and (min-width: 1200px) {
-	.flip__preloadFile {
+	/* .flip__preloadFile {
 		flex-basis: 100%;
 		background-size: 30%;
 	}
@@ -222,7 +223,7 @@
 	.flip__wrapperInputs {
 		flex-basis: 25%;
 
-	}
+	} */
 
 	h2.flip__title {
 		font-size: 36px;

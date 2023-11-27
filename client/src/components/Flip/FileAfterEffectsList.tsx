@@ -6,9 +6,8 @@ export const FileAfterEffectsList = (
   props: React.PropsWithChildren<FileListProps>
 ) => {
   const refImage = useRef<HTMLImageElement>(null);
-
   return (
-    <ul>
+    <ul style={{ height: "400px" }}>
       {props.files.map((file: File | null) => {
         if (!file) return <></>;
         return (
@@ -18,7 +17,8 @@ export const FileAfterEffectsList = (
               alt={file.name}
               style={{
                 height: "auto",
-                width: "100%",
+                width: "30%",
+                objectFit: "contain",
               }}
               ref={refImage}
             />

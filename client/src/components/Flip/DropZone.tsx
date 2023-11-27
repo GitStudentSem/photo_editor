@@ -100,3 +100,24 @@ export const DropZone = memo(
   }
 );
 DropZone.displayName = "DropZone";
+{
+  /* <DropZone
+            onDragStateChange={onDragStateChange}
+            onFilesDrop={onFilesDrop}
+          ></DropZone> */
+}
+  //   const onDragStateChange = (dragActive: boolean) => {
+  //     if (!isDropActive) setIsDropActive(dragActive);
+  //   };
+
+  //   const onFilesDrop = (files: (File | null)[]) => {
+  //     if (files.length === 0) return;
+  //     setFiles(files);
+  //     // files.forEach((file: File | null) => {
+  //     // //   images.push(file);
+  //     // });
+
+  //     if (refImage?.current) {
+  //       refImage.current.style.opacity = "0%";
+  //     }
+  //   };

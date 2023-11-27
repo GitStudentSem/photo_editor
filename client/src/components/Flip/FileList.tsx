@@ -4,9 +4,10 @@ export interface FileListProps {
 }
 export const FileList = (props: React.PropsWithChildren<FileListProps>) => {
   const refImage = useRef<HTMLImageElement>(null);
+  console.log(props.files, "files111");
 
   return (
-    <ul>
+    <ul style={{ height: "auto" }}>
       {props.files.map((file: File | null) => {
         if (!file) return <></>;
         return (
@@ -16,7 +17,8 @@ export const FileList = (props: React.PropsWithChildren<FileListProps>) => {
               alt={file.name}
               style={{
                 height: "auto",
-                width: "100%",
+                width: "30%",
+                objectFit: "contain",
               }}
               ref={refImage}
             />
