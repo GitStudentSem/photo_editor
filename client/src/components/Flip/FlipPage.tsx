@@ -7,7 +7,7 @@ import { mapFileListToArray } from "./utils";
 // import { validation } from "./validation";
 import { Input } from "./Input";
 
-export const FlipPage23423 = () => {
+export const FlipPage = () => {
   //   const refImage = useRef<HTMLImageElement>(null);
   const refPreloadFile = useRef<HTMLDivElement>(null);
   const refInput = useRef<HTMLInputElement>(null);
