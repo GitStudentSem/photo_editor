@@ -8,12 +8,13 @@ export const NegativePage = () => {
   const [photo, setPhoto] = useState<File>();
   const [processedPhoto, setProcessedPhoto] = useState<Blob | null>(null);
 
-  const [isAlpha, setIsAlpha] = useState(false);
+  const [isAlpha, setIsAlpha] = useState(true);
 
   const [submitStatus, setSubmitStatus] = useState<string>();
 
   const filePickerRef = useRef<HTMLInputElement>(null);
-  const downloadRef = useRef(null);
+  const downloadRef = useRef<HTMLImageElement>(null);
+  const downloadPickerRef = useRef<HTMLAnchorElement>(null);
 
   const [drag, setDrag] = useState(false);
 
@@ -24,7 +25,7 @@ export const NegativePage = () => {
     }
   }
 
-  async function sendPhoto(e) {
+  async function sendPhoto() {
     const data = new FormData();
     data.append("image", photo as Blob);
     data.append("alpha", String(isAlpha));
@@ -44,11 +45,10 @@ export const NegativePage = () => {
     setProcessedPhoto(blob);
   }
 
-  function downloadPhoto(e) {
-    if (!processedPhoto) return;
-    // filePickerRef.current.download();
-    setPhoto(null);
-    setProcessedPhoto(null);
+  function downloadPhoto() {
+    if (!processedPhoto || !downloadRef.current) return;
+    downloadPickerRef.current.href = downloadRef.current.src;
+    downloadPickerRef.current.click();
   }
 
   function dragStartHandler(e) {
@@ -84,7 +84,8 @@ export const NegativePage = () => {
           >
             {photo ? <img src={URL.createObjectURL(photo)} alt="Фото" /> : <>Перетащите файл сюда</>}</div>
           <div className={styles.photo__after}>
-            {processedPhoto ? <img src={URL.createObjectURL(processedPhoto)} alt="Фото" /> : <></>}</div>
+            {processedPhoto ?
+              <img src={URL.createObjectURL(processedPhoto)} alt="Фото" ref={downloadRef} /> : <></>}</div>
         </div>
         <div className={styles.photo__fileList}></div>
       </div>
@@ -98,20 +99,18 @@ export const NegativePage = () => {
         <input type="file" accept="image/*" onChange={onChange} ref={filePickerRef} hidden />
         <label>
           Использовать α канал
-          <Checkbox type="checkbox" onChange={prev => setIsAlpha(!prev)} disabled={!photo} />
+          <Checkbox onChange={prev => setIsAlpha(!prev)} disabled={!!photo} />
         </label>
         <Button type="submit"
                 onClick={sendPhoto}
                 text="Отправить на обработку"
-                disabled={!!processedPhoto}
+                disabled={!!photo && !!processedPhoto}
         />
-        <Button type="submit"
-                onClick={downloadPhoto}
-                ref={filePickerRef}
+        <Button onClick={downloadPhoto}
                 text="Скачать фото"
                 disabled={!processedPhoto}
         />
-        <a ref={downloadRef} hidden></a>
+        <a ref={downloadPickerRef} download={"file.jpg"} hidden></a>
         <p>{submitStatus}</p>
       </div>
     </div>
