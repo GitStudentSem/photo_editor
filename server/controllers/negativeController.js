@@ -5,12 +5,14 @@ import fs from "fs";
 export const negative = async (req, res) => {
   if (!req.file) throw Error("Фото не получено");
 
+  const { alpha } = req.body;
+
   fs.readFile(`uploads/${req.file.originalname}`, (err, data) => {
     if (err) return;
 
     try {
       sharp(data)
-        .negate({ alpha: true })  //нужно доработать отправку alpha с клиента
+        .negate({ alpha: Boolean(alpha) })
         .toBuffer((err, resizedBuffer) => {
           if (err) return;
 
