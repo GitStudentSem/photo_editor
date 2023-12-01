@@ -21,7 +21,7 @@ app.use(bodyParser.json({
 }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.post("/flip", fileLoader.array("image", 10), photoController.flip);
+app.post("/flip", fileLoader.single("image"), photoController.flip);
 app.post("/rotate", fileLoader.single("image"), photoController.rotate);
 app.post("/negative", photoController.negative);
 

@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-export interface InputProps {
+export interface InputI {
   type: string;
   id: string;
   multiple?: boolean;
@@ -22,7 +22,7 @@ export const Input = ({
   accept,
   value,
   ref1,
-}: InputProps) => {
+}: InputI) => {
   return (
     <input
       type={type}
@@ -37,3 +37,4 @@ export const Input = ({
     />
   );
 };
+Input.displayName = "Input";

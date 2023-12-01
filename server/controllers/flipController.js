@@ -6,10 +6,8 @@ import fs from "fs";
 
 export const flip = async (req, res) => {
 	try {
-		if (!req.files[0]) throw Error("Картинка не получена");
-		// const arrFiles = [];
-		const file = req.files[0];
-		// console.log(files, 'files');
+		if (!req.file) throw Error("Картинка не получена");
+		const file = req.file;
 
 		fs.readFile(`uploads/${file.originalname}`, (err, file) => {
 			if (err) {
@@ -31,9 +29,6 @@ export const flip = async (req, res) => {
 				});
 			}
 		});
-
-		res.status(200)
-
 	} catch (error) {
 		sendError({
 			message: "Не удалось flip",

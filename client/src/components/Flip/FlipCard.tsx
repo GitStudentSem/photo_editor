@@ -1,4 +1,4 @@
-import styles from "./FlipCard.module.css";
+import styles from "./styles/FlipCard.module.css";
 import { Link } from "react-router-dom";
 
 type Props = {
