@@ -1,15 +1,17 @@
 import { ChangeEvent } from "react";
 
 export interface InputI {
-  type: string;
-  id: string;
+  type?: string;
+  id?: string;
   multiple?: boolean;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  name: string;
+  name?: string;
   accept?: string;
   value?: string | React.ComponentState;
-  ref1?: React.RefObject<HTMLInputElement>;
+  refInput?: React.RefObject<HTMLInputElement>;
+  disabled?: boolean;
+  hidden?: boolean;
 }
 
 export const Input = ({
@@ -21,7 +23,8 @@ export const Input = ({
   name,
   accept,
   value,
-  ref1,
+  refInput,
+  hidden,
 }: InputI) => {
   return (
     <input
@@ -33,7 +36,9 @@ export const Input = ({
       name={name}
       accept={accept}
       value={value}
-      ref={ref1}
+      ref={refInput}
+      disabled={false}
+      hidden={hidden}
     />
   );
 };

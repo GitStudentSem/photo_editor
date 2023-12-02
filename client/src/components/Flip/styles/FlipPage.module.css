@@ -12,12 +12,37 @@
 	margin: 0 auto;
 	padding: 0 10px;
 	padding-top: 30px;
+	max-height: 100%;
+
 }
 
 .flip img {
 	max-width: 100%;
 	object-fit: contain;
 	display: block;
+	max-height: inherit;
+}
+
+.flip__header {
+	margin-bottom: 10px;
+}
+
+.flip__form {
+	display: flex;
+	gap: 10px;
+	align-items: start;
+	min-width: 100%;
+	flex-wrap: wrap;
+}
+
+.flip__wrapper {
+	display: flex;
+	gap: 45px;
+	flex-grow: 2;
+	min-height: 300px;
+	max-height: 100vh;
+	flex-wrap: wrap;
+	margin-bottom: 120px;
 }
 
 .flip__button,
@@ -26,13 +51,44 @@
 	background-color: transparent;
 }
 
-.flip__preloadFile {
-	min-height: 300px;
-	background-position: center;
+.flip__preloadFile,
+.flip__afterFile {
 	background-repeat: no-repeat;
-	background-size: contain;
+	align-items: center;
+	flex-grow: inherit;
+	max-height: 50vh;
+	flex-basis: 100%;
 }
 
-.flip__preloadFile img {
-	min-height: inherit;
+
+.flip__preloadFile div,
+.flip__afterFile div {
+	height: 100%;
+}
+
+.flip__afterFile {
+	height: 100%;
+}
+
+.flip__settings {
+	display: grid;
+}
+
+.flip__settings div {
+	display: grid;
+	grid-auto-flow: column dense;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+
+.flip__button {
+	padding: 5px;
+	font-size: 24px;
+	background-color: blue;
+	line-height: 32px;
+	color: white;
+}
+
+.flip__button:disabled {
+	opacity: 0.4;
 }
