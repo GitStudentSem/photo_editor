@@ -13,17 +13,17 @@ export const rotate = async (req, res) => {
 			background
 		} = req.body;
 
-		fs.readFile(`uploads/${req.file.originalname}`, (err, data) => {
-			if (err) {
-				return;
-			}
-			try {
-				sharp(data)
-					.rotate(+angle, {
-						background: background || "transparent"
-					})
-					.toBuffer((err, resizedBuffer) => {
-						if (err) return;
+    fs.readFile(`uploads/${req.file.originalname}`, (err, data) => {
+      if (err) {
+        return;
+      }
+      try {
+        sharp(data)
+          .rotate(+angle, {
+            background: background || "transparent", // проблема с прозрачностью
+          })
+          .toBuffer((err, resizedBuffer) => {
+            if (err) return;
 
 						res.send(resizedBuffer);
 					});

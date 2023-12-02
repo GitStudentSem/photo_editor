@@ -1,0 +1,7 @@
+.input {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    transition: all 0.2s;
+    padding: 5px;
+}

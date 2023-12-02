@@ -5,22 +5,39 @@ import { Button } from "./Button";
 import { Alert } from "./Alert";
 import { Checkbox } from "./Checkbox";
 import { ColorInput } from "./ColorInput";
+import { Images } from "./Images";
 
+export interface INotification {
+  text: string;
+  type?: "error" | "warning" | "success" | "info";
+}
 const RotatePage = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
-  const [originalImage, setOriginalImage] = useState<File>();
-  const [processedImage, setProcessedImage] = useState<File>();
-  const [notification, setNotification] = useState<{
-    text: string;
-    type?: "error" | "warning" | "success" | "info";
-  }>();
+  const [originalImage, setOriginalImage] = useState<File[]>();
+  const [processedImage, setProcessedImage] = useState<File[]>();
+
+  const [notification, setNotification] = useState<INotification>();
   const [usedBackground, setUsedBackground] = useState(false);
+
+  interface ILog {
+    error: Error | any;
+    type?: "error" | "warning" | "success" | "info";
+  }
+  const log = ({ type = "error", error }: ILog) => {
+    if (error instanceof Error) {
+      console.error(error);
+      setNotification({ text: error.message, type });
+    } else {
+      console.error("Неизвестная ошибка:", error);
+      setNotification({ text: `Неизвестная ошибка: ${error}` });
+    }
+  };
 
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setOriginalImage(e.target.files[0]);
+      setOriginalImage([...e.target.files]);
     }
   };
 
@@ -31,7 +48,9 @@ const RotatePage = () => {
       e.preventDefault();
 
       const formData = new FormData(e.currentTarget);
-
+      const image = formData.getAll("image")[0];
+      formData.delete("image");
+      formData.append("image", image);
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
         body: formData,
@@ -44,46 +63,42 @@ const RotatePage = () => {
 
       const arrayBuffer = await response.arrayBuffer();
       const arrayBufferView = new Uint8Array(arrayBuffer);
-      const file = new File([arrayBufferView], originalImage?.name);
+      const files = originalImage.map((image) => {
+        return new File([arrayBufferView], image?.name); // Вот эта штука может сломатся
+      });
 
       setNotification({
         text: "Обработка завершена, вы можете скачать изображение",
         type: "success",
       });
-      setProcessedImage(file);
+      setProcessedImage(files);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error);
-        setNotification({ text: error.message, type: "error" });
-      } else {
-        console.error("Unexpected error:", error);
-        setNotification({ text: `Неизвестная ошибка: ${error}` });
-      }
+      log({ type: "error", error });
     }
+  };
+
+  const onDownload = () => {
+    if (!processedImage) return;
+    processedImage.forEach((image) => {
+      if (!downloadRef.current || !processedImage) return;
+      downloadRef.current.href = URL.createObjectURL(image);
+      downloadRef.current.download = image.name;
+      downloadRef.current?.click();
+    });
+
+    setOriginalImage(undefined);
+    setProcessedImage(undefined);
   };
 
   return (
     <div className={s.wrapper}>
-      <div className={s.images_wrapper}>
-        <div className={s.image_before}>
-          {originalImage && (
-            <img
-              className={s.image}
-              alt='Изображение не может быть прочитано, попробуйте выбрать другое'
-              src={URL.createObjectURL(originalImage)}
-            />
-          )}
-        </div>
-        <div className={s.image_after}>
-          {processedImage && (
-            <img
-              className={s.image}
-              alt='Изображение не может быть прочитано, попробуйте выбрать другое'
-              src={URL.createObjectURL(processedImage)}
-            />
-          )}
-        </div>
-      </div>
+      <Images
+        originalImage={originalImage}
+        setOriginalImage={setOriginalImage}
+        processedImage={processedImage}
+        setNotification={setNotification}
+        filePickerRef={filePickerRef}
+      />
       <form className={s.controls_wrapper} onSubmit={onSend}>
         <div className={s.input_wrapper}>
           <Button
@@ -98,9 +113,10 @@ const RotatePage = () => {
             ref={filePickerRef}
             type='file'
             hidden
-            accept='.png,.jpeg'
+            accept='image/*'
             onChange={onImageChange}
             name='image'
+            multiple
           />
         </div>
 
@@ -127,17 +143,11 @@ const RotatePage = () => {
         <Button text='Отправить' disabled={!originalImage} />
         <Button
           text='Скачать'
-          onClick={() => {
-            if (!downloadRef.current || !processedImage) return;
-
-            downloadRef.current.href = URL.createObjectURL(processedImage);
-
-            downloadRef.current?.click();
-          }}
+          onClick={onDownload}
           disabled={!processedImage}
         />
 
-        <a ref={downloadRef} download={processedImage?.name} hidden />
+        <a ref={downloadRef} hidden />
 
         {notification?.text && (
           <Alert
