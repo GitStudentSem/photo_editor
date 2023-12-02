@@ -1,4 +1,4 @@
-import styles from "./styles/FlipCard.module.css";
+import styles from "./styles/FlipCard.module.scss";
 import { Link } from "react-router-dom";
 export const FlipCard = () => {
   const text = "FLIP & FLOP";

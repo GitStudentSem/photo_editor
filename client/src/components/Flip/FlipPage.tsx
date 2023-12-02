@@ -1,4 +1,4 @@
-import styles from "./styles/FlipPage.module.css";
+import styles from "./styles/FlipPage.module.scss";
 import { useRef, useState } from "react";
 // import { FileList } from "./FileList";
 import { FileGet } from "./common/FileGet";
@@ -7,6 +7,7 @@ import { FileGet } from "./common/FileGet";
 // import { validation } from "./validation";
 import { Input } from "./common/Input";
 import { Button } from "./common/Button";
+import { Alert } from "./alerts/Alert";
 
 export const FlipPage = () => {
   const refPreloadFile = useRef<HTMLDivElement>(null);
@@ -16,6 +17,7 @@ export const FlipPage = () => {
   const [files, setFiles] = useState<File | null>();
   const [filesAfter, setFilesAfter] = useState<File>();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isStatus, setIsStatus] = useState<string | undefined>("");
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
   const onClick = () => {
@@ -54,6 +56,7 @@ export const FlipPage = () => {
       const response = await fetch(apiAddress, params);
 
       if (!response.ok) {
+        // setIsStatus("error");
         const data = await response.json();
         throw new Error(data.message);
       }
@@ -64,11 +67,14 @@ export const FlipPage = () => {
 
       setFilesAfter(file);
       setIsDisabled(true);
+      setIsStatus("success");
     } catch (error) {
       if (error instanceof Error) {
+        setIsStatus("error");
         console.error(error);
       } else {
         console.error("Unexpected error:", error);
+        // setIsStatus("error");
       }
     }
   };
@@ -130,6 +136,7 @@ export const FlipPage = () => {
           </div>
         </div>
       </form>
+      <Alert status={isStatus} />
     </div>
   );
 };

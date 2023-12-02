@@ -10,6 +10,17 @@
 	transition: 0.4s;
 	border-radius: 20px;
 	box-shadow: 4px 4px 20px 10px rgba(34, 60, 80, 0.2);
+	&__wrapper {
+		margin: auto;
+	}
+
+	&__text {
+		font-family: sans-serif;
+		font-size: 18px;
+		font-weight: bold;
+		text-decoration: none;
+		color: black;
+	}
 }
 
 .cardX:hover {
@@ -23,16 +34,4 @@
 .cardXY:hover {
 	transform: rotateX(180deg);
 	transform: rotateY(180deg);
-}
-
-.card__wrapper {
-	margin: auto;
-}
-
-.card__text {
-	font-family: sans-serif;
-	font-size: 18px;
-	font-weight: bold;
-	text-decoration: none;
-	color: black;
 }

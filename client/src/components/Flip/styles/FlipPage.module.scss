@@ -1,0 +1,92 @@
+/* quiries */
+$phone: 475px;
+$tablet: 768px;
+$desktop: 1024px;
+$fullHD: 1440px;
+$black: black;
+
+.flip {
+	max-width: $fullHD;
+	margin: 0 auto;
+	padding: 0 10px;
+	padding-top: 30px;
+	max-height: 100%;
+
+	img {
+		max-width: 100%;
+		object-fit: contain;
+		display: block;
+		height: 80%;
+	}
+
+	&__header {
+		margin-bottom: 10px;
+	}
+
+	&__form {
+		display: flex;
+		gap: 10px;
+		align-items: start;
+		min-width: 100%;
+		flex-wrap: wrap;
+	}
+
+	&__wrapper {
+		display: flex;
+		justify-items: center;
+		flex-grow: 2;
+		min-height: 300px;
+		max-height: 100vh;
+		flex-wrap: wrap;
+		border: 1px solid $black;
+		padding: 10px;
+	}
+
+	&__button,
+	& input {
+		cursor: pointer;
+		background-color: transparent;
+	}
+	&__preloadFile {
+		border-bottom: 1px solid $black;
+	}
+
+	&__preloadFile,
+	&__afterFile {
+		background-repeat: no-repeat;
+		flex-grow: inherit;
+		height: 50vh;
+		flex-basis: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__settings {
+		display: grid;
+		border: 1px solid $black;
+		min-height: 100vh;
+	}
+
+	&__settings div {
+		display: grid;
+		grid-auto-flow: column dense;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		align-items: start;
+		min-height: inherit;
+	}
+
+	&__button {
+		padding: 5px;
+		font-size: 24px;
+		background-color: blue;
+		line-height: 32px;
+		color: white;
+	}
+
+	&__button:disabled {
+		opacity: 0.4;
+	}
+}
