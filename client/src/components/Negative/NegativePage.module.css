@@ -1,61 +1,64 @@
 .negativePage {
-  display: flex;
-  font-family: sans-serif;
-  height: 100vh;
+    display: flex;
+    font-family: sans-serif;
+    height: 100vh;
 }
 
 .photo {
-  width: 70%;
-  height: 100%;
+    width: 60%;
 }
 
 .photo__wrapper {
-  background: lightgray;
+    background: lightgray;
 }
 
 .settings {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .settings label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .settings label input {
-  border: 0;
-  border-radius: 2px;
-  padding: 5px;
-  background: #cacaca;
+    border: 0;
+    border-radius: 2px;
+    padding: 5px;
+    background: #cacaca;
 }
 
 .photo__before, .photo__after {
-  width: 100%;
-  height: 50vh;
-  padding: 10px;
-  border: 3px solid white;
-  cursor: pointer;
+    width: 100%;
+    height: 50vh;
+    padding: 10px;
+    border: 3px solid white;
 }
 
 .photo__before img, .photo__after img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
-.photo__fileList {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.fileList {
+    width: 20%;
+    overflow-y: scroll;
+}
+
+.fileList__wrapper {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .drag {
-  background: rgba(187, 187, 187, 0.9);
-  border: 1px solid black;
-  cursor: pointer;
+    background: rgba(187, 187, 187, 0.9);
+    border: 1px solid black;
+    cursor: pointer;
 }
