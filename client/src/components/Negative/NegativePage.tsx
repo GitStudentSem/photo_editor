@@ -18,10 +18,11 @@ export const NegativePage = () => {
   const downloadRef = useRef<HTMLImageElement>(null);
   const downloadPickerRef = useRef<HTMLAnchorElement>(null);
 
-  const [notification, setNotification] = useState<"success" | "error" | null>(null);
+  const [notification, setNotification] = useState<"success" | "error" | null>(
+    null
+  );
 
   const [drag, setDrag] = useState(false);
-
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (e.target.files) {
@@ -43,7 +44,7 @@ export const NegativePage = () => {
       setNotification("error");
     }
 
-    const arrayBuffer = await res.arrayBuffer();  //преобразование resizedBuffer с сервера в Blob для вставки фото
+    const arrayBuffer = await res.arrayBuffer(); //преобразование resizedBuffer с сервера в Blob для вставки фото
     const arrayBufferBytes = new Uint8Array(arrayBuffer);
     const blob = new Blob([arrayBufferBytes]);
 
@@ -91,48 +92,79 @@ export const NegativePage = () => {
       {renderNotification()}
       <div className={styles.photo}>
         <div className={styles.photo__wrapper}>
-          <div className={!drag ? styles.photo__before : styles.photo__before + " " + styles.drag}
-               onDragStart={e => dragStartHandler(e)}
-               onDragOver={e => dragStartHandler(e)}
-               onDragLeave={e => dragLeaveHandler(e)}
-               onDrop={onDropHandler}
-               onClick={() => {
-                 setProcessedPhoto(null);
-                 if (!filePickerRef.current) return;
-                 filePickerRef.current.click();
-               }}
+          <div
+            className={
+              !drag
+                ? styles.photo__before
+                : styles.photo__before + " " + styles.drag
+            }
+            onDragStart={(e) => dragStartHandler(e)}
+            onDragOver={(e) => dragStartHandler(e)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDrop={onDropHandler}
+            onClick={() => {
+              setProcessedPhoto(null);
+              if (!filePickerRef.current) return;
+              filePickerRef.current.click();
+            }}
           >
-            {photo ? <img src={URL.createObjectURL(photo)} alt="Фото" /> : <>Перетащите файл сюда</>}
+            {photo ? (
+              <img src={URL.createObjectURL(photo)} alt='Фото' />
+            ) : (
+              <>Перетащите файл сюда</>
+            )}
           </div>
           <div className={styles.photo__after}>
-            {processedPhoto ?
-              <img src={URL.createObjectURL(processedPhoto)} alt="Фото" ref={downloadRef} /> : <></>}
+            {processedPhoto ? (
+              <img
+                src={URL.createObjectURL(processedPhoto)}
+                alt='Фото'
+                ref={downloadRef}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className={styles.photo__fileList}></div>
       </div>
       <div className={styles.settings}>
-        <Button text="Выбрать фото" onClick={(e) => {
-          e.preventDefault();
-          setProcessedPhoto(null);
-          if (!filePickerRef.current) return;
-          filePickerRef.current.click();
-        }} />
-        <input type="file" accept="image/*" onChange={onChange} ref={filePickerRef} hidden />
+        <Button
+          text='Выбрать фото'
+          onClick={(e) => {
+            e.preventDefault();
+            setProcessedPhoto(null);
+            if (!filePickerRef.current) return;
+            filePickerRef.current.click();
+          }}
+        />
+        <input
+          type='file'
+          accept='image/*'
+          onChange={onChange}
+          ref={filePickerRef}
+          hidden
+        />
         <label>
           Использовать α канал
-          <Checkbox onChange={prev => setIsAlpha(!prev)} disabled={!photo} />
+          <Checkbox onChange={(prev) => setIsAlpha(!prev)} disabled={!photo} />
         </label>
-        <Button type="submit"
-                onClick={sendPhoto}
-                text="Отправить на обработку"
-                disabled={!photo || !!processedPhoto}
+        <Button
+          type='submit'
+          onClick={sendPhoto}
+          text='Отправить на обработку'
+          disabled={!photo || !!processedPhoto}
         />
-        <Button onClick={downloadPhoto}
-                text="Скачать фото"
-                disabled={!processedPhoto}
+        <Button
+          onClick={downloadPhoto}
+          text='Скачать фото'
+          disabled={!processedPhoto}
         />
-        <a ref={downloadPickerRef} download={photo ? photo.name : "file.jpg"} hidden></a>
+        <a
+          ref={downloadPickerRef}
+          download={photo ? photo.name : "file.jpg"}
+          hidden
+        ></a>
       </div>
     </div>
   );

@@ -18,7 +18,23 @@ export const FlipPage = () => {
   const [filesAfter, setFilesAfter] = useState<File>();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isStatus, setIsStatus] = useState<string>("");
+  const [isDrag, setIsDrag] = useState<boolean>(false);
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
+
+  function dragStart(event: DragEvent) {
+    event.preventDefault();
+    setIsDrag(true);
+  }
+  function dragLeave(event: DragEvent) {
+    event.preventDefault();
+    setIsDrag(false);
+  }
+
+  function onDrop(event: DragEvent) {
+    event.preventDefault();
+    setIsDrag(false);
+    setFiles(event.dataTransfer?.files[0]);
+  }
 
   const onClick = () => {
     if (refInput.current) {
@@ -47,6 +63,7 @@ export const FlipPage = () => {
 
       const formData = new FormData(event.currentTarget);
       console.log(...formData);
+      formData.append("image", files);
 
       const params = {
         method: method,
@@ -101,6 +118,10 @@ export const FlipPage = () => {
             style={{
               backgroundImage: files ? "" : preloadFileBackground,
             }}
+            onDragStart={(e) => dragStart(e)}
+            onDragOver={(e) => dragStart(e)}
+            onDragLeave={(e) => dragLeave(e)}
+            onDrop={onDrop}
           >
             {files && <FileGet file={files} />}
           </div>
