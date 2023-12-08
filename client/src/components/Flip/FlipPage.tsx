@@ -17,7 +17,7 @@ export const FlipPage = () => {
   const [files, setFiles] = useState<File | null>();
   const [filesAfter, setFilesAfter] = useState<File>();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [isStatus, setIsStatus] = useState<string | undefined>("");
+  const [isStatus, setIsStatus] = useState<string>("");
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
   const onClick = () => {
@@ -56,7 +56,7 @@ export const FlipPage = () => {
       const response = await fetch(apiAddress, params);
 
       if (!response.ok) {
-        // setIsStatus("error");
+        setIsStatus("error");
         const data = await response.json();
         throw new Error(data.message);
       }
@@ -74,7 +74,7 @@ export const FlipPage = () => {
         console.error(error);
       } else {
         console.error("Unexpected error:", error);
-        // setIsStatus("error");
+        setIsStatus("error");
       }
     }
   };
@@ -136,7 +136,7 @@ export const FlipPage = () => {
           </div>
         </div>
       </form>
-      <Alert status={isStatus} />
+      {isStatus && <Alert status={isStatus} />}
     </div>
   );
 };

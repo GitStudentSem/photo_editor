@@ -1,46 +1,58 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export interface AlertI {
-  status?: string | undefined;
+  status: string;
 }
 
 export const Alert = ({ status }: AlertI) => {
-  //   const [time, setTime] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
   const [backgroundColor, setBackgroundColor] = useState<string>("");
-  const [one, setOne] = useState<string | undefined>(status);
-  //   const status111 = status;
-
+  const [isShow, setisShow] = useState<boolean>(false);
+  const refAlert = useRef<HTMLDivElement>(null);
+  const timeout = 5000;
+  console.log(status, "status");
   useEffect(() => {
-    setOne(status);
-  }, []);
-  console.log(one, "afasf");
-  if (one === "success" || one === "error") {
-    if (one === "success") {
+    if (status === "success") {
       setMessage(" Ваше изображение успешно загружено и обработано!");
       setBackgroundColor("green");
+      setisShow(true);
     }
-    if (one === "error") {
-      setMessage(" Произошла ошибка!");
+    if (status === "error") {
+      setMessage(
+        " Произошла ошибка! Попробуйте перезагрузить страницу и повторить операцию снова. Если ошибка не исчезла, то обратитесь в тех. службу поддержки."
+      );
       setBackgroundColor("red");
+      setisShow(true);
     }
-    console.log(one, "afasf");
-    return (
-      <div
-        style={{
-          backgroundColor: backgroundColor,
-          padding: "10px",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          transition: "0.3s else-in-out",
-        }}
-      >
-        {message}
-      </div>
-    );
+  }, []);
+  if (isShow) {
+    if (refAlert.current) {
+      setTimeout(() => {
+        if (refAlert.current !== null) {
+          refAlert.current.style.display = "none";
+          setisShow(false);
+        }
+      }, timeout);
+    }
   }
+
+  return (
+    <div
+      style={{
+        backgroundColor: backgroundColor,
+        padding: "10px",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        transition: "0.8s else-in-out",
+        color: "white"
+      }}
+      ref={refAlert}
+    >
+      {message}
+    </div>
+  );
 };
 
 Alert.displayName = "Alert";
