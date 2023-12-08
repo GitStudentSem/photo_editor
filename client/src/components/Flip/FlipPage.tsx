@@ -12,6 +12,8 @@ import { Alert } from "./alerts/Alert";
 export const FlipPage = () => {
   const refPreloadFile = useRef<HTMLDivElement>(null);
   const refInput = useRef<HTMLInputElement>(null);
+  const refInputFlip = useRef<HTMLInputElement>(null);
+  const refInputFlop = useRef<HTMLInputElement>(null);
   const refForm = useRef<HTMLFormElement>(null);
 
   const [files, setFiles] = useState<File | null>();
@@ -19,21 +21,25 @@ export const FlipPage = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isStatus, setIsStatus] = useState<string>("");
   const [isDrag, setIsDrag] = useState<boolean>(false);
+  const [isFlip, setIsFlip] = useState<boolean>(false);
+  const [isFlop, setIsFlop] = useState<boolean>(false);
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
-  function dragStart(event: DragEvent) {
+  function dragStart(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDrag(true);
   }
-  function dragLeave(event: DragEvent) {
+  function dragLeave(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDrag(false);
   }
 
-  function onDrop(event: DragEvent) {
+  function onDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDrag(false);
-    setFiles(event.dataTransfer?.files[0]);
+    if (isDrag) {
+      setFiles(event.dataTransfer.files[0]);
+    }
   }
 
   const onClick = () => {
@@ -49,6 +55,14 @@ export const FlipPage = () => {
       setFiles(file);
     }
   };
+  const onChangeFlip = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFlip(!isFlip);
+    event.target.checked = !isFlip;
+  };
+  const onChangeFlop = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFlop(!isFlop);
+    event.target.checked = !isFlop;
+  };
 
   const onSubmit = async (
     event: React.FormEvent<HTMLFormElement> | undefined
@@ -61,9 +75,12 @@ export const FlipPage = () => {
       const apiAddress = " http://localhost:3333/flip";
       const method = "POST";
 
-      const formData = new FormData(event.currentTarget);
+      const formData = new FormData();
       console.log(...formData);
       formData.append("image", files);
+      console.log(isFlip, "form isFlip");
+      formData.append("flip", String(isFlip));
+      formData.append("flop", String(isFlop));
 
       const params = {
         method: method,
@@ -74,6 +91,7 @@ export const FlipPage = () => {
 
       if (!response.ok) {
         setIsStatus("error");
+
         const data = await response.json();
         throw new Error(data.message);
       }
@@ -88,7 +106,6 @@ export const FlipPage = () => {
     } catch (error) {
       if (error instanceof Error) {
         setIsStatus("error");
-        console.error(error);
       } else {
         console.error("Unexpected error:", error);
         setIsStatus("error");
@@ -122,6 +139,7 @@ export const FlipPage = () => {
             onDragOver={(e) => dragStart(e)}
             onDragLeave={(e) => dragLeave(e)}
             onDrop={onDrop}
+            onClick={onClick}
           >
             {files && <FileGet file={files} />}
           </div>
@@ -144,6 +162,28 @@ export const FlipPage = () => {
               accept='.png,.jpeg,.jpg'
               refInput={refInput}
             />
+            <label htmlFor='flip'>
+              развернуть по вертикали{" "}
+              <Input
+                type='checkbox'
+                id='flip'
+                name='flip'
+                refInput={refInputFlip}
+                onChange={onChangeFlip}
+              />
+            </label>
+
+            <label htmlFor='flop'>
+              развернуть по горизонтали{" "}
+              <Input
+                type='checkbox'
+                id='flop'
+                name='flop'
+                refInput={refInputFlop}
+                onChange={onChangeFlop}
+              />
+            </label>
+
             <Button
               type='button'
               text='Выбрать файл'

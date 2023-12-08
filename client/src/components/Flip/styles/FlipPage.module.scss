@@ -67,15 +67,19 @@ $black: black;
 		display: grid;
 		border: 1px solid $black;
 		min-height: 100vh;
+		max-width: min-content;
+		padding: 10px;
 	}
 
 	&__settings div {
 		display: grid;
-		grid-auto-flow: column dense;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
 		gap: 10px;
 		align-items: start;
 		min-height: inherit;
+		max-width: 100%;
+		min-width: max-content;
+		grid-template-rows: repeat(12, 1fr);
 	}
 
 	&__button {

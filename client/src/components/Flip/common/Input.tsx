@@ -12,6 +12,7 @@ export interface InputI {
   refInput?: React.RefObject<HTMLInputElement>;
   disabled?: boolean;
   hidden?: boolean;
+  checked?: boolean;
 }
 
 export const Input = ({
@@ -25,6 +26,7 @@ export const Input = ({
   value,
   refInput,
   hidden,
+  checked,
 }: InputI) => {
   return (
     <input
@@ -39,6 +41,7 @@ export const Input = ({
       ref={refInput}
       disabled={false}
       hidden={hidden}
+      checked={checked}
     />
   );
 };

@@ -24,7 +24,7 @@ export const Alert = ({ status }: AlertI) => {
       setBackgroundColor("red");
       setisShow(true);
     }
-  }, []);
+  }, [status]);
   if (isShow) {
     if (refAlert.current) {
       setTimeout(() => {
@@ -46,7 +46,7 @@ export const Alert = ({ status }: AlertI) => {
         left: "50%",
         transform: "translate(-50%, -50%)",
         transition: "0.8s else-in-out",
-        color: "white"
+        color: "white",
       }}
       ref={refAlert}
     >
