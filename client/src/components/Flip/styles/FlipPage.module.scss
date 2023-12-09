@@ -49,6 +49,7 @@ $black: black;
 	}
 	&__preloadFile {
 		border-bottom: 1px solid $black;
+		background-position: center;
 	}
 
 	&__preloadFile,
@@ -92,5 +93,16 @@ $black: black;
 
 	&__button:disabled {
 		opacity: 0.4;
+	}
+
+	&__label {
+		display: flex;
+		justify-content: space-between;
+		flex-basis: 90%;
+
+		input {
+			flex-basis: 15%;
+			flex-shrink: 0;
+		}
 	}
 }

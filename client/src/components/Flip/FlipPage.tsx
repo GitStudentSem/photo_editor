@@ -22,7 +22,7 @@ export const FlipPage = () => {
   const [isStatus, setIsStatus] = useState<string>("");
   const [isDrag, setIsDrag] = useState<boolean>(false);
   const [isFlip, setIsFlip] = useState<boolean>(false);
-  const [isFlop, setIsFlop] = useState<boolean>(false);
+  const [isFlop, setIsFlop] = useState<boolean>(true);
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
   function dragStart(event: React.DragEvent<HTMLDivElement>) {
@@ -78,7 +78,6 @@ export const FlipPage = () => {
       const formData = new FormData();
       console.log(...formData);
       formData.append("image", files);
-      console.log(isFlip, "form isFlip");
       formData.append("flip", String(isFlip));
       formData.append("flop", String(isFlop));
 
@@ -162,7 +161,7 @@ export const FlipPage = () => {
               accept='.png,.jpeg,.jpg'
               refInput={refInput}
             />
-            <label htmlFor='flip'>
+            <label className={styles.flip__label}>
               развернуть по вертикали{" "}
               <Input
                 type='checkbox'
@@ -173,7 +172,7 @@ export const FlipPage = () => {
               />
             </label>
 
-            <label htmlFor='flop'>
+            <label className={styles.flip__label}>
               развернуть по горизонтали{" "}
               <Input
                 type='checkbox'
