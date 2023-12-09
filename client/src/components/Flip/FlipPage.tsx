@@ -25,6 +25,8 @@ export const FlipPage = () => {
   const [isFlop, setIsFlop] = useState<boolean>(true);
   const preloadFileBackground: string = "url('./../../../drag_drop.svg')";
 
+  const [arr, setArr] = useState<File[]>([]);
+
   function dragStart(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setIsDrag(true);
@@ -52,7 +54,12 @@ export const FlipPage = () => {
     if (!event.target.files) return;
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
+      const files: FileList = event.target.files;
+      //   arrayPhotos.push(files);
+      const files2Array: File[] = [...files];
+      setArr([...files2Array]);
       setFiles(file);
+      console.log(files, "FILES");
     }
   };
   const onChangeFlip = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +84,7 @@ export const FlipPage = () => {
 
       const formData = new FormData();
       console.log(...formData);
+
       formData.append("image", files);
       formData.append("flip", String(isFlip));
       formData.append("flop", String(isFlop));
@@ -140,12 +148,12 @@ export const FlipPage = () => {
             onDrop={onDrop}
             onClick={onClick}
           >
-            {files && <FileGet file={files} />}
+            {files && <FileGet files={arr} />}
           </div>
 
-          <div className={styles.flip__afterFile}>
-            {filesAfter && <FileGet file={filesAfter} fileNew={filesAfter} />}
-          </div>
+          {/* <div className={styles.flip__afterFile}>
+            {filesAfter && <FileGet files={filesAfter} fileNew={filesAfter} />}
+          </div> */}
         </div>
 
         <div className={styles.flip__settings}>

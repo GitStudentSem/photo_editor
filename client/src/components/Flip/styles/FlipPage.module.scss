@@ -28,7 +28,7 @@ $black: black;
 		gap: 10px;
 		align-items: start;
 		min-width: 100%;
-		flex-wrap: wrap;
+		// flex-wrap: wrap;
 	}
 
 	&__wrapper {
@@ -36,8 +36,8 @@ $black: black;
 		justify-items: center;
 		flex-grow: 2;
 		min-height: 300px;
-		max-height: 100vh;
-		flex-wrap: wrap;
+		// max-height: 100vh;
+		// flex-wrap: wrap;
 		border: 1px solid $black;
 		padding: 10px;
 	}
@@ -56,12 +56,29 @@ $black: black;
 	&__afterFile {
 		background-repeat: no-repeat;
 		flex-grow: inherit;
-		height: 50vh;
-		flex-basis: 100%;
+		min-height: 50vh;
+		flex-basis: 80%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+	}
+	ul {
+		display: flex;
+		min-height: inherit;
+		list-style-type: none;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 10px;
+	}
+
+	ul > li {
+		max-height: 300px;
+		flex-basis: 40%;
+		background-color: rgb(196, 196, 196);
+		display: flex;
+		flex-direction: column;
+		text-align: center;
 	}
 
 	&__settings {

@@ -1,36 +1,48 @@
 import { useRef, useState, useEffect } from "react";
 import { LinkDownload } from "./LinkDownload";
 export interface FileI {
-  file: File;
+  files: File[];
   fileNew?: File;
 }
-export const FileGet = ({ file, fileNew }: FileI) => {
+export const FileGet = ({ files, fileNew }: FileI) => {
   const imageRef = useRef<HTMLImageElement>(null);
-  const [src, setSrc] = useState<string>("");
-  const [href, setHref] = useState<string>("");
-  useEffect(() => {
-    const src = URL.createObjectURL(file);
-    setSrc(src);
-    if (fileNew) {
-      const href = URL.createObjectURL(fileNew);
-      setHref(href);
-    }
-  }, []);
+  //   const [href, setHref] = useState<string>("");
 
-  if (file) {
+  //   useEffect(() => {
+  //     if (fileNew) {
+  //       const href = URL.createObjectURL(fileNew);
+  //       setHref(href);
+  //     }
+  //   }, []);
+
+  if (files != undefined && files.length > 0) {
     return (
-      <>
-        <img src={src} alt={file.name} ref={imageRef} />
-        <p>{file.name}</p>
-        <p>
-          <strong>({Math.round(file.size / 1024)}kb) </strong>
-          {fileNew && <LinkDownload href={href} fileName={fileNew.name} />}
-        </p>
-      </>
+      <ul>
+        {files.map((file) => {
+          let name = "";
+          if (file.name.length > 10) {
+            name = file.name.slice(0, 15) + "....";
+          }
+          return (
+            <li key={file.name + file.size}>
+              <img src={URL.createObjectURL(file)} alt={name} ref={imageRef} />
+              <p>{name}</p>
+              <p>
+                <strong>({Math.round(file.size / 1024)}kb)</strong>
+                {fileNew && (
+                  <LinkDownload
+                    href={URL.createObjectURL(fileNew)}
+                    fileName={fileNew.name}
+                  />
+                )}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
     );
   } else {
     return;
   }
 };
-
 FileGet.displayName = "FileGet";
