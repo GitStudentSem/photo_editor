@@ -14,7 +14,8 @@ export const flip = async (req, res) => {
 		} = req.body;
 
 		console.log(req.body, 'body');
-		const file = req.file;
+		const file = req.files;
+		console.log(file, 'file');
 
 		fs.readFile(`uploads/${file.originalname}`, (err, file) => {
 			if (err) {
