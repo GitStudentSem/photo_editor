@@ -55,11 +55,11 @@ export const FlipPage = () => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       const files: FileList = event.target.files;
-      //   arrayPhotos.push(files);
+      console.log(files, "files");
       const files2Array: File[] = [...files];
+      console.log(files2Array, "filesARR");
       setArr([...files2Array]);
       setFiles(file);
-      console.log(files, "FILES");
     }
   };
   const onChangeFlip = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,6 +85,7 @@ export const FlipPage = () => {
       const formData = new FormData();
       console.log(...formData);
 
+      console.log(files, "file");
       formData.append("image", files);
       formData.append("flip", String(isFlip));
       formData.append("flop", String(isFlop));
@@ -148,12 +149,9 @@ export const FlipPage = () => {
             onDrop={onDrop}
             onClick={onClick}
           >
-            {files && <FileGet files={arr} />}
+            {files && <FileGet files={files} />}
+            {filesAfter && <FileGet files={filesAfter} />}
           </div>
-
-          {/* <div className={styles.flip__afterFile}>
-            {filesAfter && <FileGet files={filesAfter} fileNew={filesAfter} />}
-          </div> */}
         </div>
 
         <div className={styles.flip__settings}>
