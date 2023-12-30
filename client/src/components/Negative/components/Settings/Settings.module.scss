@@ -1,0 +1,19 @@
+.settings {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settings label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings label input {
+  border: 0;
+  border-radius: 2px;
+  padding: 5px;
+  background: #cacaca;
+}
