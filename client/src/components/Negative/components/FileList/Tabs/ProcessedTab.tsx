@@ -7,10 +7,10 @@ const ProcessedTab = observer(() => {
   return (
     <>
       {PhotoStore.processedPhoto ? PhotoStore.processedPhoto.map((item, index) => {
-        return <ImageItem key={item + index}
+        return <ImageItem key={item.size + index}
                           imageSrc={URL.createObjectURL(item)}
-                          imageTitle={"hello"}
-                          imageInfo={item.type}
+                          imageTitle={PhotoStore.photo[index].name}
+                          imageInfo={(item.size/(1024*1024)).toFixed(1)}
         />;
       }) : "Обработанных фото пока что нет)"}
     </>

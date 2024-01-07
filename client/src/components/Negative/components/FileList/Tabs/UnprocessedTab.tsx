@@ -10,7 +10,7 @@ const UnprocessedTab = observer(() => {
         return <ImageItem key={item.name + index}
                           imageSrc={URL.createObjectURL(item)}
                           imageTitle={item.name}
-                          imageInfo={item.type}
+                          imageInfo={(item.size/(1024*1024)).toFixed(1)}
         />;
       })}
     </>

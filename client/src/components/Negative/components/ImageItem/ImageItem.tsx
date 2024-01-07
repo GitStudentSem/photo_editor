@@ -4,7 +4,7 @@ import { memo } from "react";
 interface IImageItem {
   imageSrc: string; // должно быть преобразовано через createObjectUrl() при передаче в пропсы
   imageTitle: string;
-  imageInfo: string;
+  imageInfo: number | string;
 }
 
 export const ImageItem = memo(({ imageSrc, imageTitle, imageInfo }: IImageItem) => {
@@ -13,7 +13,7 @@ export const ImageItem = memo(({ imageSrc, imageTitle, imageInfo }: IImageItem) 
       <div className={styles.imageItem__wrapper}>
         <img src={imageSrc} alt="Фото" width={50} height={50} />
         <h5>{imageTitle.slice(0, 30)}...</h5>
-        <h5>{imageInfo}</h5>
+        <h5>{imageInfo} Мб</h5>
       </div>
     </div>
   );
