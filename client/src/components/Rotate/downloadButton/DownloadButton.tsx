@@ -1,9 +1,15 @@
-import { useRef } from "react";
+import React, {
+  useRef,
+  ButtonHTMLAttributes,
+  AnchorHTMLAttributes,
+} from "react";
 import { Button } from "../button/Button";
 import { observer } from "mobx-react-lite";
 import ImagesStore from "../store/ImagesStore";
 
-const DownloadButton = observer(() => {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+const DownloadButton: React.FC<ButtonProps> = observer((props) => {
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
   const onDownload = () => {
@@ -24,7 +30,8 @@ const DownloadButton = observer(() => {
       <Button
         text='Скачать'
         onClick={onDownload}
-        disabled={!ImagesStore.processedImages}
+        disabled={!ImagesStore.processedImages?.length}
+        {...props}
       />
 
       <a ref={downloadRef} hidden />

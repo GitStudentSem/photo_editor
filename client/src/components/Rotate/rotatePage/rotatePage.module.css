@@ -32,11 +32,21 @@
   object-fit: contain;
 }
 
-.controls_wrapper {
+.sidebar {
   width: 400px;
   margin-left: 8px;
   padding: 8px;
-  position: relative;
   background-color: #ffffff;
   border-radius: 2px;
+  height: 100%;
+}
+.controls_wrapper {
+  height: calc(100% - 66px); /* костыль */
+  margin-bottom: auto;
+}
+
+.load_buttons_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }

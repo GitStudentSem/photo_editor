@@ -16,7 +16,7 @@ const UploadButton = observer(
     return (
       <>
         <Button
-          text='Загрузить изображение'
+          text='Загрузить изображения'
           onClick={(e) => {
             e.preventDefault();
             if (!filePickerRef.current) return;

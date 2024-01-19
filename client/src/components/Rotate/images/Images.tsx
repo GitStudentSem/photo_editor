@@ -1,6 +1,6 @@
 import { useState, DragEvent, RefObject } from "react";
 import s from "./images.module.css";
-import LoggerStore, { INotification } from "../store/LoggerStore";
+import LoggerStore from "../store/LoggerStore";
 import ImagesStore from "../store/ImagesStore";
 import { observer } from "mobx-react-lite";
 
@@ -50,15 +50,18 @@ export const Images = observer(({ filePickerRef }: IImagesProps) => {
     const files = [...dt.files].filter((file: File) => {
       const regex = /image/;
       const isImage = regex.test(file.type);
+
       if (isImage) {
         return true;
       } else {
         LoggerStore.setNotification({
           text: `Файл ${file.name} не был добавлен - это не изображение`,
+          type: "warning",
         });
         return false;
       }
     });
+
     if (filePickerRef.current && filePickerRef.current?.files) {
       filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
     }

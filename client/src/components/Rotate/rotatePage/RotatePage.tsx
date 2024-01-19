@@ -57,34 +57,40 @@ const RotatePage = observer(() => {
     <div className={s.wrapper}>
       <Images filePickerRef={filePickerRef} />
 
-      <form className={s.controls_wrapper} onSubmit={onSend}>
-        <div className={s.input_wrapper}>
-          <UploadButton filePickerRef={filePickerRef} />
+      <form className={s.sidebar} onSubmit={onSend}>
+        <div className={s.controls_wrapper}>
+          <TextInput
+            placeholder='Угол поворота'
+            label='На какой угол нужно повернуть изображение?'
+            type='number'
+            name='angle'
+            required
+          />
+
+          <Checkbox
+            text='Использоавать задний фон?'
+            checked={usedBackground}
+            onChange={() => setUsedBackground(!usedBackground)}
+          />
+
+          <ColorInput
+            label='Какого цвета установить задний фон?'
+            name='background'
+            disabled={!usedBackground}
+          />
         </div>
 
-        <TextInput
-          placeholder='Угол поворота'
-          label='На какой угол нужно повернуть изображение?'
-          type='number'
-          name='angle'
-          required
-        />
+        <div className={s.load_buttons_wrapper}>
+          <UploadButton filePickerRef={filePickerRef} />
 
-        <Checkbox
-          text='Использоавать задний фон?'
-          checked={usedBackground}
-          onChange={() => setUsedBackground(!usedBackground)}
-        />
+          <Button
+            text='Отправить'
+            disabled={!ImagesStore.originalImages?.length}
+            style={{ width: "48%" }}
+          />
 
-        <ColorInput
-          label='Какого цвета установить задний фон?'
-          name='background'
-          disabled={!usedBackground}
-        />
-
-        <Button text='Отправить' disabled={!ImagesStore.originalImages} />
-
-        <DownloadButton />
+          <DownloadButton style={{ width: "48%" }} />
+        </div>
 
         {LoggerStore.notification?.text && <Alert />}
       </form>

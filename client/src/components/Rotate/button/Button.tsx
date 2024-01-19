@@ -1,22 +1,20 @@
 import s from "./button.module.css";
-import { MouseEvent } from "react";
+import { ButtonHTMLAttributes } from "react";
 
-interface IPropsButton {
+interface IPropsButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
   beforeIcon?: string;
   afterIcon?: string;
 }
-const Button = ({
+
+const Button: React.FC<IPropsButton> = ({
   text,
-  onClick,
-  disabled,
   beforeIcon,
   afterIcon,
+  ...props
 }: IPropsButton) => {
   return (
-    <button onClick={onClick} className={s.button} disabled={disabled}>
+    <button className={s.button} {...props}>
       {beforeIcon && <img src={beforeIcon} />}
       <span className={s.text}>{text}</span>
       {afterIcon && <img src={afterIcon} />}
