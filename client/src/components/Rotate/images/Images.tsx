@@ -1,10 +1,13 @@
 import { useState, DragEvent, RefObject } from "react";
 import s from "./images.module.css";
-import { INotification } from "../rotatePage/RotatePage";
+import LoggerStore, { INotification } from "../store/LoggerStore";
+import ImagesStore from "../store/ImagesStore";
+import { observer } from "mobx-react-lite";
 
 interface IImagesListProps {
   imagesList: File[];
 }
+
 const ImagesList = ({ imagesList }: IImagesListProps) => {
   return imagesList.map((image) => {
     return (
@@ -19,19 +22,10 @@ const ImagesList = ({ imagesList }: IImagesListProps) => {
 };
 
 interface IImagesProps {
-  originalImage: File[] | undefined;
-  setOriginalImage: (file: File[] | undefined) => void;
-  processedImage: File[] | undefined;
-  setNotification: (notification: INotification) => void;
   filePickerRef: RefObject<HTMLInputElement>;
 }
-export const Images = ({
-  originalImage,
-  setOriginalImage,
-  processedImage,
-  setNotification,
-  filePickerRef,
-}: IImagesProps) => {
+
+export const Images = observer(({ filePickerRef }: IImagesProps) => {
   const [isDrag, setIsDrag] = useState(false);
 
   const dragEnterHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -59,7 +53,7 @@ export const Images = ({
       if (isImage) {
         return true;
       } else {
-        setNotification({
+        LoggerStore.setNotification({
           text: `Файл ${file.name} не был добавлен - это не изображение`,
         });
         return false;
@@ -68,7 +62,7 @@ export const Images = ({
     if (filePickerRef.current && filePickerRef.current?.files) {
       filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
     }
-    setOriginalImage(files);
+    ImagesStore.setOriginalImages(files);
     setIsDrag(false);
   };
 
@@ -81,8 +75,8 @@ export const Images = ({
         onDrop={dropHandler}
         onDragOver={dragOverHandler}
       >
-        {originalImage ? (
-          <ImagesList imagesList={originalImage} />
+        {ImagesStore.originalImages ? (
+          <ImagesList imagesList={ImagesStore.originalImages} />
         ) : isDrag ? (
           <p>Отпустите для загрузки</p>
         ) : (
@@ -90,8 +84,10 @@ export const Images = ({
         )}
       </div>
       <div className={s.image_after}>
-        {processedImage && <ImagesList imagesList={processedImage} />}
+        {ImagesStore.processedImages && (
+          <ImagesList imagesList={ImagesStore.processedImages} />
+        )}
       </div>
     </div>
   );
-};
+});

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import s from "./textInput.module.css";
-import errorIcon from "../../icons/errorIcon.svg";
+import errorIcon from "../../../icons/errorIcon.svg";
 
 interface IPropsTextInput {
   label: string;
