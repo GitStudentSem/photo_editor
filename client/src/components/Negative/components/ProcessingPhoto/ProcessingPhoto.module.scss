@@ -1,7 +1,15 @@
 .photo {
-  max-width: 60%;
-  height: 50%;
-  position: relative;
+  width: 60%;
+  height: 100%;
+  border: 2px solid green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__wrapper {
+    position: relative;
+    margin: auto;
+  }
 }
 
 .before {

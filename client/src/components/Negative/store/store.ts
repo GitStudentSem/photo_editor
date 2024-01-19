@@ -1,22 +1,20 @@
-import { makeAutoObservable, spy } from "mobx";
-
-spy((ev) => {
-//   console.log(ev);
-});
+import { makeAutoObservable } from "mobx";
 
 class Store {
+  photo: File[];
+  processedPhoto: Blob[];
+
   constructor() {
+    this.photo = [];
+    this.processedPhoto = [];
     makeAutoObservable(this);
   }
 
-  photo: FileList;
-  processedPhoto: Blob[];
-
-  setPhoto(value) {
+  setPhoto(value: File[]) {
     this.photo = value;
   }
 
-  setProcessedPhoto(value) {
+  setProcessedPhoto(value: Blob[]) {
     this.processedPhoto = value;
   }
 }

@@ -15,13 +15,16 @@ const Settings = observer(() => {
   const filePickerRef = useRef<HTMLInputElement>(null);
 
   const [isAlpha, setIsAlpha] = useState(false);
-  const [notification, setNotification] = useState<"error" | "success" | "wait" | null>(null);
-
+  const [notification, setNotification] = useState<
+    "error" | "success" | "wait" | null
+  >(null);
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (e.target.files) {
-      PhotoStore.setPhoto(e.target.files);
-      PhotoStore.setProcessedPhoto(null);
+      console.log("success", e.target.files[0]);
+
+      PhotoStore.setPhoto([...e.target.files]);
+      PhotoStore.setProcessedPhoto([]);
     }
   }
 
@@ -29,13 +32,13 @@ const Settings = observer(() => {
     if (!PhotoStore.photo) return;
     setNotification("wait");
 
-    let processedPhotoArr = [];
+    let processedPhotoArr: Blob[] = [];
 
     for (let i = 0; i < PhotoStore.photo.length; i++) {
       const data = new FormData();
-      data.append('alpha', String(isAlpha))
+      data.append("alpha", String(isAlpha));
       data.append("image", PhotoStore.photo[i] as Blob);
-      const res: any = await fetch("http://localhost:3333/negative", {
+      const res = await fetch("http://localhost:3333/negative", {
         method: "POST",
         body: data,
       });
@@ -44,16 +47,15 @@ const Settings = observer(() => {
         setNotification("error");
       }
 
-      const arrayBuffer = await res.arrayBuffer();  //преобразование resizedBuffer с сервера в Blob для вставки фото
+      const arrayBuffer = await res.arrayBuffer(); //преобразование resizedBuffer с сервера в Blob для вставки фото
       const arrayBufferBytes = new Uint8Array(arrayBuffer);
       const blob = new Blob([arrayBufferBytes]);
 
-      processedPhotoArr = [...processedPhotoArr, blob]
+      processedPhotoArr = [...processedPhotoArr, blob];
     }
 
     PhotoStore.setProcessedPhoto(processedPhotoArr);
   }
-
 
   function downloadPhoto() {
     if (!PhotoStore.processedPhoto || !downloadRef.current) return;
@@ -64,32 +66,50 @@ const Settings = observer(() => {
   function renderNotification() {
     if (!notification) return;
     setTimeout(() => setNotification(null), 5000);
-    return createPortal(<Alert status="success" />, document.body);
+    return createPortal(<Alert status='success' />, document.body);
   }
 
   return (
     <div className={styles.settings}>
       {renderNotification()}
-      <Button text="Выбрать фото" onClick={(e) => {
-        e.preventDefault();
-        if (!filePickerRef.current) return;
-        filePickerRef.current.click();
-      }} />
-      <input type="file" accept="image/*" onChange={onChange} ref={filePickerRef} hidden multiple />
+      <Button
+        text='Выбрать фото'
+        onClick={(e) => {
+          e.preventDefault();
+          if (!filePickerRef.current) return;
+          filePickerRef.current.click();
+        }}
+      />
+      <input
+        type='file'
+        accept='image/*'
+        onChange={onChange}
+        ref={filePickerRef}
+        hidden
+        multiple
+      />
       <label>
         Использовать α канал
-        <Checkbox onChange={prev => setIsAlpha(!prev)} disabled={!PhotoStore.photo} />
+        <Checkbox
+          onChange={(prev) => setIsAlpha(!prev)}
+          disabled={!PhotoStore.photo}
+        />
       </label>
-      <Button type="submit"
-              onClick={sendPhoto}
-              text="Отправить на обработку"
-              disabled={!PhotoStore.photo || !!PhotoStore.processedPhoto}
+      <Button
+        onClick={sendPhoto}
+        text='Отправить на обработку'
+        // disabled={!PhotoStore.photo || !PhotoStore.processedPhoto}
       />
-      <Button onClick={downloadPhoto}
-              text="Скачать фото"
-              disabled={!PhotoStore.processedPhoto}
+      <Button
+        onClick={downloadPhoto}
+        text='Скачать фото'
+        disabled={!PhotoStore.processedPhoto}
       />
-      <a ref={downloadPickerRef} download={PhotoStore.photo ? PhotoStore.photo[0].name : "file.jpg"} hidden></a>
+      <a
+        ref={downloadPickerRef}
+        download={PhotoStore.photo ? PhotoStore.photo[0] : "file.jpg"}
+        hidden
+      ></a>
     </div>
   );
 });

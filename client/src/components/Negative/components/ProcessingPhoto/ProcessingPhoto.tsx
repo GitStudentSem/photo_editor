@@ -1,33 +1,63 @@
 import styles from "./ProcessingPhoto.module.scss";
-import { PhotoStore } from "../../store/store";
 import { observer } from "mobx-react-lite";
-import { MouseEvent, useRef } from "react";
+import { useRef, MouseEvent } from "react";
+import { PhotoStore } from "../../store/store";
 
 const ProcessingPhoto = observer(() => {
-  const { photo, processedPhoto } = PhotoStore;
-  const resizeRef = useRef(null);
-  const beforeWrapperRef = useRef(null);
+  const resizeRef = useRef<HTMLDivElement>(null);
+  const beforeWrapperRef = useRef<HTMLDivElement>(null);
 
-  function onMouseMove(e: MouseEvent<HTMLSpanElement>) {
-    resizeRef.current.style.left = `${e.clientX}px`;
-    beforeWrapperRef.current.style.width = `${e.clientX}px`;
-  }
+  function onMouseMove(e: MouseEvent) {
+    if (!beforeWrapperRef.current || !resizeRef.current) return;
 
-  function onMouseLeave() {
-    beforeWrapperRef.current.style.width = `50%`;
-    resizeRef.current.style.left = "50%";
+    const elemLeft = beforeWrapperRef.current.getBoundingClientRect().left;
+    resizeRef.current.style.left = `${e.clientX - elemLeft}px`;
+    beforeWrapperRef.current.style.width = `${e.clientX - elemLeft}px`;
+    console.log("func");
   }
 
   return (
-    <div className={styles.photo}
-         onMouseMove={processedPhoto ? e => onMouseMove(e) : null}
-         onMouseLeave={processedPhoto ? onMouseLeave : null}>
-      <div className={processedPhoto ? styles.before_processed : styles.before} ref={beforeWrapperRef}>
-        {photo && <img src={URL.createObjectURL(photo[0])} alt="" className={styles.before__img} />}
-      </div>
-      <span className={processedPhoto ? styles.resize : styles.resize_notProcessed} ref={resizeRef}></span>
-      <div className={styles.after}>
-        {processedPhoto && <img src={URL.createObjectURL(processedPhoto[0])} alt="" className={styles.after__img} />}
+    <div className={styles.photo}>
+      <div
+        className={styles.photo__wrapper}
+        onMouseMove={(e) => {
+          if (PhotoStore.processedPhoto.length === 0) return;
+          onMouseMove(e);
+        }}
+      >
+        <div
+          className={
+            PhotoStore.processedPhoto.length > 0
+              ? styles.before_processed
+              : styles.before
+          }
+          ref={beforeWrapperRef}
+        >
+          {!!PhotoStore.photo.length && (
+            <img
+              src={URL.createObjectURL(PhotoStore.photo[0])}
+              alt='UnprocessedPhoto'
+              className={styles.before__img}
+            />
+          )}
+        </div>
+        <span
+          className={
+            PhotoStore.processedPhoto
+              ? styles.resize
+              : styles.resize_notProcessed
+          }
+          ref={resizeRef}
+        ></span>
+        <div className={styles.after}>
+          {!!PhotoStore.processedPhoto.length && (
+            <img
+              src={URL.createObjectURL(PhotoStore.processedPhoto[0])}
+              alt='ProcessedPhoto'
+              className={styles.after__img}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
