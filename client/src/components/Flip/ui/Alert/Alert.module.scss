@@ -1,0 +1,43 @@
+.notification {
+  z-index: 10;
+  max-width: 300px;
+  height: auto;
+  position: absolute;
+  bottom: 5%;
+  right: 10px;
+  border-radius: 5px;
+
+  animation: show 1s 1;
+  animation-fill-mode: forwards;
+
+  &__wrapper {
+    padding: 10px;
+  }
+
+  &__text {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.success {
+  background: mediumseagreen;
+}
+
+.error {
+  background: darkred;
+}
+
+.wait {
+  background: darkorange;
+}

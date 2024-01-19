@@ -1,7 +1,7 @@
 import { makeAutoObservable, spy } from "mobx";
 
 spy((ev) => {
-  console.log(ev);
+//   console.log(ev);
 });
 
 class Store {

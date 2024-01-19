@@ -1,0 +1,29 @@
+.link {
+  text-decoration: none;
+}
+
+.card {
+  width: 150px;
+  height: 150px;
+  background: white;
+  display: flex;
+  transition: 0.5s;
+  border-radius: 20px;
+  box-shadow: 4px 4px 20px 10px rgba(34, 60, 80, 0.2);
+}
+
+.card:hover {
+  filter: invert(100%);
+}
+
+.card__wrapper {
+  margin: auto;
+}
+
+.card__text {
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}

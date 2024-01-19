@@ -1,0 +1,13 @@
+.imageItem {
+  width: 100%;
+  height: 70px;
+  cursor: pointer;
+  border-radius: 3px;
+  background: lightgrey;
+
+  &__wrapper {
+    padding: 10px;
+    display: flex;
+    gap: 5px;
+  }
+}
