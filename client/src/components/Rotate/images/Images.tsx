@@ -1,6 +1,6 @@
 import { useState, DragEvent, RefObject } from "react";
 import s from "./images.module.css";
-import { INotification } from "./RotatePage";
+import { INotification } from "../rotatePage/RotatePage";
 
 interface IImagesListProps {
   imagesList: File[];

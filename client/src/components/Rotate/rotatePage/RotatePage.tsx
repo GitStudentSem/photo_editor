@@ -1,11 +1,11 @@
 import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import s from "./rotatePage.module.css";
-import { TextInput } from "./TextInput";
-import { Button } from "./Button";
-import { Alert } from "./Alert";
-import { Checkbox } from "./Checkbox";
-import { ColorInput } from "./ColorInput";
-import { Images } from "./Images";
+import { TextInput } from "../textInput/TextInput";
+import { Button } from "../button/Button";
+import { Alert } from "../alert/Alert";
+import { Checkbox } from "../checkbox/Checkbox";
+import { ColorInput } from "../colorInput/ColorInput";
+import { Images } from "../images/Images";
 
 export interface INotification {
   text: string;
