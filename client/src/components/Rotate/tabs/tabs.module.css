@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+.input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.label {
+  padding: 5px;
+  color: #1c2b36;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.input:checked + label {
+  color: #186ade;
+}
+.input:focus + label {
+  color: #186ade;
+}
+.border_bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #dce3e8;
+}
+.active_border {
+  background-color: #186ade;
+  position: absolute;
+  height: 100%;
+  transition: all 0.3s;
+}

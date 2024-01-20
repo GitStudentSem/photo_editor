@@ -11,6 +11,7 @@ import ImagesStore from "../store/ImagesStore";
 import LoggerStore from "../store/LoggerStore";
 import { DownloadButton } from "../downloadButton/DownloadButton";
 import { UploadButton } from "../uploadButton/UploadButton";
+import { SmallPreviews } from "../smallPreviews/SmallPreviews";
 
 const RotatePage = observer(() => {
   const filePickerRef = useRef<HTMLInputElement>(null);
@@ -55,8 +56,9 @@ const RotatePage = observer(() => {
 
   return (
     <div className={s.wrapper}>
+      <div className={s.header}></div>
       <Images filePickerRef={filePickerRef} />
-
+      <SmallPreviews />
       <form className={s.sidebar} onSubmit={onSend}>
         <div className={s.controls_wrapper}>
           <TextInput
@@ -89,7 +91,7 @@ const RotatePage = observer(() => {
             style={{ width: "48%" }}
           />
 
-          <DownloadButton style={{ width: "48%" }} />
+          <DownloadButton />
         </div>
 
         {LoggerStore.notification?.text && <Alert />}

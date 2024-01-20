@@ -2,6 +2,7 @@
   height: 100%;
   min-height: 500px;
   flex-grow: 1;
+  grid-area: large-preview;
 }
 .image_before {
   height: calc(50% - 8px); /* Посчитать позже*/

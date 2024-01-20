@@ -10,12 +10,14 @@ class ImagesStore {
   constructor() {
     this.originalImages = [];
     this.processedImages = [];
-    makeAutoObservable(this);
+
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setOriginalImages(images: Images) {
     this.originalImages = images;
   }
+
   setProcessedImages(images: Images) {
     this.processedImages = images;
   }

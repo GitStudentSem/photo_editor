@@ -16,7 +16,8 @@ class LoggerStore {
 
   constructor() {
     this.notification = { text: "", type: "error" };
-    makeAutoObservable(this);
+
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   log({ type = "error", error }: ILog) {
