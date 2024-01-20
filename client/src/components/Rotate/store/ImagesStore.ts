@@ -4,14 +4,20 @@ import { makeAutoObservable } from "mobx";
 type Images = File[];
 
 class ImagesStore {
+  selectedImage: File | null;
   originalImages: Images;
   processedImages: Images;
 
   constructor() {
+    this.selectedImage = null;
     this.originalImages = [];
     this.processedImages = [];
 
     makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  setSelectedImage(image: File) {
+    this.selectedImage = image;
   }
 
   setOriginalImages(images: Images) {

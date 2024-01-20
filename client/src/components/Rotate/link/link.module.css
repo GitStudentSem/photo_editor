@@ -1,0 +1,17 @@
+.link {
+  font-size: 14px;
+  color: #186ade;
+}
+.link:active {
+  color: #0d4ea6;
+}
+.link:hover {
+  color: #0d4ea6;
+}
+.link:visited {
+  color: #6b30ab;
+}
+.link:focus {
+  color: #0d4ea6;
+  border-bottom: 1px solid #0d4ea6;
+}

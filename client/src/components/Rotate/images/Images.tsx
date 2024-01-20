@@ -4,22 +4,18 @@ import LoggerStore from "../store/LoggerStore";
 import ImagesStore from "../store/ImagesStore";
 import { observer } from "mobx-react-lite";
 
-interface IImagesListProps {
-  imagesList: File[];
-}
+const Image = observer(() => {
+  if (!ImagesStore.selectedImage) return null;
 
-const ImagesList = ({ imagesList }: IImagesListProps) => {
-  return imagesList.map((image) => {
-    return (
-      <img
-        key={image.name}
-        className={s.image}
-        alt='Исходное изображение'
-        src={URL.createObjectURL(image)}
-      />
-    );
-  });
-};
+  return (
+    <img
+      key={ImagesStore.selectedImage.name}
+      className={s.image}
+      alt='Исходное изображение'
+      src={URL.createObjectURL(ImagesStore.selectedImage)}
+    />
+  );
+});
 
 interface IImagesProps {
   filePickerRef: RefObject<HTMLInputElement>;
@@ -70,27 +66,20 @@ export const Images = observer(({ filePickerRef }: IImagesProps) => {
   };
 
   return (
-    <div className={s.images_wrapper}>
-      <div
-        className={s.image_before}
-        onDragEnter={dragEnterHandler}
-        onDragLeave={dragLeaveHandler}
-        onDrop={dropHandler}
-        onDragOver={dragOverHandler}
-      >
-        {ImagesStore.originalImages ? (
-          <ImagesList imagesList={ImagesStore.originalImages} />
-        ) : isDrag ? (
-          <p>Отпустите для загрузки</p>
-        ) : (
-          <p>Перетащите файлы сюда</p>
-        )}
-      </div>
-      <div className={s.image_after}>
-        {ImagesStore.processedImages && (
-          <ImagesList imagesList={ImagesStore.processedImages} />
-        )}
-      </div>
+    <div
+      className={s.image_wrapper}
+      onDragEnter={dragEnterHandler}
+      onDragLeave={dragLeaveHandler}
+      onDrop={dropHandler}
+      onDragOver={dragOverHandler}
+    >
+      {ImagesStore.selectedImage ? (
+        <Image />
+      ) : isDrag ? (
+        <p>Отпустите для загрузки</p>
+      ) : (
+        <p>Перетащите файлы сюда</p>
+      )}
     </div>
   );
 });

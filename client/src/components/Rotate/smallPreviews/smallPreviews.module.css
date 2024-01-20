@@ -4,12 +4,19 @@
   padding: 8px;
 }
 .previews {
+  overflow: scroll;
 }
 .preview_wrapper {
   height: 82px;
-  padding: 5px 5px 5px 0;
+  padding: 5px;
+  margin-bottom: 5px;
   display: flex;
   overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.preview_wrapper:hover {
+  background-color: #6583ee33;
 }
 .image {
   height: 100%;
@@ -25,7 +32,13 @@
   /* white-space: nowrap;    */
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #3e5463;
+  margin-bottom: 5px;
+}
+.name.original {
+  -webkit-line-clamp: 3;
 }
 .size {
   font-weight: 600;
+  color: #3e5463;
 }

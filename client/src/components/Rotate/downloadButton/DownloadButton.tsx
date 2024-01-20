@@ -7,7 +7,6 @@ const DownloadButton = observer(() => {
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
   const onDownload = () => {
-    if (!ImagesStore.processedImages) return;
     ImagesStore.processedImages.forEach((image) => {
       if (!downloadRef.current || !ImagesStore.processedImages) return;
       downloadRef.current.href = URL.createObjectURL(image);
@@ -15,8 +14,8 @@ const DownloadButton = observer(() => {
       downloadRef.current?.click();
     });
 
-    ImagesStore.setOriginalImages(undefined);
-    ImagesStore.setProcessedImages(undefined);
+    ImagesStore.setOriginalImages([]);
+    ImagesStore.setProcessedImages([]);
   };
 
   return (
