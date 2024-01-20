@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 // import { observer } from "mobx-react-lite";
 
-type Images = File[] | undefined;
+type Images = File[];
 
 class ImagesStore {
   originalImages: Images;
