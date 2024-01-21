@@ -1,12 +1,12 @@
 import { makeAutoObservable } from "mobx";
 // import { observer } from "mobx-react-lite";
 
-type Images = File[];
+export type Image = { name: string; src: string; size: number };
 
 class ImagesStore {
-  selectedImage: File | null;
-  originalImages: Images;
-  processedImages: Images;
+  selectedImage: Image | null;
+  originalImages: Image[];
+  processedImages: Image[];
 
   constructor() {
     this.selectedImage = null;
@@ -16,15 +16,15 @@ class ImagesStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  setSelectedImage(image: File) {
+  setSelectedImage(image: Image) {
     this.selectedImage = image;
   }
 
-  setOriginalImages(images: Images) {
+  setOriginalImages(images: Image[]) {
     this.originalImages = images;
   }
 
-  setProcessedImages(images: Images) {
+  setProcessedImages(images: Image[]) {
     this.processedImages = images;
   }
 }

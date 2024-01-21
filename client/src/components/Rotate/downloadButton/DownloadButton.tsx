@@ -9,7 +9,7 @@ const DownloadButton = observer(() => {
   const onDownload = () => {
     ImagesStore.processedImages.forEach((image) => {
       if (!downloadRef.current || !ImagesStore.processedImages) return;
-      downloadRef.current.href = URL.createObjectURL(image);
+      downloadRef.current.href = image.src;
       downloadRef.current.download = image.name;
       downloadRef.current?.click();
     });

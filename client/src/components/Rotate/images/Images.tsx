@@ -12,7 +12,7 @@ const Image = observer(() => {
       key={ImagesStore.selectedImage.name}
       className={s.image}
       alt='Исходное изображение'
-      src={URL.createObjectURL(ImagesStore.selectedImage)}
+      src={ImagesStore.selectedImage.src}
     />
   );
 });
@@ -58,10 +58,18 @@ export const Images = observer(({ filePickerRef }: IImagesProps) => {
       }
     });
 
+    const images = files.map((image) => {
+      return {
+        name: image.name,
+        src: URL.createObjectURL(image),
+        size: image.size,
+      };
+    });
+
     if (filePickerRef.current && filePickerRef.current?.files) {
       filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
     }
-    ImagesStore.setOriginalImages(files);
+    ImagesStore.setOriginalImages(images);
     setIsDrag(false);
   };
 

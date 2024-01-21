@@ -9,7 +9,15 @@ const UploadButton = observer(
   ({ filePickerRef }: { filePickerRef: React.RefObject<HTMLInputElement> }) => {
     const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files[0]) {
-        ImagesStore.setOriginalImages([...e.target.files]);
+        const files = [...e.target.files].map((image) => {
+          return {
+            name: image.name,
+            size: image.size,
+            src: URL.createObjectURL(image),
+          };
+        });
+
+        ImagesStore.setOriginalImages(files);
       }
     };
 

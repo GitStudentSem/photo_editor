@@ -40,8 +40,10 @@ const RotatePage = observer(() => {
 
       const arrayBuffer = await response.arrayBuffer();
       const arrayBufferView = new Uint8Array(arrayBuffer);
+
       const files = ImagesStore.originalImages.map((image) => {
-        return new File([arrayBufferView], image?.name); // Вот эта штука может сломатся
+        return image; // Вот эта штука может сломатся
+        // return new File([arrayBufferView], image.name); // Вот эта штука может сломатся
       });
 
       LoggerStore.setNotification({
