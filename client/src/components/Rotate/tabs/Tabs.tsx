@@ -12,7 +12,7 @@ const Tabs = observer(({ tabs, setActiveTab, activeTab }: ITabs) => {
     <div className={s.wrapper}>
       {tabs.map((text, i) => {
         return (
-          <>
+          <div key={text}>
             <input
               type='radio'
               id={text}
@@ -28,7 +28,7 @@ const Tabs = observer(({ tabs, setActiveTab, activeTab }: ITabs) => {
             >
               {text}
             </label>
-          </>
+          </div>
         );
       })}
 

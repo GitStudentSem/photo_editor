@@ -3,6 +3,7 @@
   justify-content: space-around;
   position: relative;
   margin-bottom: 5px;
+  padding-bottom: 5px;
 }
 .input {
   position: absolute;

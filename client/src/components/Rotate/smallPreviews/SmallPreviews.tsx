@@ -13,8 +13,10 @@ interface IPropsPreview {
 
 const Preview = observer(({ image, isProcessed }: IPropsPreview) => {
   return (
-    <div
-      className={s.preview_wrapper}
+    <ol
+      className={`${s.preview_wrapper} ${
+        ImagesStore.selectedImage?.name === image.name ? s.selected : ""
+      }`}
       onClick={() => ImagesStore.setSelectedImage(image)}
     >
       <img
@@ -35,7 +37,7 @@ const Preview = observer(({ image, isProcessed }: IPropsPreview) => {
           />
         )}
       </div>
-    </div>
+    </ol>
   );
 });
 
@@ -48,7 +50,8 @@ const SmallPreviews = observer(() => {
       <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className={s.previews}>
-        <div
+        <ul
+          className={s.list_wrapper}
           style={{
             display: tabs[activeTab] === "Не обработанные" ? "block" : "none",
           }}
@@ -56,8 +59,9 @@ const SmallPreviews = observer(() => {
           {ImagesStore.originalImages.map((image, i) => {
             return <Preview image={image} key={"original" + image.name + i} />;
           })}
-        </div>
-        <div
+        </ul>
+        <ul
+          className={s.list_wrapper}
           style={{
             display: tabs[activeTab] === "Обработанные" ? "block" : "none",
           }}
@@ -71,7 +75,7 @@ const SmallPreviews = observer(() => {
               />
             );
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

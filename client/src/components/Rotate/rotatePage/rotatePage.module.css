@@ -1,5 +1,5 @@
 .wrapper {
-  height: 100vh;
+  min-height: 100vh;
   padding: 8px;
   background-color: #dce3e8;
 
@@ -24,7 +24,7 @@
   position: relative;
 }
 .controls_wrapper {
-  height: calc(100% - 80px); /* костыль */
+  height: calc(100% - 80px);
   margin-bottom: auto;
 }
 
