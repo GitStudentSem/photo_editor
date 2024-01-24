@@ -1,5 +1,7 @@
 import multer from "multer";
 
+// const storage = multer.memoryStorage(); // Сохранение в памяти, а не на диске
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, "uploads/");

@@ -25,9 +25,13 @@ const RotatePage = observer(() => {
       e.preventDefault();
 
       const formData = new FormData(e.currentTarget);
-      const image = formData.getAll("image")[0];
+      const images = formData.getAll("image");
+
       formData.delete("image");
-      formData.append("image", image);
+      images.forEach((image) => {
+        formData.append("image", image);
+      });
+
       const response: any = await fetch("http://localhost:3333/rotate", {
         method: "POST",
         body: formData,
@@ -38,19 +42,28 @@ const RotatePage = observer(() => {
         throw new Error(data.message);
       }
 
-      const arrayBuffer = await response.arrayBuffer();
-      const arrayBufferView = new Uint8Array(arrayBuffer);
+      const data = await response.json();
 
-      const files = ImagesStore.originalImages.map((image) => {
-        return image; // Вот эта штука может сломатся
-        // return new File([arrayBufferView], image.name); // Вот эта штука может сломатся
+      const processed = data.map((image: any, i: number) => {
+        const arrayBufferView = new Uint8Array(image.data);
+
+        const file = new File(
+          [arrayBufferView],
+          ImagesStore.originalImages[i].name
+        );
+
+        return {
+          name: file.name,
+          src: URL.createObjectURL(file),
+          size: file.size,
+        };
       });
+      ImagesStore.setProcessedImages(processed);
 
       LoggerStore.setNotification({
         text: "Обработка завершена, вы можете скачать изображение",
         type: "success",
       });
-      ImagesStore.setProcessedImages(files);
     } catch (error) {
       LoggerStore.log({ type: "error", error });
     }
