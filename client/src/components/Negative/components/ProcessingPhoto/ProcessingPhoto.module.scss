@@ -1,56 +1,16 @@
-.photo {
+.processingPhoto {
   width: 60%;
   height: 100%;
-  border: 2px solid green;
   display: flex;
   justify-content: center;
   align-items: center;
 
   &__wrapper {
-    position: relative;
-    margin: auto;
-  }
-}
-
-.before {
-  max-width: 100%;
-  z-index: 2;
-
-  &__img {
-    object-position: center;
-    max-height: 300px;
+    width: 70%;
   }
 
-  &_processed {
-    position: absolute;
-    overflow: hidden;
-  }
-}
-
-.resize {
-  position: absolute;
-  z-index: 2;
-  width: 1px;
-  background: white;
-  height: 100%;
-  right: 50%;
-  left: 50%;
-  top: 0;
-  cursor: e-resize;
-
-  &_notProcessed {
-    display: none;
-  }
-}
-
-.after {
-  display: flex;
-  justify-content: center;
-  object-position: center;
-  width: 100%;
-
-  &__img {
-    object-position: center;
-    max-height: 300px;
+  &__photo {
+    max-width: 100%;
+    object-fit: contain;
   }
 }

@@ -1,21 +1,33 @@
 import { makeAutoObservable } from "mobx";
 
 class Store {
-  photo: File[];
-  processedPhoto: Blob[];
+  photo: { name: string; size: number; src: string; file: File }[];
+  processedPhoto: { src: string; blob: Blob }[];
+  currentPhoto: string | null;
 
   constructor() {
     this.photo = [];
     this.processedPhoto = [];
-    makeAutoObservable(this);
+    this.currentPhoto = null;
+
+    makeAutoObservable(this, undefined, {
+      autoBind: true,
+    });
   }
 
-  setPhoto(value: File[]) {
+  setPhoto(value: { name: string; size: number; src: string; file: File }[]) {
     this.photo = value;
+    this.currentPhoto = value[0].src;
+    this.processedPhoto = [];
   }
 
-  setProcessedPhoto(value: Blob[]) {
+  setProcessedPhoto(value: { src: string; blob: Blob }[]) {
     this.processedPhoto = value;
+    this.currentPhoto = value[0].src;
+  }
+
+  setCurrentPhoto(value: string) {
+    this.currentPhoto = value;
   }
 }
 

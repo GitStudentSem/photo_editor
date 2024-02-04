@@ -1,0 +1,22 @@
+.tab {
+  width: 50%;
+  background: rgb(230, 223, 223);
+  cursor: pointer;
+  transition: 0.2s all ease-out;
+
+  &_active {
+    width: 50%;
+    cursor: pointer;
+    transition: 0.2s all ease-out;
+    background: rgb(252, 193, 193);
+  }
+
+  &__wrapper {
+    text-align: center;
+    padding: 10px;
+  }
+}
+
+.tab:hover {
+  background: rgb(153, 153, 153);
+}

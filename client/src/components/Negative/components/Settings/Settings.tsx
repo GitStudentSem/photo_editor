@@ -21,10 +21,19 @@ const Settings = observer(() => {
 
   function onChange(e: ChangeEvent<HTMLInputElement>): void {
     if (e.target.files) {
-      console.log("success", e.target.files[0]);
-
-      PhotoStore.setPhoto([...e.target.files]);
-      PhotoStore.setProcessedPhoto([]);
+      if(e.target.files.length > 5) return;
+      [...e.target.files].forEach((file) => {
+        PhotoStore.setPhoto([
+          ...PhotoStore.photo,
+          {
+            name: file.name,
+            size: file.size,
+            src: URL.createObjectURL(file),
+            file: file,
+          },
+        ]);
+      });
+      !!PhotoStore.processedPhoto.length && PhotoStore.setProcessedPhoto([]);
     }
   }
 
@@ -32,12 +41,13 @@ const Settings = observer(() => {
     if (!PhotoStore.photo) return;
     setNotification("wait");
 
-    let processedPhotoArr: Blob[] = [];
+    let processedPhotoArr: {src: string, blob: Blob}[] = [];
 
     for (let i = 0; i < PhotoStore.photo.length; i++) {
       const data = new FormData();
       data.append("alpha", String(isAlpha));
-      data.append("image", PhotoStore.photo[i] as Blob);
+
+      data.append("image", PhotoStore.photo[i].file as Blob);
       const res = await fetch("http://localhost:3333/negative", {
         method: "POST",
         body: data,
@@ -51,7 +61,8 @@ const Settings = observer(() => {
       const arrayBufferBytes = new Uint8Array(arrayBuffer);
       const blob = new Blob([arrayBufferBytes]);
 
-      processedPhotoArr = [...processedPhotoArr, blob];
+      processedPhotoArr = [...processedPhotoArr, {src: URL.createObjectURL(blob), blob}];
+      console.log(processedPhotoArr);
     }
 
     PhotoStore.setProcessedPhoto(processedPhotoArr);
@@ -59,8 +70,8 @@ const Settings = observer(() => {
 
   function downloadPhoto() {
     if (!PhotoStore.processedPhoto || !downloadRef.current) return;
-    downloadPickerRef.current.href = downloadRef.current.src;
-    downloadPickerRef.current.click();
+    // downloadPickerRef.current.href = downloadRef.current.src;
+    // downloadPickerRef.current.click();
   }
 
   function renderNotification() {

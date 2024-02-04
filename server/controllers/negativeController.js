@@ -3,8 +3,6 @@ import sharp from "sharp";
 import fs from "fs";
 
 export const negative = async (req, res) => {
-  if (!req.file) throw Error("Фото не получено");
-
   const { alpha } = req.body;
 
   fs.readFile(`uploads/${req.file.originalname}`, (err, data) => {

@@ -1,48 +1,49 @@
 import styles from "./FileList.module.scss";
 import { observer } from "mobx-react-lite";
+import TabPanel from "./TabPanel/TabPanel";
 import { useState } from "react";
-import ProcessedTab from "./Tabs/ProcessedTab";
-import UnprocessedTab from "./Tabs/UnprocessedTab";
+import { ImageItem } from "../ImageItem/ImageItem";
+import { PhotoStore } from "../../store/store";
 
 const FileList = observer(() => {
-  console.log("render");
-
-  const [activeTab, setActiveTab] = useState<"Необработанные" | "Обработанные">(
-    "Необработанные"
-  );
-
-  const tabs = {
-    Обработанные: <ProcessedTab />,
-    Необработанные: <UnprocessedTab />,
-  };
+  const tabs = ["unprocessed", "processed"];
+  const [activeTab, setActiveTab] = useState(0);
+  const { photo, processedPhoto, currentPhoto } = PhotoStore;
 
   return (
     <div className={styles.fileList}>
-      <div className={styles.tabs}>
-        <div className={styles.tabs__wrapper}>
-          <div
-            className={
-              activeTab === "Необработанные"
-                ? styles.tabs__item_active
-                : styles.tabs__item
-            }
-            onClick={() => setActiveTab("Необработанные")}
-          >
-            <h4>Необработанные</h4>
-          </div>
-          <div
-            className={
-              activeTab === "Обработанные"
-                ? styles.tabs__item_active
-                : styles.tabs__item
-            }
-            onClick={() => setActiveTab("Обработанные")}
-          >
-            <h4>Обработанные</h4>
-          </div>
-        </div>
+      <TabPanel
+        tabs={tabs}
+        activeTab={tabs[activeTab]}
+        setActiveTab={setActiveTab}
+      />
+      <div className={styles.fileList__wrapper}>
+        {tabs[activeTab] === "unprocessed"
+          ? photo &&
+            photo.map((item, index) => {
+              return (
+                <ImageItem
+                  key={item.src + index}
+                  imageSrc={item.src}
+                  imageTitle={item.name}
+                  imageInfo={(item.size / (1024 * 1024)).toFixed(2)}
+                  isActive={item.src === currentPhoto}
+                />
+              );
+            })
+          : processedPhoto &&
+            processedPhoto.map((item, index) => {
+              return (
+                <ImageItem
+                  key={item.src + index}
+                  imageSrc={item.src}
+                  imageTitle={photo[index].name}
+                  imageInfo={(item.blob.size / (1024 * 1024)).toFixed(2)}
+                  isActive={item.src === currentPhoto}
+                />
+              );
+            })}
       </div>
-      <div className={styles.fileList__wrapper}>{tabs[activeTab]}</div>
     </div>
   );
 });
