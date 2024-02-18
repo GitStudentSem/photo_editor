@@ -1,35 +1,30 @@
-import { useState } from "react";
+import { Fragment } from "react";
 import { TextInput } from "../../textInput/TextInput";
 
 import { Checkbox } from "../../checkbox/Checkbox";
 import { ColorInput } from "../../colorInput/ColorInput";
 import { observer } from "mobx-react-lite";
 import { Layout } from "../../layout/Layout";
+import rotateStore from "../../../store/rotateStore";
 
 const RotatePage = observer(() => {
-  const [usedBackground, setUsedBackground] = useState(false);
+  const enumTags = {
+    TextInput,
+    Checkbox,
+    ColorInput,
+  };
 
   return (
     <Layout>
-      <TextInput
-        placeholder='Угол поворота'
-        label='На какой угол нужно повернуть изображение?'
-        type='number'
-        name='angle'
-        required
-      />
+      {rotateStore.controls.map(({ name, props }) => {
+        const Control = enumTags[name];
 
-      <Checkbox
-        text='Использоавать задний фон?'
-        checked={usedBackground}
-        onChange={() => setUsedBackground(!usedBackground)}
-      />
-
-      <ColorInput
-        label='Какого цвета установить задний фон?'
-        name='background'
-        disabled={!usedBackground}
-      />
+        return (
+          <Fragment key={name}>
+            {Reflect.apply(Control, null, [props])}
+          </Fragment>
+        );
+      })}
     </Layout>
   );
 });

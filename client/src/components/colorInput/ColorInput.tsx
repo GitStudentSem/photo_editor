@@ -1,7 +1,7 @@
 import { useState } from "react";
 import s from "./colorInput.module.css";
 
-interface IPropsColorInput {
+export interface IPropsColorInput {
   label: string;
   name: string;
   disabled?: boolean;

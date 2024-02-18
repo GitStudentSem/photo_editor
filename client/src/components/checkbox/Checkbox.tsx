@@ -1,7 +1,7 @@
 import s from "./checkbox.module.css";
 import checkIcon from "../../icons/checkIcon.svg";
 
-interface IPropsCheckbox {
+export interface IPropsCheckbox {
   text: string;
   checked: boolean;
   onChange?: () => void;

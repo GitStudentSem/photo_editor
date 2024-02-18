@@ -2,7 +2,7 @@ import { useState } from "react";
 import s from "./textInput.module.css";
 import errorIcon from "../../icons/errorIcon.svg";
 
-interface IPropsTextInput {
+export interface IPropsTextInput {
   label: string;
   type: "number" | "text" | "password";
   name: string;
