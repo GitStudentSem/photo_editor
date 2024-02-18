@@ -1,5 +1,5 @@
 import s from "./checkbox.module.css";
-import checkIcon from "../../../icons/checkIcon.svg";
+import checkIcon from "../../icons/checkIcon.svg";
 
 interface IPropsCheckbox {
   text: string;

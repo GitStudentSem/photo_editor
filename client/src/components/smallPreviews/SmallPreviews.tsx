@@ -3,7 +3,7 @@ import s from "./smallPreviews.module.css";
 
 import { observer } from "mobx-react-lite";
 import { Tabs } from "../tabs/Tabs";
-import ImagesStore, { Image } from "../store/ImagesStore";
+import ImagesStore, { Image } from "../../store/ImagesStore";
 import { Link } from "../link/Link";
 
 interface IPropsPreview {

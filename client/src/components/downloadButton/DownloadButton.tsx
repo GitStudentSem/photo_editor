@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Button } from "../button/Button";
 import { observer } from "mobx-react-lite";
-import ImagesStore from "../store/ImagesStore";
+import ImagesStore from "../../store/ImagesStore";
 
 const DownloadButton = observer(() => {
   const downloadRef = useRef<HTMLAnchorElement>(null);

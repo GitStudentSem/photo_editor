@@ -1,7 +1,7 @@
 import { useState, DragEvent, RefObject } from "react";
-import s from "./images.module.css";
-import LoggerStore from "../store/LoggerStore";
-import ImagesStore from "../store/ImagesStore";
+import s from "./largePreview.module.css";
+import LoggerStore from "../../store/LoggerStore";
+import ImagesStore from "../../store/ImagesStore";
 import { observer } from "mobx-react-lite";
 
 const Image = observer(() => {
@@ -21,7 +21,7 @@ interface IImagesProps {
   filePickerRef: RefObject<HTMLInputElement>;
 }
 
-export const Images = observer(({ filePickerRef }: IImagesProps) => {
+export const LargePreview = observer(({ filePickerRef }: IImagesProps) => {
   const [isDrag, setIsDrag] = useState(false);
 
   const dragEnterHandler = (e: DragEvent<HTMLDivElement>) => {

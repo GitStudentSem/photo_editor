@@ -1,17 +1,17 @@
 import { useState, FormEvent, useRef } from "react";
 import s from "./rotatePage.module.css";
-import { TextInput } from "../textInput/TextInput";
-import { Button } from "../button/Button";
-import { Alert } from "../alert/Alert";
-import { Checkbox } from "../checkbox/Checkbox";
-import { ColorInput } from "../colorInput/ColorInput";
-import { Images } from "../images/Images";
+import { TextInput } from "../../textInput/TextInput";
+import { Button } from "../../button/Button";
+import { Alert } from "../../alert/Alert";
+import { Checkbox } from "../../checkbox/Checkbox";
+import { ColorInput } from "../../colorInput/ColorInput";
+import { LargePreview } from "../../largePreview/LargePreview";
 import { observer } from "mobx-react-lite";
-import ImagesStore from "../store/ImagesStore";
-import LoggerStore from "../store/LoggerStore";
-import { DownloadButton } from "../downloadButton/DownloadButton";
-import { UploadButton } from "../uploadButton/UploadButton";
-import { SmallPreviews } from "../smallPreviews/SmallPreviews";
+import ImagesStore from "../../../store/ImagesStore";
+import LoggerStore from "../../../store/LoggerStore";
+import { DownloadButton } from "../../downloadButton/DownloadButton";
+import { UploadButton } from "../../uploadButton/UploadButton";
+import { SmallPreviews } from "../../smallPreviews/SmallPreviews";
 
 const RotatePage = observer(() => {
   const filePickerRef = useRef<HTMLInputElement>(null);
@@ -72,8 +72,11 @@ const RotatePage = observer(() => {
   return (
     <div className={s.wrapper}>
       <div className={s.header}></div>
-      <Images filePickerRef={filePickerRef} />
+
+      <LargePreview filePickerRef={filePickerRef} />
+
       <SmallPreviews />
+
       <form className={s.sidebar} onSubmit={onSend}>
         <div className={s.controls_wrapper}>
           <TextInput

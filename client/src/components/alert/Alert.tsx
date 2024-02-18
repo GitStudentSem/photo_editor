@@ -1,11 +1,11 @@
 import s from "./alert.module.css";
-import infoIcon from "../../../icons/infoIcon.svg";
-import errorIcon from "../../../icons/errorIconOutlined.svg";
-import successIcon from "../../../icons/successIcon.svg";
-import warnIcon from "../../../icons/warnIcon.svg";
-import closeIcon from "../../../icons/closeIcon.svg";
+import infoIcon from "../../icons/infoIcon.svg";
+import errorIcon from "../../icons/errorIconOutlined.svg";
+import successIcon from "../../icons/successIcon.svg";
+import warnIcon from "../../icons/warnIcon.svg";
+import closeIcon from "../../icons/closeIcon.svg";
 import { observer } from "mobx-react-lite";
-import LoggerStore from "../store/LoggerStore";
+import LoggerStore from "../../store/LoggerStore";
 
 const iconsEnum = {
   info: infoIcon,

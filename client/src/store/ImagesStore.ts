@@ -27,6 +27,11 @@ class ImagesStore {
   setProcessedImages(images: Image[]) {
     this.processedImages = images;
   }
+  deleteAllImages() {
+    this.selectedImage = null
+    this.originalImages = []
+    this.processedImages = []
+  }
 }
 
 export default new ImagesStore();

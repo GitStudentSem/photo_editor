@@ -7,6 +7,7 @@ interface ITabs {
   activeTab: number;
   setActiveTab: (tab: number) => void;
 }
+
 const Tabs = observer(({ tabs, setActiveTab, activeTab }: ITabs) => {
   return (
     <div className={s.wrapper}>
