@@ -24,11 +24,14 @@ const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
       images.forEach((image) => {
         formData.append("image", image);
       });
-
-      const response: any = await fetch("http://localhost:3333/rotate", {
-        method: "POST",
-        body: formData,
-      });
+      console.log(window.location.pathname);
+      const response: any = await fetch(
+        `http://localhost:3333${window.location.pathname}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const data = await response.json();
