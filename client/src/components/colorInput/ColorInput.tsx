@@ -1,36 +1,26 @@
-import { useState } from "react";
+import { FC, InputHTMLAttributes } from "react";
 import s from "./colorInput.module.css";
+import { observer } from "mobx-react-lite";
 
-export interface IPropsColorInput {
+export interface IPropsColorInput
+  extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  name: string;
-  disabled?: boolean;
   required?: boolean;
 }
-
-export const ColorInput = ({
+const _ColorInput: FC<IPropsColorInput> = ({
   label,
-  name,
-  disabled,
   required,
-}: IPropsColorInput) => {
-  const [value, setValue] = useState("#ffffff");
-
+  value,
+  ...props
+}) => {
   return (
     <label className={s.label}>
       <div className={s.input_wrapper}>
-        <input
-          className={s.input}
-          type='color'
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          name={name}
-          disabled={disabled}
-        />
+        <input className={s.input} type='color' {...props} />
         <div
-          style={{ backgroundColor: !disabled ? value : "transparent" }}
+          style={{
+            backgroundColor: value?.toString(),
+          }}
           className={s.color_view}
         />
 
@@ -43,3 +33,4 @@ export const ColorInput = ({
     </label>
   );
 };
+export const ColorInput = observer(_ColorInput);

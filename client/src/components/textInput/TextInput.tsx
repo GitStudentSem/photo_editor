@@ -1,25 +1,15 @@
-import { useState } from "react";
+import { useState, FC, InputHTMLAttributes } from "react";
 import s from "./textInput.module.css";
 import errorIcon from "../../icons/errorIcon.svg";
+import { observer } from "mobx-react-lite";
 
-export interface IPropsTextInput {
+export interface IPropsTextInput extends InputHTMLAttributes<HTMLInputElement> {
+  required: boolean;
   label: string;
-  type: "number" | "text" | "password";
-  name: string;
-  placeholder?: string;
-  disabled?: boolean;
-  required?: boolean;
+  type: "number" | "text" | "password" | "email";
 }
 
-export const TextInput = ({
-  placeholder,
-  label,
-  type,
-  name,
-  disabled,
-  required,
-}: IPropsTextInput) => {
-  const [value, setValue] = useState("");
+const _TextInput: FC<IPropsTextInput> = ({ label, required, ...props }) => {
   const [isError, setIsError] = useState(false);
   const errorClass = isError ? s.error : "";
 
@@ -28,17 +18,7 @@ export const TextInput = ({
       <p className={s.label_text}>{label}</p>
 
       <div className={s.input_wrapper}>
-        <input
-          className={`${s.input} ${errorClass}`}
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          name={name}
-          disabled={disabled}
-        />
+        <input className={`${s.input} ${errorClass}`} {...props} />
         {isError && <img className={s.input_icon} src={errorIcon} />}
       </div>
 
@@ -48,3 +28,5 @@ export const TextInput = ({
     </label>
   );
 };
+
+export const TextInput = observer(_TextInput);
