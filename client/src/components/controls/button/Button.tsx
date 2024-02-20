@@ -1,18 +1,19 @@
+import { FC, ButtonHTMLAttributes } from "react";
+import { observer } from "mobx-react-lite";
 import s from "./button.module.css";
-import { ButtonHTMLAttributes } from "react";
 
-interface IPropsButton extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   beforeIcon?: string;
   afterIcon?: string;
 }
 
-const Button: React.FC<IPropsButton> = ({
+const _Button: FC<IButtonProps> = ({
   text,
   beforeIcon,
   afterIcon,
   ...props
-}: IPropsButton) => {
+}) => {
   return (
     <button className={s.button} {...props}>
       {beforeIcon && <img src={beforeIcon} />}
@@ -21,4 +22,4 @@ const Button: React.FC<IPropsButton> = ({
     </button>
   );
 };
-export { Button };
+export const Button = observer(_Button);

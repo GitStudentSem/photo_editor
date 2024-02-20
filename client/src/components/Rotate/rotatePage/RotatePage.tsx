@@ -1,11 +1,8 @@
 import { Fragment } from "react";
-import { TextInput } from "../../textInput/TextInput";
-
-import { Checkbox } from "../../checkbox/Checkbox";
-import { ColorInput } from "../../colorInput/ColorInput";
 import { observer } from "mobx-react-lite";
 import { Layout } from "../../layout/Layout";
 import rotateStore from "../../../store/rotateStore";
+import { Checkbox, TextInput, ColorInput } from "../../controls";
 
 export const RotatePage = observer(() => {
   const enumTags = {

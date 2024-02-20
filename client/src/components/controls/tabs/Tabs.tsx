@@ -1,14 +1,14 @@
+import { FC } from "react";
 import s from "./tabs.module.css";
-
 import { observer } from "mobx-react-lite";
 
-interface ITabs {
+export interface ITabsProps {
   tabs: string[];
   activeTab: number;
   setActiveTab: (tab: number) => void;
 }
 
-const Tabs = observer(({ tabs, setActiveTab, activeTab }: ITabs) => {
+const _Tabs: FC<ITabsProps> = ({ tabs, setActiveTab, activeTab }) => {
   return (
     <div className={s.wrapper}>
       {tabs.map((text, i) => {
@@ -44,5 +44,5 @@ const Tabs = observer(({ tabs, setActiveTab, activeTab }: ITabs) => {
       </div>
     </div>
   );
-});
-export { Tabs };
+};
+export const Tabs = observer(_Tabs);

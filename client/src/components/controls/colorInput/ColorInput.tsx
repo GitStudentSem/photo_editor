@@ -2,12 +2,13 @@ import { FC, InputHTMLAttributes } from "react";
 import s from "./colorInput.module.css";
 import { observer } from "mobx-react-lite";
 
-export interface IPropsColorInput
+export interface IColorInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   required?: boolean;
 }
-const _ColorInput: FC<IPropsColorInput> = ({
+
+const _ColorInput: FC<IColorInputProps> = ({
   label,
   required,
   value,

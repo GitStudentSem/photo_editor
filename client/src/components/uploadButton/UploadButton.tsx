@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-import { Button } from "../button/Button";
+import { Button } from "../controls";
 
 import { observer } from "mobx-react-lite";
 import ImagesStore from "../../store/ImagesStore";

@@ -1,6 +1,6 @@
 import { FormEvent, useRef, ReactNode } from "react";
 import s from "./controlsSidebar.module.css";
-import { Button } from "../button/Button";
+import { Button } from "../controls";
 import { Alert } from "../alert/Alert";
 import { observer } from "mobx-react-lite";
 import ImagesStore from "../../store/ImagesStore";

@@ -1,21 +1,23 @@
 import { makeAutoObservable } from "mobx";
-import { IPropsCheckbox } from "../components/checkbox/Checkbox";
-import { IPropsTextInput } from "../components/textInput/TextInput";
-import { IPropsColorInput } from "../components/colorInput/ColorInput";
+import {
+  ICheckboxProps,
+  ITextInputProps,
+  IColorInputProps,
+} from "../components/controls";
 
 type TextInput = {
   name: "TextInput";
-  props: IPropsTextInput;
+  props: ITextInputProps;
 };
 
 type Checkbox = {
   name: "Checkbox";
-  props: IPropsCheckbox;
+  props: ICheckboxProps;
 };
 
 type ColorInput = {
   name: "ColorInput";
-  props: IPropsColorInput;
+  props: IColorInputProps;
 };
 
 class RotateStore {
