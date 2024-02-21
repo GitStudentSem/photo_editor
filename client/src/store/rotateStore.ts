@@ -47,7 +47,7 @@ class RotateStore {
       {
         name: "Checkbox",
         props: {
-          text: "Использоавать задний фон?",
+          label: "Использоавать задний фон?",
           checked: this.usedBackground,
           onChange: () => this.toggleUsedBackground(),
         },
@@ -70,19 +70,25 @@ class RotateStore {
   toggleUsedBackground() {
     this.usedBackground = !this.usedBackground;
 
-    this.controls[1].props.checked = this.usedBackground;
-    this.controls[2].props.disabled = !this.usedBackground;
+    const [_, checkbox, colorInput] = this.controls;
+
+    checkbox.props.checked = this.usedBackground;
+    colorInput.props.disabled = !this.usedBackground;
   }
 
   setColor(e: React.ChangeEvent<HTMLInputElement>) {
     this.backgroundColor = e.target.value;
 
-    this.controls[2].props.value = this.backgroundColor;
+    const [_, __, colorInput] = this.controls;
+
+    colorInput.props.value = this.backgroundColor;
   }
   setAngle(e: React.ChangeEvent<HTMLInputElement>) {
     this.angle = +e.target.value;
 
-    this.controls[0].props.value = this.angle;
+    const [textInput, _, __] = this.controls;
+
+    textInput.props.value = this.angle;
   }
 }
 
