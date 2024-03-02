@@ -7,9 +7,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 2px;
+
   transition: all 0.3s;
   margin-bottom: 10px;
 }
+
 .button:hover {
   background-color: #013681;
 }
@@ -19,6 +21,8 @@
 }
 .button:focus {
   background-color: #186ade;
+  outline: 1px solid #186ade;
+  outline-offset: 1px;
 }
 .text {
   margin: 0 10px;

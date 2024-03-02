@@ -47,6 +47,8 @@
 }
 .input:focus {
   border-color: #186ade;
+  outline: 1px solid #186ade;
+  outline-offset: 1px;
 }
 .input:disabled {
   color: #5b728280;

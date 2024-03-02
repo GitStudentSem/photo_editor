@@ -31,14 +31,16 @@
   border: 1px solid #9fb1bd;
   background-color: #ffffff;
   transition: all 0.3s;
-  outline: none;
 }
 .input:hover ~ .color_view {
   border-color: #7a909e;
 }
 .input:focus ~ .color_view {
   border-color: #186ade;
+  outline: 1px solid #186ade;
+  outline-offset: 1px;
 }
+
 .input:disabled ~ .color_view {
   border-color: #5b728266;
 }
