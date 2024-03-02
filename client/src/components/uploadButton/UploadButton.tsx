@@ -11,7 +11,9 @@ interface IUploadButton {
 
 const UploadButton = observer(({ filePickerRef }: IUploadButton) => {
   const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (!e.target.files) return;
+
+    if (e.target.files[0]) {
       const files = [...e.target.files].map((image) => {
         return {
           name: image.name,

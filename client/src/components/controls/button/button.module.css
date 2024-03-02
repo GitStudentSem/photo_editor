@@ -17,6 +17,9 @@
   background-color: #186ade4d;
   color: #ffffffcc;
 }
+.button:focus {
+  background-color: #186ade;
+}
 .text {
   margin: 0 10px;
   color: inherit;

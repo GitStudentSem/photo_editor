@@ -21,12 +21,13 @@ const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
       const images = formData.getAll("image");
 
       formData.delete("image");
-      images.forEach((image) => {
+
+      for (const image of images) {
         formData.append("image", image);
-      });
-      console.log(window.location.pathname);
-      const response: any = await fetch(
-        `http://localhost:3333${window.location.pathname}`,
+      }
+
+      const response: Response = await fetch(
+        `http://localhost:3333${location.pathname}`,
         {
           method: "POST",
           body: formData,
@@ -40,7 +41,8 @@ const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
 
       const data = await response.json();
 
-      const processed = data.map((image: any, i: number) => {
+      // { data: ArrayBuffer } костыль, не очень ясно как то типизировать
+      const processed = data.map((image: { data: ArrayBuffer }, i: number) => {
         const arrayBufferView = new Uint8Array(image.data);
 
         const file = new File(
@@ -61,7 +63,9 @@ const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
         type: "success",
       });
     } catch (error) {
-      LoggerStore.log({ type: "error", error });
+      if (error instanceof Error) {
+        LoggerStore.log({ type: "error", error });
+      }
     }
   };
 
@@ -76,6 +80,7 @@ const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
           text='Отправить'
           disabled={!ImagesStore.originalImages?.length}
           style={{ width: "48%" }}
+          type='submit'
         />
 
         <DownloadButton />

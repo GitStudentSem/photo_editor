@@ -33,6 +33,12 @@
 .input.error {
   border-color: #d91f11;
 }
+.input.warning {
+  border-color: #e86427;
+}
+.input.success {
+  border-color: #077d55;
+}
 .input::placeholder {
   color: #9fb1bd;
 }

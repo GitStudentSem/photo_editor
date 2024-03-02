@@ -49,13 +49,12 @@ export const LargePreview = observer(({ filePickerRef }: IImagesProps) => {
 
       if (isImage) {
         return true;
-      } else {
-        LoggerStore.setNotification({
-          text: `Файл ${file.name} не был добавлен - это не изображение`,
-          type: "warning",
-        });
-        return false;
       }
+      LoggerStore.setNotification({
+        text: `Файл ${file.name} не был добавлен - это не изображение`,
+        type: "warning",
+      });
+      return false;
     });
 
     const images = files.map((image) => {
@@ -66,8 +65,8 @@ export const LargePreview = observer(({ filePickerRef }: IImagesProps) => {
       };
     });
 
-    if (filePickerRef.current && filePickerRef.current?.files) {
-      filePickerRef.current.files = dt.files; // Это костыль пока не готово получение массива
+    if (filePickerRef?.current?.files) {
+      filePickerRef.current.files = dt.files;
     }
     ImagesStore.setOriginalImages(images);
     setIsDrag(false);

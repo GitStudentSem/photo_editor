@@ -15,10 +15,10 @@ const _Button: FC<IButtonProps> = ({
   ...props
 }) => {
   return (
-    <button className={s.button} {...props}>
-      {beforeIcon && <img src={beforeIcon} />}
+    <button type='button' className={s.button} {...props} tabIndex={0}>
+      {beforeIcon && <img src={beforeIcon} alt='icon before' />}
       <span className={s.text}>{text}</span>
-      {afterIcon && <img src={afterIcon} />}
+      {afterIcon && <img src={afterIcon} alt='icon after' />}
     </button>
   );
 };

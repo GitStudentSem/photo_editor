@@ -19,7 +19,7 @@ const _TextInput: FC<ITextInputProps> = ({ label, required, ...props }) => {
 
       <div className={s.input_wrapper}>
         <input className={`${s.input} ${errorClass}`} {...props} />
-        {isError && <img className={s.input_icon} src={errorIcon} />}
+        {isError && <img className={s.input_icon} src={errorIcon} alt='' />}
       </div>
 
       {required && (

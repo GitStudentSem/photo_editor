@@ -22,15 +22,16 @@ class ImagesStore {
 
   setOriginalImages(images: Image[]) {
     this.originalImages = images;
+    this.selectedImage = images[0];
   }
 
   setProcessedImages(images: Image[]) {
     this.processedImages = images;
   }
   deleteAllImages() {
-    this.selectedImage = null
-    this.originalImages = []
-    this.processedImages = []
+    this.selectedImage = null;
+    this.originalImages = [];
+    this.processedImages = [];
   }
 }
 

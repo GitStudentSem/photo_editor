@@ -54,3 +54,10 @@
 .input:disabled ~ .text {
   color: #5b728280;
 }
+
+.input:focus ~ .text {
+  color: #186ade;
+}
+.input:focus ~ .checkmark {
+  border-color: #186ade;
+}

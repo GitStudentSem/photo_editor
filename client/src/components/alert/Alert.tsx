@@ -17,7 +17,7 @@ export const Alert = observer(() => {
   return (
     <div className={`${s.wrapper} ${s[LoggerStore.notification.type]}`}>
       <div className={s.text_wrapper}>
-        <img src={iconsEnum[LoggerStore.notification.type]} />
+        <img src={iconsEnum[LoggerStore.notification.type]} alt='status icon' />
         <span className={s.text}>{LoggerStore.notification.text}</span>
       </div>
 
@@ -25,6 +25,7 @@ export const Alert = observer(() => {
         className={s.close_icon}
         src={closeIcon}
         onClick={LoggerStore.closeNotification}
+        alt='close icon'
       />
     </div>
   );

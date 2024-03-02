@@ -40,7 +40,7 @@ const _Tabs: FC<ITabsProps> = ({ tabs, setActiveTab, activeTab }) => {
             width: `${100 / tabs.length}%`,
             left: `${activeTab * (100 / tabs.length)}%`,
           }}
-        ></div>
+        />
       </div>
     </div>
   );

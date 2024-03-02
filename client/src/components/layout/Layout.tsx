@@ -10,7 +10,7 @@ const Layout = observer(({ children }: { children: ReactNode }) => {
 
   return (
     <div className={s.wrapper}>
-      <div className={s.header}></div>
+      <div className={s.header} />
 
       <LargePreview filePickerRef={filePickerRef} />
 

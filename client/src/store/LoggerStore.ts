@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 // import { observer } from "mobx-react-lite";
 
 interface ILog {
-  error: Error | any;
+  error: Error;
   type?: "error" | "warning" | "success" | "info";
 }
 

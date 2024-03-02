@@ -12,7 +12,7 @@ const _Checkbox: FC<ICheckboxProps> = ({ label, ...props }) => {
     <label className={s.container}>
       <input className={s.input} type='checkbox' {...props} />
       <span className={s.checkmark}>
-        <img src={checkIcon} />
+        <img src={checkIcon} alt='' />
       </span>
       <span className={s.text}>{label}</span>
     </label>

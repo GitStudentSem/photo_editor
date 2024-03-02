@@ -48,7 +48,7 @@ const SmallPreviews = observer(() => {
           <ul className={s.list_wrapper}>
             {ImagesStore.originalImages.map((image, i) => {
               return (
-                <Preview image={image} key={"original" + image.name + i} />
+                <Preview image={image} key={`original-${image.name}-${i}`} />
               );
             })}
           </ul>
@@ -60,7 +60,7 @@ const SmallPreviews = observer(() => {
               return (
                 <Preview
                   image={image}
-                  key={"processed" + image.name + i}
+                  key={`processed-${image.name}-${i}`}
                   isProcessed
                 />
               );
