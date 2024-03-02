@@ -11,9 +11,9 @@ import { UploadButton } from "../uploadButton/UploadButton";
 const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
   const filePickerRef = useRef<HTMLInputElement>(null);
 
-  const onSend = async (e: FormEvent<HTMLFormElement> | undefined) => {
+  const onSend = async (e: FormEvent<HTMLFormElement>) => {
     try {
-      if (!e || !ImagesStore.originalImages) return;
+      if (!ImagesStore.originalImages) return;
 
       e.preventDefault();
 
