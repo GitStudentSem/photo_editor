@@ -4,18 +4,18 @@ import rotateStore from "../../../store/rotateStore";
 import { Checkbox, TextInput, ColorInput } from "../../controls";
 
 export const RotatePage = observer(() => {
-	return (
-		<Layout>
-			{rotateStore.controls.map(({ name, props }) => {
-				switch (name) {
-					case "TextInput":
-						return <TextInput key={name + Math.random()} {...props} />;
-					case "Checkbox":
-						return <Checkbox key={name + Math.random()} {...props} />;
-					case "ColorInput":
-						return <ColorInput key={name + Math.random()} {...props} />;
-				}
-			})}
-		</Layout>
-	);
+  return (
+    <Layout>
+      {rotateStore.controls.map(({ name, props }, index) => {
+        switch (name) {
+          case "TextInput":
+            return <TextInput key={name + index} {...props} />;
+          case "Checkbox":
+            return <Checkbox key={name + index} {...props} />;
+          case "ColorInput":
+            return <ColorInput key={name + index} {...props} />;
+        }
+      })}
+    </Layout>
+  );
 });

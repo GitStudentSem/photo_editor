@@ -1,23 +1,25 @@
 import { sendError } from "../assets.js";
 import sharp from "sharp";
-import fs from "fs";
 
 export const negative = async (req, res) => {
-  const { alpha } = req.body;
+  try {
+    if (!req.files) throw Error("Изобраения не были получены");
 
-  fs.readFile(`uploads/${req.file.originalname}`, (err, data) => {
-    if (err) return;
+    const imageBuffers = req.files.map((file) => file.buffer);
+    const { alpha } = req.body;
 
-    try {
-      sharp(data)
-        .negate({ alpha: Boolean(alpha) })
-        .toBuffer((err, resizedBuffer) => {
-          if (err) return;
+    const processedImages = await Promise.all(
+      imageBuffers.map(async (buffer) => {
+        return await sharp(buffer).negate(Boolean(alpha)).toBuffer();
+      })
+    );
 
-          res.send(resizedBuffer);
-        });
-    } catch (error) {
-      sendError({ defaultMessage: "Не удалось negate", error, res });
-    }
-  });
+    res.send(processedImages);
+  } catch (error) {
+    sendError({
+      defaultMessage: "Не удалось обработать изображение",
+      error,
+      res,
+    });
+  }
 };

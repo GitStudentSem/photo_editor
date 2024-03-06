@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { FlipPage } from "./components/Flip/FlipPage";
 import { RotatePage } from "./components/Rotate/rotatePage/RotatePage";
-import { NegativePage } from "./components/Negative/NegativePage";
+import { NegativePage } from "./components/Negative/NegativePage/NegativePage";
 
 import { MainPage } from "./components/Main/MainPage";
 

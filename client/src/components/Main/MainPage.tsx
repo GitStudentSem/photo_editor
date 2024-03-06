@@ -1,6 +1,6 @@
 import { FlipCard } from "../Flip/components/FlipCard/FlipCard";
 import { RotateCard } from "../Rotate/rotateCard/RotateCard";
-import { NegativeCard } from "../Negative/components/NegativeCard/NegativeCard";
+import { NegativeCard } from "../Negative/NegativeCard/NegativeCard";
 import s from "./mainPage.module.css";
 
 export const MainPage = () => {
