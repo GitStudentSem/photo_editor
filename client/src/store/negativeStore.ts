@@ -18,7 +18,7 @@ class NegativeStore {
         name: "Checkbox",
         props: {
           label: "Использовать a канал?",
-          checked: this.isAlpha,
+          checked: !!this.isAlpha,
           onChange: () => this.toggleAlpha(),
         },
       },

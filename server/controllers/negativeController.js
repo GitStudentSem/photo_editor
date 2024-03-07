@@ -3,14 +3,14 @@ import sharp from "sharp";
 
 export const negative = async (req, res) => {
   try {
-    if (!req.files) throw Error("Изобраения не были получены");
+    if (!req.files) throw Error("Изображения не были получены");
 
     const imageBuffers = req.files.map((file) => file.buffer);
     const { alpha } = req.body;
 
     const processedImages = await Promise.all(
       imageBuffers.map(async (buffer) => {
-        return await sharp(buffer).negate(Boolean(alpha)).toBuffer();
+        return await sharp(buffer).negate(true).toBuffer();
       })
     );
 

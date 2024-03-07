@@ -25,8 +25,6 @@ const ControlsSidebar = observer(({ children }: { children: ReactNode }) => {
       for (const image of images) {
         formData.append("image", image);
       }
-      console.log(formData.getAll("image"))
-      
 
       const response: Response = await fetch(
         `http://localhost:3333${location.pathname}`,
