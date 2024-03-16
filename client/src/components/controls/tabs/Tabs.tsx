@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import s from "./tabs.module.css";
 import { observer } from "mobx-react-lite";
 
@@ -13,7 +13,14 @@ const _Tabs: FC<ITabsProps> = ({ tabs, setActiveTab, activeTab }) => {
     <div className={s.wrapper}>
       {tabs.map((text, i) => {
         return (
-          <div key={text}>
+          <div
+            key={text}
+            onClick={() => {
+              console.log("first");
+              setActiveTab(i);
+            }}
+            className={s.tab_wrapper}
+          >
             <input
               type='radio'
               id={text}
@@ -22,11 +29,7 @@ const _Tabs: FC<ITabsProps> = ({ tabs, setActiveTab, activeTab }) => {
               className={s.input}
               onChange={() => setActiveTab(i)}
             />
-            <label
-              className={s.label}
-              htmlFor={text}
-              onClick={() => setActiveTab(i)}
-            >
+            <label className={s.label} htmlFor={text}>
               {text}
             </label>
           </div>

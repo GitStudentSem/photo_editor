@@ -2,7 +2,9 @@ import { useState } from "react";
 import s from "./smallPreviews.module.css";
 import { observer } from "mobx-react-lite";
 import { Tabs } from "../controls";
-import ImagesStore, { Image } from "../../store/ImagesStore";
+import ImagesStore from "../../store/ImagesStore";
+import type { Image } from "../../store/ImagesStore";
+
 import { Link } from "../controls";
 
 interface IPropsPreview {

@@ -4,25 +4,11 @@
   background-color: #dce3e8;
 
   display: grid;
-  grid-template-columns: 1fr 296px 296px;
-  grid-template-rows: 50px 1fr;
-  gap: 10px 10px;
+  grid-template-columns: 1fr 296px;
+  grid-template-rows: 50px 1fr 195px;
+  gap: 8px;
   grid-template-areas:
-    "header header header"
-    "large-preview small-preview settings";
-}
-
-@media (max-width: 1024px) {
-  .wrapper {
-    grid-template-columns: 1fr 296px;
-    grid-template-rows: 50px 1fr 350px;
-    grid-template-areas:
-      "header header"
-      "large-preview  settings"
-      "small-preview  settings";
-  }
-}
-.header {
-  grid-area: header;
-  background-color: #ffffff;
+    "header header"
+    "large-preview  settings"
+    "small-preview  small-preview";
 }

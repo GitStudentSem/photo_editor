@@ -1,0 +1,20 @@
+.header {
+  grid-area: header;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.back_location_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1c2b36;
+  margin-left: 5px;
+}
+.back_location_wrapper:focus {
+  outline: 1px solid #186ade;
+}
+.back_location_wrapper img {
+  width: 25px;
+}

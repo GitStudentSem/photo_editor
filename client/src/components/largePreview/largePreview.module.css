@@ -1,8 +1,7 @@
 .image_wrapper {
   grid-area: large-preview;
-  /* width: 100%; */
   padding: 8px;
-  max-height: calc(100vh - 76px);
+  max-height: calc(100vh - 277px); /* Значение 277 подобрано на глаз */
   background-color: #ffffff;
   border-radius: 2px;
   display: flex;
