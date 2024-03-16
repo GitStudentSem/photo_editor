@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 import s from "./colorInput.module.css";
 import { observer } from "mobx-react-lite";
 
@@ -14,6 +14,7 @@ const _ColorInput: FC<IColorInputProps> = ({
   value,
   ...props
 }) => {
+  console.log("color input");
   return (
     <label className={s.label}>
       <div className={s.input_wrapper}>

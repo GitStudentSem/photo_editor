@@ -1,4 +1,5 @@
-import { useState, FC, InputHTMLAttributes } from "react";
+import { useState } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 import s from "./textInput.module.css";
 import errorIcon from "../../../icons/errorIcon.svg";
 import { observer } from "mobx-react-lite";
@@ -12,7 +13,7 @@ export interface ITextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 const _TextInput: FC<ITextInputProps> = ({ label, required, ...props }) => {
   const [isError, setIsError] = useState(false);
   const errorClass = isError ? s.error : "";
-
+  console.log("text input");
   return (
     <label className={s.label}>
       <p className={s.label_text}>{label}</p>

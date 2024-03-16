@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 import s from "./checkbox.module.css";
 import checkIcon from "../../../icons/checkIcon.svg";
 import { observer } from "mobx-react-lite";
@@ -8,6 +8,7 @@ export interface ICheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const _Checkbox: FC<ICheckboxProps> = ({ label, ...props }) => {
+  console.log("checkbox input");
   return (
     <label className={s.container}>
       <input className={s.input} type='checkbox' {...props} />

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import {
+import type {
   ICheckboxProps,
   ITextInputProps,
   IColorInputProps,
