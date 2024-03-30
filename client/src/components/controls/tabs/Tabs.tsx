@@ -16,7 +16,6 @@ const _Tabs: FC<ITabsProps> = ({ tabs, setActiveTab, activeTab }) => {
           <div
             key={text}
             onClick={() => {
-              console.log("first");
               setActiveTab(i);
             }}
             className={s.tab_wrapper}

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type { WheelEvent } from "react";
 import s from "./smallPreviews.module.css";
 import { observer } from "mobx-react-lite";
 import { Tabs } from "../controls";
@@ -40,36 +41,44 @@ const Preview = observer(({ image, isProcessed }: IPropsPreview) => {
 const SmallPreviews = observer(() => {
   const tabs = ["Не обработанные", "Обработанные"];
   const [activeTab, setActiveTab] = useState(0);
+  const scrollRef = useRef<HTMLUListElement>(null);
+
+  const handleWheel = (e: WheelEvent<HTMLUListElement>) => {
+    const node: HTMLUListElement | null = scrollRef.current;
+    const { deltaY, deltaX } = e;
+
+    if (!node || deltaX) return;
+
+    if (deltaY) node.scrollLeft += 20 * (deltaY > 0 ? 1 : -1);
+  };
 
   return (
     <div className={s.wrapper}>
       <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <div className={s.previews}>
-        {tabs[activeTab] === "Не обработанные" && (
-          <ul className={s.list_wrapper}>
-            {ImagesStore.originalImages.map((image, i) => {
-              return (
-                <Preview image={image} key={`original-${image.name}-${i}`} />
-              );
-            })}
-          </ul>
-        )}
+      {tabs[activeTab] === "Не обработанные" && (
+        <ul className={s.list_wrapper} onWheel={handleWheel} ref={scrollRef}>
+          {ImagesStore.originalImages.map((image, i) => {
+            return (
+              <Preview image={image} key={`original-${image.name}-${i}`} />
+            );
+          })}
+        </ul>
+      )}
 
-        {tabs[activeTab] === "Обработанные" && (
-          <ul className={s.list_wrapper}>
-            {ImagesStore.processedImages.map((image, i) => {
-              return (
-                <Preview
-                  image={image}
-                  key={`processed-${image.name}-${i}`}
-                  isProcessed
-                />
-              );
-            })}
-          </ul>
-        )}
-      </div>
+      {tabs[activeTab] === "Обработанные" && (
+        <ul className={s.list_wrapper} onWheel={handleWheel} ref={scrollRef}>
+          {ImagesStore.processedImages.map((image, i) => {
+            return (
+              <Preview
+                image={image}
+                key={`processed-${image.name}-${i}`}
+                isProcessed
+              />
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 });

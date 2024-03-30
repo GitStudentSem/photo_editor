@@ -1,14 +1,24 @@
 .wrapper {
+  height: 100vh;
   min-height: 100vh;
   padding: 8px;
   background-color: #dce3e8;
 
   display: grid;
+  gap: 8px;
   grid-template-columns: 1fr 296px;
   grid-template-rows: 50px 1fr 195px;
-  gap: 8px;
   grid-template-areas:
     "header header"
     "large-preview  settings"
     "small-preview  small-preview";
+}
+@media (max-width: 744px) {
+  .wrapper {
+    grid-template-columns: 1fr 296px;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas:
+      "header header"
+      "small-preview  settings";
+  }
 }
