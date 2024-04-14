@@ -6,6 +6,7 @@ import { RotatePage } from "./components/Rotate/rotatePage/RotatePage";
 import { NegativePage } from "./components/Negative/NegativePage/NegativePage";
 
 import { MainPage } from "./components/Main/MainPage";
+import Root from "./components/Root/Root";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/flip' element={<FlipPage />} />
         <Route path='/rotate' element={<RotatePage />} />
         <Route path='/negative' element={<NegativePage />} />
+        <Route path='/root' element={<Root />} />
       </Routes>
     </BrowserRouter>
   );

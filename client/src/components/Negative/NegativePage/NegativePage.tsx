@@ -1,9 +1,9 @@
 import { Layout } from "../../layout/Layout";
 import { Checkbox } from "../../controls";
-import { ControlsStore } from "../../../store/negativeStore";
+import negativeStore from "../../../store/negativeStore";
 
 export const NegativePage = () => {
-  const { controls } = ControlsStore;
+  const { controls } = negativeStore;
 
   return (
     <Layout>

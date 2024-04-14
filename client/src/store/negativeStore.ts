@@ -8,7 +8,7 @@ type Checkbox = {
 
 class NegativeStore {
   controls: [Checkbox];
-  isAlpha: boolean | undefined;
+  isAlpha?: boolean;
 
   constructor() {
     this.isAlpha;
@@ -20,6 +20,7 @@ class NegativeStore {
           label: "Использовать a канал?",
           checked: !!this.isAlpha,
           onChange: () => this.toggleAlpha(),
+          name: "alpha"
         },
       },
     ];
@@ -32,4 +33,4 @@ class NegativeStore {
   }
 }
 
-export const ControlsStore = new NegativeStore();
+export default new NegativeStore();
